@@ -10,8 +10,8 @@ file(GLOB LlglDriverDirect3D11_SRC
 	)
 add_definitions(-DLLGL_EXPORT)
 	
-#add_library(LlglDriverDirect3D11 SHARED ${LlglDriverDirect3D11_SRC})
-#target_link_libraries(LlglDriverDirect3D11 ${Direct3D11_LIBRARIES} LlglCommon)
-#if(NOT MSVC_IDE)
-#	cotire(LlglDriverDirect3D11)
-#endif()
+add_library(LlglDriverDirect3D11 SHARED ${LlglDriverDirect3D11_SRC})
+target_link_libraries(LlglDriverDirect3D11 ${Direct3D11_LIBRARIES} Llgl)
+if(NOT MSVC_IDE)
+	cotire(LlglDriverDirect3D11)
+endif()

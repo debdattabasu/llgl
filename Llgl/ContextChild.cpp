@@ -17,5 +17,4 @@ ContextPtr ContextChild::getParentContext() const
 	return _parentContext;
 }
 
-
 LLGL_NAMESPACE_END;

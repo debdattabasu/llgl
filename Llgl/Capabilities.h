@@ -3,16 +3,15 @@
 
 LLGL_NAMESPACE(Llgl);
 
-LLGL_CLASS(Capabilities)
+LLGL_CLASS(Capabilities) : public ContextChild
 {
 public:
+	virtual ~Capabilities();
 	virtual bool supportsRawBuffer() = 0;
 	virtual bool supportsShaderResourceBuffer() = 0;
-	virtual uint32_t numUnorderedAccessSlots() = 0; 
-
+	virtual uint32_t numUnorderedAccessSlots() = 0;
 protected:
-	Capabilities();
-	~Capabilities();
+	Capabilities(ContextPtr parentContext);
 };
 
 LLGL_NAMESPACE_END;

@@ -2,7 +2,7 @@
 
 LLGL_NAMESPACE(Llgl);
 
-Capabilities::Capabilities()
+Capabilities::Capabilities(ContextPtr parentContext) : ContextChild(parentContext)
 {
 
 }
@@ -11,4 +11,5 @@ Capabilities::~Capabilities()
 {
 
 }
+
 LLGL_NAMESPACE_END;

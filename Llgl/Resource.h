@@ -3,12 +3,6 @@
 
 LLGL_NAMESPACE(Llgl);
 
-LLGL_ENUM(MapType)
-{
-	Read,
-	Write
-};
-
 LLGL_ENUM(ResourceType)
 {
 	Buffer,
@@ -20,6 +14,7 @@ LLGL_ENUM(ResourceType)
 LLGL_CLASS(Resource) : public ContextChild
 {
 public:
+	friend class Context;
 	virtual ~Resource() override;
 	FormatPtr getFormat() const;
 	uint32_t isStreaming() const;
@@ -30,17 +25,12 @@ public:
 	uint32_t getNumDimensions() const;
 	ResourceType getType() const;
 
-	void* map(MapType type);
-	void unmap();
-
 protected:
 	Resource(ContextPtr parentContext, ResourceType resType, uint32_t width, FormatPtr format, bool isStreaming);
 	Resource(ContextPtr parentContext, ResourceType resType, uint32_t width, uint32_t height, FormatPtr format, bool isStreaming);
 	Resource(ContextPtr parentContext, ResourceType resType, uint32_t width, uint32_t height, uint32_t depth, FormatPtr format, bool isStreaming);
 
-	virtual void initialize() override;
-	virtual void* mapImpl(MapType type) = 0;
-	virtual void unmapImpl() = 0;
+	virtual void initialize();
 
 private:
 	FormatPtr _format;

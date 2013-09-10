@@ -38,7 +38,7 @@ public:
 	bool equals(FormatPtr other);
 protected:
 	Format(ContextPtr parentContext, FormatType type, uint32_t vectorSize);
-	virtual void initialize() override;
+	virtual void initialize();
 private:
 	FormatType _type;
 	uint32_t _vectorSize;

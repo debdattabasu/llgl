@@ -72,19 +72,5 @@ void Resource::initialize()
 	if(_width == 0 || _height == 0 || _depth == 0) throw InvalidArgumentException("dimensions invalid");
 }
 
-void* Resource::map(MapType type)
-{
-	if(!_isStreaming) throw InvalidOperationException("can not map non-streaming rsource");
-	if(_isMapped) throw InvalidOperationException("resource already mapped");
-	_isMapped = true;
-	return mapImpl(type);
-}
-
-void Resource::unmap()
-{
-	if(!_isMapped) throw InvalidOperationException("resource already unmapped");
-	_isMapped = false;
-	return unmapImpl();
-}
 
 LLGL_NAMESPACE_END;

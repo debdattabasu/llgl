@@ -91,9 +91,9 @@ LLGL_EXCEPTION(FileAccess);
 
 LLGL_CLASS(Exception);
 LLGL_CLASS(Driver);
-LLGL_CLASS(Capabilities);
 LLGL_CLASS(Context);
 LLGL_CLASS(ContextChild);
+LLGL_CLASS(Capabilities);
 LLGL_ENUM(FormatType);
 LLGL_ENUM(FormatUsage);
 LLGL_CLASS(Format);
