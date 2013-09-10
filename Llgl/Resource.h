@@ -3,6 +3,12 @@
 
 LLGL_NAMESPACE(Llgl);
 
+LLGL_ENUM(MapType)
+{
+	Read,
+	Write
+};
+
 LLGL_ENUM(ResourceType)
 {
 	Buffer,
@@ -23,11 +29,18 @@ public:
 	uint32_t getDepth() const; 
 	uint32_t getNumDimensions() const;
 	ResourceType getType() const;
+
+	void* map(MapType type);
+	void unmap();
+
 protected:
-	Resource(ContextPtr parentContext, ResourceType resType, uint32_t width, FormatPtr format, bool isStreaming = false);
-	Resource(ContextPtr parentContext, ResourceType resType, uint32_t width, uint32_t height, FormatPtr format, bool isStreaming = false);
-	Resource(ContextPtr parentContext, ResourceType resType, uint32_t width, uint32_t height, uint32_t depth, FormatPtr format, bool isStreaming = false);
+	Resource(ContextPtr parentContext, ResourceType resType, uint32_t width, FormatPtr format, bool isStreaming);
+	Resource(ContextPtr parentContext, ResourceType resType, uint32_t width, uint32_t height, FormatPtr format, bool isStreaming);
+	Resource(ContextPtr parentContext, ResourceType resType, uint32_t width, uint32_t height, uint32_t depth, FormatPtr format, bool isStreaming);
+
 	virtual void initialize() override;
+	virtual void* mapImpl(MapType type) = 0;
+	virtual void unmapImpl() = 0;
 
 private:
 	FormatPtr _format;

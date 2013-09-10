@@ -8,7 +8,7 @@ LLGL_CLASS(Buffer) : public Resource
 public:
 	virtual ~Buffer() override;
 protected:
-	Buffer(ContextPtr parentContext, uint32_t width, FormatPtr format, bool isStreaming = false);
+	Buffer(ContextPtr parentContext, uint32_t width, FormatPtr format, bool isStreaming);
 	virtual void initialize() override;
 };
 

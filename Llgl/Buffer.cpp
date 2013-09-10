@@ -19,12 +19,12 @@ void Buffer::initialize()
 
 	switch(getFormat()->getUsage())
 	{
+	case FormatUsage::General:
+		break;
+
 	case FormatUsage::RawBuffer:
 		if(!caps->supportsRawBuffer())
 			throw InvalidArgumentException("raw buffers unsupported");
-		break;
-
-	case FormatUsage::General:
 		break;
 
 	case FormatUsage::IndexBuffer:

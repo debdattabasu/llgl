@@ -98,6 +98,7 @@ LLGL_ENUM(FormatType);
 LLGL_ENUM(FormatUsage);
 LLGL_CLASS(Format);
 LLGL_ENUM(ResourceType);
+LLGL_ENUM(MapType);
 LLGL_CLASS(Resource);
 LLGL_CLASS(Buffer);
 
