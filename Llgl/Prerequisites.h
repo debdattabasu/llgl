@@ -40,7 +40,7 @@
 	#ifdef LLGL_EXPORT
 		#define LLGL_CLASS(className) class _declspec(dllexport) className; \
 			typedef std::shared_ptr<className> className##Ptr; \
-			typedef std::shared_ptr<className> className##WeakPtr; \
+			typedef std::weak_ptr<className> className##WeakPtr; \
 			class _declspec(dllexport) className 
 		#define LLGL_EXCEPTION_DECLARE(exceptionClassName) \
 			class _declspec(dllexport) exceptionClassName##Exception : public Llgl::Exception\
@@ -49,10 +49,11 @@
 				exceptionClassName##Exception(const std::string& what);\
 				exceptionClassName##Exception();\
 			};
+		#define LLGL_EXCEPTION(exceptionClassName) class _declspec(dllexport) exceptionClassName##Exception
 	#else
 		#define LLGL_CLASS(className) class _declspec(dllimport) className; \
 			typedef std::shared_ptr<className> className##Ptr; \
-			typedef std::shared_ptr<className> className##WeakPtr; \
+			typedef std::weak_ptr<className> className##WeakPtr; \
 			class _declspec(dllimport) className 
 		#define LLGL_EXCEPTION_DECLARE(exceptionClassName) \
 			class _declspec(dllimport) exceptionClassName##Exception : public Llgl::Exception\
@@ -61,11 +62,12 @@
 				exceptionClassName##Exception(const std::string& what);\
 				exceptionClassName##Exception();\
 			};
+		#define LLGL_EXCEPTION(exceptionClassName) class _declspec(dllimport) exceptionClassName##Exception
 	#endif
 #else
 	#define LLGL_CLASS(className) class className; \
 		typedef std::shared_ptr<className> className##Ptr; \
-		typedef std::shared_ptr<className> className##WeakPtr; \
+		typedef std::weak_ptr<className> className##WeakPtr; \
 		class className 
 	#define LLGL_EXCEPTION_DECLARE(exceptionClassName) \
 		class exceptionClassName##Exception : public Llgl::Exception\
@@ -74,14 +76,31 @@
 			exceptionClassName##Exception(const std::string& what);\
 			exceptionClassName##Exception();\
 		};
+	#define LLGL_EXCEPTION(exceptionClassName) class exceptionClassName##Exception
 #endif
 
 
 LLGL_NAMESPACE(Llgl);
 
+LLGL_EXCEPTION(InvalidArgument);
+LLGL_EXCEPTION(InvalidOperation);
+LLGL_EXCEPTION(OutOfMemory);
+LLGL_EXCEPTION(UnexpectedError);
+LLGL_EXCEPTION(NotImplemented);
+LLGL_EXCEPTION(FileAccess);
+
+LLGL_CLASS(Exception);
 LLGL_CLASS(Driver);
+LLGL_CLASS(Capabilities);
 LLGL_CLASS(Context);
-LLGL_CLASS(Object);
+LLGL_CLASS(ContextChild);
+LLGL_ENUM(FormatType);
+LLGL_ENUM(FormatUsage);
+LLGL_CLASS(Format);
+LLGL_ENUM(ResourceType);
+LLGL_CLASS(Resource);
+LLGL_CLASS(Buffer);
+
 
 LLGL_NAMESPACE_END
 

@@ -14,7 +14,7 @@ public:
 	};
 	static Driver* get();
 	virtual ~Driver();
-	ContextPtr createContext() = 0;
+	virtual ContextPtr createContext() = 0;
 protected:
 	Driver();
 private:
