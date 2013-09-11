@@ -3,7 +3,7 @@
 LLGL_NAMESPACE(Llgl);
 
 Buffer::Buffer(ContextPtr parentContext, uint32_t width, FormatPtr format, bool isStreaming)
-	: Resource(parentContext, ResourceType::Buffer, width, format, isStreaming)
+	: Resource(parentContext, ResourceType::Buffer, width, 1, 1, format, isStreaming)
 {
 }
 

@@ -18,6 +18,12 @@ public:
 	FormatPtr createFormat(FormatType type, uint32_t vectorSize = 1);
 	void* mapResource(ResourcePtr resource, MapType type);
 	void unmapResource(ResourcePtr resource);
+	void copyBuffer(BufferPtr sourceBuffer, uint32_t srcWidth, uint32_t srcOffset, BufferPtr destBuffer, uint32_t destOffset);
+
+	void copyResource(ResourcePtr src, uint32_t srcOffsetX, uint32_t srcOffsetY, uint32_t srcOffsetZ, 
+		uint32_t srcWidth, uint32_t srcHeight, uint32_t srcDepth, uint32_t srcMipLevel, uint32_t srcArrayIndex, 
+		ResourcePtr dest, uint32_t destOffsetX, uint32_t destOffsetY, uint32_t destOffsetZ, 
+		uint32_t destMipLevel, uint32_t destArrayIndex);
 protected:
 	Context();
 	void checkChild(ContextChildPtr child);
@@ -25,6 +31,11 @@ protected:
 	virtual FormatPtr createFormatImpl(FormatType type, uint32_t vectorSize) = 0;
 	virtual void* mapResourceImpl(ResourcePtr resource, MapType type) = 0;
 	virtual void unmapResourceImpl(ResourcePtr resource) = 0;
+	virtual void copyBufferImpl(BufferPtr srcBuffer, uint32_t srcWidth, uint32_t srcOffset, BufferPtr destBuffer, uint32_t destOffset) = 0;
+	virtual void copyResourceImpl(ResourcePtr src, uint32_t srcOffsetX, uint32_t srcOffsetY, uint32_t srcOffsetZ, 
+		uint32_t srcWidth, uint32_t srcHeight, uint32_t srcDepth, uint32_t srcMipLevel, uint32_t srcArrayIndex, 
+		ResourcePtr dest, uint32_t destOffsetX, uint32_t destOffsetY, uint32_t destOffsetZ, 
+		uint32_t destMipLevel, uint32_t destArrayIndex) = 0;
 private:
 	std::mutex _mutex;
 };

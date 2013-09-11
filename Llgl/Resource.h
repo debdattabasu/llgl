@@ -23,11 +23,13 @@ public:
 	uint32_t getHeight() const;
 	uint32_t getDepth() const; 
 	uint32_t getNumDimensions() const;
+	uint32_t getNumMips()  const;
+	uint32_t getArraySize() const;
 	ResourceType getType() const;
 protected:
-	Resource(ContextPtr parentContext, ResourceType resType, uint32_t width, FormatPtr format, bool isStreaming);
-	Resource(ContextPtr parentContext, ResourceType resType, uint32_t width, uint32_t height, FormatPtr format, bool isStreaming);
-	Resource(ContextPtr parentContext, ResourceType resType, uint32_t width, uint32_t height, uint32_t depth, FormatPtr format, bool isStreaming);
+	Resource(ContextPtr parentContext, ResourceType resType, uint32_t width, uint32_t numMips, uint32_t arraySize, FormatPtr format, bool isStreaming);
+	Resource(ContextPtr parentContext, ResourceType resType, uint32_t width, uint32_t height, uint32_t numMips, uint32_t arraySize, FormatPtr format, bool isStreaming);
+	Resource(ContextPtr parentContext, ResourceType resType, uint32_t width, uint32_t height, uint32_t depth, uint32_t numMips, uint32_t arraySize, FormatPtr format, bool isStreaming);
 	virtual void initialize();
 private:
 	FormatPtr _format;
@@ -37,6 +39,8 @@ private:
 	uint32_t _height;
 	uint32_t _depth;
 	uint32_t _numDims;
+	uint32_t _numMips;
+	uint32_t _arraySize;
 	ResourceType _resourceType;
 };
 
