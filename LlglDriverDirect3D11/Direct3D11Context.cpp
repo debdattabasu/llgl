@@ -82,22 +82,6 @@ void Direct3D11Context::unmapResourceImpl(ResourcePtr resource)
 	throw NotImplementedException();
 }
 
-void Direct3D11Context::copyBufferImpl(BufferPtr srcBuffer, uint32_t srcWidth, uint32_t srcOffset, BufferPtr destBuffer, uint32_t destOffset)
-{
-	auto elementSize = destBuffer->getFormat()->getSize();
-	auto srcBuf = std::dynamic_pointer_cast<Direct3D11Buffer>(srcBuffer)->_buf;
-	auto destBuf = std::dynamic_pointer_cast<Direct3D11Buffer>(destBuffer)->_buf;
-
-	D3D11_BOX bx;
-	bx.left = srcOffset * elementSize; 
-	bx.right = (srcOffset + srcWidth) * elementSize;
-	bx.top = 0;
-	bx.bottom = 1;
-	bx.front = 0;
-	bx.back = 1;
-	_ctx->CopySubresourceRegion(destBuf, 0, destOffset , 0, 0, srcBuf, 0, &bx);
-}
-
 void Direct3D11Context::copyResourceImpl(ResourcePtr src, uint32_t srcOffsetX, uint32_t srcOffsetY, uint32_t srcOffsetZ, 
 		uint32_t srcWidth, uint32_t srcHeight, uint32_t srcDepth, uint32_t srcMipLevel, uint32_t srcArrayIndex, 
 		ResourcePtr dest, uint32_t destOffsetX, uint32_t destOffsetY, uint32_t destOffsetZ, 

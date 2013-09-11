@@ -9,7 +9,7 @@ public:
 	Direct3D11Driver();
 	~Direct3D11Driver() override;
 	ContextPtr createContext() override;
-private:
+	
 	static Direct3D11Driver _registrar;
 };
 

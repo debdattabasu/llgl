@@ -11,7 +11,7 @@ public:
 	~Direct3D11Format() override;
 	void initialize() override;
 	DXGI_FORMAT getDxgiFormat();
-private:
+	
 	DXGI_FORMAT _dxgiFormat;
 };
 

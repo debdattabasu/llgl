@@ -11,7 +11,7 @@ public:
 	bool supportsRawBuffer() override;
 	bool supportsShaderResourceBuffer() override;
 	uint32_t numUnorderedAccessSlots() override;
-private:
+	
 	D3D_FEATURE_LEVEL _featureLevel;
 };
 
