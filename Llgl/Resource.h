@@ -24,14 +24,11 @@ public:
 	uint32_t getDepth() const; 
 	uint32_t getNumDimensions() const;
 	ResourceType getType() const;
-
 protected:
 	Resource(ContextPtr parentContext, ResourceType resType, uint32_t width, FormatPtr format, bool isStreaming);
 	Resource(ContextPtr parentContext, ResourceType resType, uint32_t width, uint32_t height, FormatPtr format, bool isStreaming);
 	Resource(ContextPtr parentContext, ResourceType resType, uint32_t width, uint32_t height, uint32_t depth, FormatPtr format, bool isStreaming);
-
 	virtual void initialize();
-
 private:
 	FormatPtr _format;
 	bool _isStreaming;
@@ -42,6 +39,5 @@ private:
 	uint32_t _numDims;
 	ResourceType _resourceType;
 };
-
 
 LLGL_NAMESPACE_END;

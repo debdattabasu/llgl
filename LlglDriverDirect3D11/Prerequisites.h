@@ -6,7 +6,6 @@
 
 #define CHECK_HRESULT(hr) { if(FAILED(hr)) {throw UnexpectedErrorException(); }}
 
-
 LLGL_NAMESPACE2(Llgl, Direct3D11);
 
 LLGL_CLASS(Direct3D11Driver);

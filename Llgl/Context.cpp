@@ -39,7 +39,6 @@ void* Context::mapResource(ResourcePtr resource, MapType type)
 	auto ret = mapResourceImpl(resource, type);
 	resource->_isMapped = true;
 	return ret;
-
 }
 
 void Context::unmapResource(ResourcePtr resource)

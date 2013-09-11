@@ -12,5 +12,4 @@ protected:
 	virtual void initialize() override;
 };
 
-
 LLGL_NAMESPACE_END;

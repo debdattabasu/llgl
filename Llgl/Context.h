@@ -18,13 +18,11 @@ public:
 	FormatPtr createFormat(FormatType type, uint32_t vectorSize = 1);
 	void* mapResource(ResourcePtr resource, MapType type);
 	void unmapResource(ResourcePtr resource);
-
 protected:
 	Context();
 	void checkChild(ContextChildPtr child);
 	virtual BufferPtr createBufferImpl(uint32_t width, FormatPtr format, bool isStreaming) = 0;
 	virtual FormatPtr createFormatImpl(FormatType type, uint32_t vectorSize) = 0;
-
 	virtual void* mapResourceImpl(ResourcePtr resource, MapType type) = 0;
 	virtual void unmapResourceImpl(ResourcePtr resource) = 0;
 private:

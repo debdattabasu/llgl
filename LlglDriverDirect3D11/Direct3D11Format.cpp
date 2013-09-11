@@ -180,5 +180,4 @@ DXGI_FORMAT Direct3D11Format::getDxgiFormat()
 	return _dxgiFormat;
 }
 
-
 LLGL_NAMESPACE_END2;

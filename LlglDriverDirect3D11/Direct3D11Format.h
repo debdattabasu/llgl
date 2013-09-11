@@ -15,5 +15,4 @@ private:
 	DXGI_FORMAT _dxgiFormat;
 };
 
-
 LLGL_NAMESPACE_END2;

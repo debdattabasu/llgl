@@ -44,5 +44,4 @@ private:
 	uint32_t _vectorSize;
 };
 
-
 LLGL_NAMESPACE_END;

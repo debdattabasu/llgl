@@ -2,8 +2,6 @@
 
 LLGL_NAMESPACE2(Llgl, Direct3D11);
 
-
-
 Direct3D11Capabilities::Direct3D11Capabilities(ContextPtr parentContext) : Capabilities(parentContext)
 {
 	_featureLevel = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_featureLevel;

@@ -6,7 +6,6 @@
 #include <vector>
 #include <mutex>
 
-
 #pragma warning(disable : 4251)
 
 #define LLGL_NAMESPACE(ns) namespace ns { 
@@ -79,7 +78,6 @@
 	#define LLGL_EXCEPTION(exceptionClassName) class exceptionClassName##Exception
 #endif
 
-
 LLGL_NAMESPACE(Llgl);
 
 LLGL_EXCEPTION(InvalidArgument);
@@ -102,8 +100,7 @@ LLGL_ENUM(MapType);
 LLGL_CLASS(Resource);
 LLGL_CLASS(Buffer);
 
-
-LLGL_NAMESPACE_END
+LLGL_NAMESPACE_END;
 
 
 

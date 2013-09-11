@@ -13,7 +13,6 @@ Direct3D11Context::~Direct3D11Context()
 	SAFE_RELEASE(_ctx);
 }
 
-
 CapabilitiesPtr Direct3D11Context::getCapabilities()
 {
 	return std::make_shared<Direct3D11Capabilities>(shared_from_this()); 
