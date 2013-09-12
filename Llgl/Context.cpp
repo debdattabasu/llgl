@@ -30,24 +30,27 @@ BufferPtr Context::createBuffer(uint32_t width, FormatPtr format, bool isStreami
 	return createBufferImpl(width, format, isStreaming);
 }
 
-void* Context::mapResource(ResourcePtr resource, MapType type)
+void* Context::mapResource(ResourcePtr resource, uint32_t mipLevel, uint32_t arrayIndex, MapType type)
 {
 	std::lock_guard<std::mutex> lock(_mutex); 
 	checkChild(resource);
 	if(!resource->_isStreaming) throw InvalidOperationException("can not map non-streaming rsource");
-	if(resource->_isMapped) throw InvalidOperationException("resource already mapped");
-	auto ret = mapResourceImpl(resource, type);
-	resource->_isMapped = true;
+	if((mipLevel + 1) > resource->getNumMips() || (arrayIndex + 1) > resource->getArraySize())
+		throw InvalidArgumentException("out of bounds");
+
+	if(resource->isMapped(mipLevel, arrayIndex)) throw InvalidOperationException("resource already mapped");
+	auto ret = mapResourceImpl(resource, mipLevel, arrayIndex, type);
+	resource->setMapped(mipLevel, arrayIndex, 1);
 	return ret;
 }
 
-void Context::unmapResource(ResourcePtr resource)
+void Context::unmapResource(ResourcePtr resource, uint32_t mipLevel, uint32_t arrayIndex)
 {
 	std::lock_guard<std::mutex> lock(_mutex); 
 	checkChild(resource);
-	if(!resource->_isMapped) throw InvalidOperationException("resource already unmapped");
-	unmapResourceImpl(resource);
-	resource->_isMapped = false;
+	if(!resource->isMapped(mipLevel, arrayIndex)) throw InvalidOperationException("resource already unmapped");
+	unmapResourceImpl(resource, mipLevel, arrayIndex);
+	resource->setMapped(mipLevel, arrayIndex, 0);
 }
 
 void Context::copyResource(ResourcePtr src, uint32_t srcOffsetX, uint32_t srcOffsetY, uint32_t srcOffsetZ, 

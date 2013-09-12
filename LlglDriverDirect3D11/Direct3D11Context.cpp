@@ -55,31 +55,44 @@ void Direct3D11Context::initialize()
 	CHECK_HRESULT(hr);
 }
 
-void* Direct3D11Context::mapResourceImpl(ResourcePtr resource, MapType type)
+void* Direct3D11Context::mapResourceImpl(ResourcePtr resource, uint32_t mipLevel, uint32_t arrayIndex, MapType type)
 {
-	if(auto buf = std::dynamic_pointer_cast<Direct3D11Buffer>(resource))
+	auto d3dMapType = (type == MapType::Read)? D3D11_MAP_READ: D3D11_MAP_WRITE;
+	HRESULT hr = S_OK;
+	D3D11_MAPPED_SUBRESOURCE rs;
+	rs.RowPitch = 0;
+	rs.pData = 0;
+	ID3D11Resource* res = 0;
+	uint32_t subRes = resource->getNumMips() * arrayIndex + mipLevel;
+	switch(resource->getType())
 	{
-		auto d3dMapType = (type == MapType::Read)? D3D11_MAP_READ: D3D11_MAP_WRITE;
-		HRESULT hr = S_OK;
-		D3D11_MAPPED_SUBRESOURCE rs;
-		rs.RowPitch = 0;
-		rs.pData = 0;
-		hr = _ctx->Map(buf->_buf, 0, d3dMapType, 0, &rs);
-		CHECK_HRESULT(hr);
-		return rs.pData;
+		case ResourceType::Buffer:
+		{
+			res = std::dynamic_pointer_cast<Direct3D11Buffer>(resource)->_buf;
+			break;
+		}
 	}
-	throw NotImplementedException();
+
+	hr = _ctx->Map(res, subRes, d3dMapType, 0, &rs);
+	CHECK_HRESULT(hr);
+	return rs.pData;
 }
 
-void Direct3D11Context::unmapResourceImpl(ResourcePtr resource)
+void Direct3D11Context::unmapResourceImpl(ResourcePtr resource, uint32_t mipLevel, uint32_t arrayIndex)
 {
-	if(auto buf = std::dynamic_pointer_cast<Direct3D11Buffer>(resource))
-	{
-		_ctx->Unmap(buf->_buf, 0);
-		return;
-	}
+	ID3D11Resource* res = 0;
+	uint32_t subRes = resource->getNumMips() * arrayIndex + mipLevel;
 
-	throw NotImplementedException();
+	switch(resource->getType())
+	{
+		case ResourceType::Buffer:
+		{
+			res = std::dynamic_pointer_cast<Direct3D11Buffer>(resource)->_buf;
+			break;
+		}
+	}
+	
+	_ctx->Unmap(res, subRes);
 }
 
 void Direct3D11Context::copyResourceImpl(ResourcePtr src, uint32_t srcOffsetX, uint32_t srcOffsetY, uint32_t srcOffsetZ, 

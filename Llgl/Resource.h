@@ -17,8 +17,8 @@ public:
 	friend class Context;
 	virtual ~Resource() override;
 	FormatPtr getFormat() const;
-	uint32_t isStreaming() const;
-	uint32_t isMapped() const;
+	bool isStreaming() const;
+	bool isMapped(uint32_t mipLevel, uint32_t arrayIndex) const;
 	uint32_t getWidth() const;
 	uint32_t getHeight() const;
 	uint32_t getDepth() const; 
@@ -34,7 +34,8 @@ protected:
 private:
 	FormatPtr _format;
 	bool _isStreaming;
-	bool _isMapped;
+	void setMapped(uint32_t mipLevel, uint32_t arrayIndex, bool value);
+	std::vector<bool> _isMapped;
 	uint32_t _width;
 	uint32_t _height;
 	uint32_t _depth;

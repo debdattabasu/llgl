@@ -36,14 +36,22 @@ FormatPtr Resource::getFormat() const
 	return _format;
 }
 
-uint32_t Resource::isStreaming() const
+bool Resource::isStreaming() const
 {
 	return _isStreaming;
 }
 
-uint32_t Resource::isMapped() const
+bool Resource::isMapped(uint32_t mipLevel, uint32_t arrayIndex) const
 {
-	return _isMapped;
+	if(mipLevel < _numMips && arrayIndex < _arraySize)
+		return _isMapped[_numMips * arrayIndex + mipLevel];
+
+	throw InvalidArgumentException("out of bounds");
+}
+
+void Resource::setMapped(uint32_t mipLevel, uint32_t arrayIndex, bool value)
+{
+	_isMapped[_numMips * arrayIndex + mipLevel] = value;
 }
 
 uint32_t Resource::getWidth() const
@@ -83,7 +91,8 @@ uint32_t Resource::getArraySize() const
 
 void Resource::initialize() 
 {
-	if(_width == 0 || _height == 0 || _depth == 0) throw InvalidArgumentException("dimensions invalid");
+	if(_width == 0 || _height == 0 || _depth == 0 || _numMips ==0 || _arraySize == 0 ) throw InvalidArgumentException("dimensions invalid");
+	_isMapped.resize(_numMips * _arraySize);
 }
 
 
