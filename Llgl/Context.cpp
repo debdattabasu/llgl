@@ -37,7 +37,6 @@ void* Context::mapResource(ResourcePtr resource, uint32_t mipLevel, uint32_t arr
 	if(!resource->_isStreaming) throw InvalidOperationException("can not map non-streaming rsource");
 	if((mipLevel + 1) > resource->getNumMips() || (arrayIndex + 1) > resource->getArraySize())
 		throw InvalidArgumentException("out of bounds");
-
 	if(resource->isMapped(mipLevel, arrayIndex)) throw InvalidOperationException("resource already mapped");
 	auto ret = mapResourceImpl(resource, mipLevel, arrayIndex, type);
 	resource->setMapped(mipLevel, arrayIndex, 1);
@@ -76,6 +75,5 @@ void Context::copyResource(ResourcePtr src, uint32_t srcOffsetX, uint32_t srcOff
 	copyResourceImpl(src, srcOffsetX, srcOffsetY, srcOffsetZ, srcWidth, srcHeight, srcDepth, srcMipLevel, srcArrayIndex, 
 	dest, destOffsetX, destOffsetY, destOffsetZ, destMipLevel, destArrayIndex);
 }
-
 
 LLGL_NAMESPACE_END;

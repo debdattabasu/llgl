@@ -35,6 +35,7 @@ void Direct3D11Buffer::initializeRaw()
 {
 	auto caps = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->getCapabilities();
 	auto dev = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_dev;
+	throw NotImplementedException();
 
 }
 
@@ -107,6 +108,5 @@ void Direct3D11Buffer::initialize()
 	else if (getFormat()->getUsage() == FormatUsage::RawBuffer) initializeRaw();
 	else initializeVertexIndex();
 }
-
 
 LLGL_NAMESPACE_END2;

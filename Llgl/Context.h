@@ -24,7 +24,6 @@ public:
 		uint32_t destMipLevel, uint32_t destArrayIndex);
 protected:
 	Context();
-	void checkChild(ContextChildPtr child);
 	virtual BufferPtr createBufferImpl(uint32_t width, FormatPtr format, bool isStreaming) = 0;
 	virtual FormatPtr createFormatImpl(FormatType type, uint32_t vectorSize) = 0;
 	virtual void* mapResourceImpl(ResourcePtr resource, uint32_t mipLevel, uint32_t arrayIndex, MapType type) = 0;
@@ -34,6 +33,7 @@ protected:
 		ResourcePtr dest, uint32_t destOffsetX, uint32_t destOffsetY, uint32_t destOffsetZ, 
 		uint32_t destMipLevel, uint32_t destArrayIndex) = 0;
 private:
+	void checkChild(ContextChildPtr child);
 	std::mutex _mutex;
 };
 
