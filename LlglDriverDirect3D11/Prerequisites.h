@@ -14,6 +14,7 @@ LLGL_CLASS(Direct3D11Capabilities);
 LLGL_CLASS(Direct3D11Format);
 LLGL_CLASS(Direct3D11Buffer);
 LLGL_CLASS(Direct3D11Texture1D);
+LLGL_CLASS(Direct3D11Texture2D);
 
 LLGL_NAMESPACE_END2;
 

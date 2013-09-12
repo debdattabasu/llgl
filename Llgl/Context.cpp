@@ -37,50 +37,10 @@ Texture1DPtr Context::createTexture1D(uint32_t width, uint32_t numMips, uint32_t
 
 }
 
-void* Context::mapResource(ResourcePtr resource, uint32_t mipLevel, uint32_t arrayIndex, MapType type)
+Texture2DPtr Context::createTexture2D(uint32_t width, uint32_t height, uint32_t numMips, uint32_t arraySize, FormatPtr format, bool isStreaming)
 {
 	std::lock_guard<std::mutex> lock(_mutex); 
-	checkChild(resource);
-	if(!resource->_isStreaming) throw InvalidOperationException("can not map non-streaming rsource");
-	if((mipLevel + 1) > resource->getNumMips() || (arrayIndex + 1) > resource->getArraySize())
-		throw InvalidArgumentException("out of bounds");
-	if(resource->isMapped(mipLevel, arrayIndex)) throw InvalidOperationException("resource already mapped");
-	auto ret = mapResourceImpl(resource, mipLevel, arrayIndex, type);
-	resource->setMapped(mipLevel, arrayIndex, 1);
-	return ret;
-}
-
-void Context::unmapResource(ResourcePtr resource, uint32_t mipLevel, uint32_t arrayIndex)
-{
-	std::lock_guard<std::mutex> lock(_mutex); 
-	checkChild(resource);
-	if(!resource->isMapped(mipLevel, arrayIndex)) throw InvalidOperationException("resource already unmapped");
-	unmapResourceImpl(resource, mipLevel, arrayIndex);
-	resource->setMapped(mipLevel, arrayIndex, 0);
-}
-
-void Context::copyResource(ResourcePtr src, uint32_t srcOffsetX, uint32_t srcOffsetY, uint32_t srcOffsetZ, 
-	uint32_t srcWidth, uint32_t srcHeight, uint32_t srcDepth, uint32_t srcMipLevel, uint32_t srcArrayIndex, 
-	ResourcePtr dest, uint32_t destOffsetX, uint32_t destOffsetY, uint32_t destOffsetZ, 
-	uint32_t destMipLevel, uint32_t destArrayIndex)
-{
-	std::lock_guard<std::mutex> lock(_mutex); 
-	checkChild(src); checkChild(dest);
-	if (!src->getFormat()->equals(dest->getFormat()))
-		throw InvalidArgumentException("resource format mismatch");
-
-	if (src->getType() != dest->getType())
-		throw InvalidArgumentException("resource type mismatch");
-
-	if((srcOffsetX + srcWidth) > src->getWidth() || (destOffsetX + srcWidth) > dest->getWidth() 
-	  	|| (srcOffsetY + srcHeight) > src->getHeight() || (destOffsetY + srcHeight) > dest->getHeight()
-	   	|| (srcOffsetZ + srcDepth) > src->getDepth() || (destOffsetZ + srcDepth) > dest->getDepth()
-	   	|| (srcMipLevel + 1) > src->getNumMips() || (srcArrayIndex + 1) > src->getArraySize() 
-	   	|| (destMipLevel + 1) > dest->getNumMips() || (destArrayIndex + 1) > dest->getArraySize())
-			throw InvalidArgumentException("out of bounds");
-
-	copyResourceImpl(src, srcOffsetX, srcOffsetY, srcOffsetZ, srcWidth, srcHeight, srcDepth, srcMipLevel, srcArrayIndex, 
-	dest, destOffsetX, destOffsetY, destOffsetZ, destMipLevel, destArrayIndex);
+	return createTexture2DImpl(width, height, numMips, arraySize, format, isStreaming);
 }
 
 LLGL_NAMESPACE_END;

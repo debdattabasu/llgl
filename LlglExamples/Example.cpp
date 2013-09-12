@@ -8,11 +8,11 @@ int main()
 	auto ctx = Driver::get()->createContext();
 	auto buf = ctx->createTexture1D(32, 1, 1, ctx->createFormat(FormatType::Float, 1));
 	auto bufStream = ctx->createTexture1D(32, 1, 1, ctx->createFormat(FormatType::Float, 1), true);
-	void* mem = ctx->mapResource(bufStream, 0, 0, MapType::Write);
+	void* mem = bufStream->map(0, 0, MapType::Write);
 	memset(mem, 1, 32*4);
-	ctx->unmapResource(bufStream, 0,0);
-	ctx->copyResource(bufStream, 0, 0, 0, 32, 1, 1, 0, 0, buf, 0, 0, 0, 0, 0);
-	void* mem1 = ctx->mapResource(bufStream, 0, 0, MapType::Read);
+	bufStream->unmap(0,0);
+	buf->copyFrom(bufStream, 0, 0, 0, 32, 1, 1, 0, 0, 0, 0, 0, 0, 0);
+	void* mem1 = bufStream->map(0, 0, MapType::Read);
 
 	if(memcmp(mem1, mem, 32*4) == 0)
 	{

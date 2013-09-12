@@ -9,4 +9,4 @@
 #include "Resource.h"
 #include "Buffer.h"
 #include "Texture1D.h"
-
+#include "Texture2D.h"

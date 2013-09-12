@@ -95,5 +95,48 @@ void Resource::initialize()
 	_isMapped.resize(_numMips * _arraySize);
 }
 
+void* Resource::map(uint32_t mipLevel, uint32_t arrayIndex, MapType type)
+{
+	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
+	if(!_isStreaming) throw InvalidOperationException("can not map non-streaming rsource");
+	if((mipLevel + 1) > getNumMips() || (arrayIndex + 1) > getArraySize())
+		throw InvalidArgumentException("out of bounds");
+	if(isMapped(mipLevel, arrayIndex)) throw InvalidOperationException("resource already mapped");
+	auto ret = mapImpl(mipLevel, arrayIndex, type);
+	setMapped(mipLevel, arrayIndex, 1);
+	return ret;
+}
+
+void Resource::unmap(uint32_t mipLevel, uint32_t arrayIndex)
+{
+	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
+	if(!isMapped(mipLevel, arrayIndex)) throw InvalidOperationException("resource already unmapped");
+	unmapImpl(mipLevel, arrayIndex);
+	setMapped(mipLevel, arrayIndex, 0);
+}
+
+void Resource::copyFrom(ResourcePtr src, uint32_t srcOffsetX, uint32_t srcOffsetY, uint32_t srcOffsetZ, 
+		uint32_t srcWidth, uint32_t srcHeight, uint32_t srcDepth, uint32_t srcMipLevel, uint32_t srcArrayIndex, 
+		uint32_t destOffsetX, uint32_t destOffsetY, uint32_t destOffsetZ, 
+		uint32_t destMipLevel, uint32_t destArrayIndex)
+{
+	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
+	if (!src->getFormat()->equals(getFormat()))
+		throw InvalidArgumentException("resource format mismatch");
+
+	if (src->getType() != getType())
+		throw InvalidArgumentException("resource type mismatch");
+
+	if((srcOffsetX + srcWidth) > src->getWidth() || (destOffsetX + srcWidth) > getWidth() 
+	  	|| (srcOffsetY + srcHeight) > src->getHeight() || (destOffsetY + srcHeight) > getHeight()
+	   	|| (srcOffsetZ + srcDepth) > src->getDepth() || (destOffsetZ + srcDepth) > getDepth()
+	   	|| (srcMipLevel + 1) > src->getNumMips() || (srcArrayIndex + 1) > src->getArraySize() 
+	   	|| (destMipLevel + 1) > getNumMips() || (destArrayIndex + 1) > getArraySize())
+			throw InvalidArgumentException("out of bounds");
+
+	copyFromImpl(src, srcOffsetX, srcOffsetY, srcOffsetZ, srcWidth, srcHeight, srcDepth, srcMipLevel, srcArrayIndex, 
+		destOffsetX, destOffsetY, destOffsetZ, destMipLevel, destArrayIndex);
+
+}
 
 LLGL_NAMESPACE_END;

@@ -152,4 +152,48 @@ void Direct3D11Buffer::initialize()
 	else initializeVertexIndex();
 }
 
+void* Direct3D11Buffer::mapImpl(uint32_t mipLevel, uint32_t arrayIndex, MapType type) 
+{
+	auto ctx = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_ctx;
+	auto d3dMapType = (type == MapType::Read)? D3D11_MAP_READ: D3D11_MAP_WRITE;
+	HRESULT hr = S_OK;
+	D3D11_MAPPED_SUBRESOURCE rs;
+	rs.RowPitch = 0;
+	rs.pData = 0;
+	uint32_t subRes = getNumMips() * arrayIndex + mipLevel;
+	hr = ctx->Map(_buf, subRes, d3dMapType, 0, &rs);
+	CHECK_HRESULT(hr);
+	return rs.pData;
+}
+
+void Direct3D11Buffer::unmapImpl(uint32_t mipLevel, uint32_t arrayIndex) 
+{
+	auto ctx = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_ctx;
+	uint32_t subRes = getNumMips() * arrayIndex + mipLevel;
+	ctx->Unmap(_buf, subRes);
+}
+
+void Direct3D11Buffer::copyFromImpl(ResourcePtr src, uint32_t srcOffsetX, uint32_t srcOffsetY, uint32_t srcOffsetZ, 
+	uint32_t srcWidth, uint32_t srcHeight, uint32_t srcDepth, uint32_t srcMipLevel, uint32_t srcArrayIndex, 
+	uint32_t destOffsetX, uint32_t destOffsetY, uint32_t destOffsetZ, 
+	uint32_t destMipLevel, uint32_t destArrayIndex) 
+{
+	auto ctx = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_ctx;
+	ID3D11Resource* srcRes = std::dynamic_pointer_cast<Direct3D11Buffer>(src)->_buf; 
+	ID3D11Resource* destRes = _buf;
+	uint32_t srcSubRes = src->getNumMips() * srcArrayIndex + srcMipLevel;
+	uint32_t destSubRes = getNumMips()  * destArrayIndex + destMipLevel;
+
+	D3D11_BOX bx;
+	auto elementSize = src->getFormat()->getSize();
+	bx.left = srcOffsetX * elementSize; 
+	bx.right = (srcOffsetX + srcWidth) * elementSize;
+	bx.top = 0;
+	bx.bottom = 1;
+	bx.front = 0;
+	bx.back = 1;
+	ctx->CopySubresourceRegion(destRes, destSubRes, destOffsetX , destOffsetY, destOffsetZ, srcRes, srcSubRes, &bx);
+}
+
+
 LLGL_NAMESPACE_END2;

@@ -100,6 +100,7 @@ LLGL_ENUM(MapType);
 LLGL_CLASS(Resource);
 LLGL_CLASS(Buffer);
 LLGL_CLASS(Texture1D);
+LLGL_CLASS(Texture2D);
 
 LLGL_NAMESPACE_END;
 
