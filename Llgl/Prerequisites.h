@@ -14,7 +14,7 @@
 #define LLGL_NAMESPACE_END } 
 #define LLGL_NAMESPACE_END2 }}
 
-#define LLGL_ENUM(enumName) enum class enumName : uint32_t
+#define LLGL_ENUM(enumName) enum class enumName 
 #define LLGL_ENUM_OPERATORS(enumName)inline enumName operator | (enumName lhs, enumName rhs)\
 		{\
 		    return (enumName)((int)lhs | (int)rhs);\
@@ -99,6 +99,7 @@ LLGL_ENUM(ResourceType);
 LLGL_ENUM(MapType);
 LLGL_CLASS(Resource);
 LLGL_CLASS(Buffer);
+LLGL_CLASS(Texture1D);
 
 LLGL_NAMESPACE_END;
 

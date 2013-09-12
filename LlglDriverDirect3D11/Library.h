@@ -4,3 +4,4 @@
 #include "Direct3D11Capabilities.h"
 #include "Direct3D11Format.h"
 #include "Direct3D11Buffer.h"
+#include "Direct3D11Texture1D.h"

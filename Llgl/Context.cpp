@@ -30,6 +30,13 @@ BufferPtr Context::createBuffer(uint32_t width, FormatPtr format, bool isStreami
 	return createBufferImpl(width, format, isStreaming);
 }
 
+Texture1DPtr Context::createTexture1D(uint32_t width, uint32_t numMips, uint32_t arraySize, FormatPtr format, bool isStreaming)
+{
+	std::lock_guard<std::mutex> lock(_mutex); 
+	return createTexture1DImpl(width, numMips, arraySize, format, isStreaming);
+
+}
+
 void* Context::mapResource(ResourcePtr resource, uint32_t mipLevel, uint32_t arrayIndex, MapType type)
 {
 	std::lock_guard<std::mutex> lock(_mutex); 

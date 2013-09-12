@@ -15,6 +15,7 @@ public:
 	virtual ~Context();
 	virtual CapabilitiesPtr getCapabilities() = 0;
 	BufferPtr createBuffer(uint32_t width, FormatPtr format, bool isStreaming = false);
+	Texture1DPtr createTexture1D(uint32_t width, uint32_t numMips, uint32_t arraySize, FormatPtr format, bool isStreaming = false);
 	FormatPtr createFormat(FormatType type, uint32_t vectorSize = 1);
 	void* mapResource(ResourcePtr resource, uint32_t mipLevel, uint32_t arrayIndex, MapType type);
 	void unmapResource(ResourcePtr resource, uint32_t mipLevel, uint32_t arrayIndex);
@@ -25,6 +26,7 @@ public:
 protected:
 	Context();
 	virtual BufferPtr createBufferImpl(uint32_t width, FormatPtr format, bool isStreaming) = 0;
+	virtual Texture1DPtr createTexture1DImpl(uint32_t width, uint32_t numMips, uint32_t arraySize, FormatPtr format, bool isStreaming) = 0;
 	virtual FormatPtr createFormatImpl(FormatType type, uint32_t vectorSize) = 0;
 	virtual void* mapResourceImpl(ResourcePtr resource, uint32_t mipLevel, uint32_t arrayIndex, MapType type) = 0;
 	virtual void unmapResourceImpl(ResourcePtr resource, uint32_t mipLevel, uint32_t arrayIndex) = 0;

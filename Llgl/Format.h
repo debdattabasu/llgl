@@ -24,7 +24,8 @@ LLGL_ENUM(FormatUsage)
 {
 	General, 
 	RawBuffer, 
-	IndexBuffer
+	IndexBuffer,
+	DepthTexture
 };
 
 LLGL_CLASS(Format) : public ContextChild

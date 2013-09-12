@@ -10,6 +10,7 @@ public:
 	~Direct3D11Context() override;
 	CapabilitiesPtr getCapabilities() override;
 	BufferPtr createBufferImpl(uint32_t width, FormatPtr format, bool isStreaming) override;
+	Texture1DPtr createTexture1DImpl(uint32_t width, uint32_t numMips, uint32_t arraySize, FormatPtr format, bool isStreaming) override;
 	FormatPtr createFormatImpl(FormatType type, uint32_t vectorSize) override;
 	void initialize();
 	void* mapResourceImpl(ResourcePtr resource, uint32_t mipLevel, uint32_t arrayIndex, MapType type) override;

@@ -16,7 +16,7 @@ Direct3D11Driver::~Direct3D11Driver()
 
 ContextPtr Direct3D11Driver::createContext()
 {
-	auto ret = std::make_shared<Direct3D11Context>();
+	auto ret = std::shared_ptr<Direct3D11Context>(new Direct3D11Context());
 	ret->initialize();
 	return ret;
 }

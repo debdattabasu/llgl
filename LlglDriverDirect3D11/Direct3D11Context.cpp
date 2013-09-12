@@ -15,20 +15,26 @@ Direct3D11Context::~Direct3D11Context()
 
 CapabilitiesPtr Direct3D11Context::getCapabilities()
 {
-	return std::make_shared<Direct3D11Capabilities>(shared_from_this()); 
+	return std::shared_ptr<Direct3D11Capabilities>(new Direct3D11Capabilities(shared_from_this())); 
 }
 
 BufferPtr Direct3D11Context::createBufferImpl(uint32_t width, FormatPtr format, bool isStreaming)
 {
-	auto ret =  std::make_shared<Direct3D11Buffer>(shared_from_this(), width, format, isStreaming);
+	auto ret =  std::shared_ptr<Direct3D11Buffer>(new Direct3D11Buffer(shared_from_this(), width, format, isStreaming));
 	ret->initialize();
 	return ret;
+}
 
+Texture1DPtr Direct3D11Context::createTexture1DImpl(uint32_t width, uint32_t numMips, uint32_t arraySize, FormatPtr format, bool isStreaming)
+{
+	auto ret =  std::shared_ptr<Direct3D11Texture1D>(new Direct3D11Texture1D(shared_from_this(), width, numMips, arraySize, format, isStreaming));
+	ret->initialize();
+	return ret;
 }
 
 FormatPtr Direct3D11Context::createFormatImpl(FormatType type, uint32_t vectorSize)
 {
-	auto ret =  std::make_shared<Direct3D11Format>(shared_from_this(), type, vectorSize);
+	auto ret =  std::shared_ptr<Direct3D11Format>(new Direct3D11Format(shared_from_this(), type, vectorSize));
 	ret->initialize();
 	return ret;
 }
@@ -73,7 +79,7 @@ void* Direct3D11Context::mapResourceImpl(ResourcePtr resource, uint32_t mipLevel
 		}
 		case ResourceType::Texture1D:
 		{
-			throw NotImplementedException();
+			res = std::dynamic_pointer_cast<Direct3D11Texture1D>(resource)->_tex1d;
 			break;
 		}
 		case ResourceType::Texture2D:
@@ -107,7 +113,7 @@ void Direct3D11Context::unmapResourceImpl(ResourcePtr resource, uint32_t mipLeve
 		}
 		case ResourceType::Texture1D:
 		{
-			throw NotImplementedException();
+			res = std::dynamic_pointer_cast<Direct3D11Texture1D>(resource)->_tex1d;
 			break;
 		}
 		case ResourceType::Texture2D:
@@ -153,7 +159,14 @@ void Direct3D11Context::copyResourceImpl(ResourcePtr src, uint32_t srcOffsetX, u
 		}
 		case ResourceType::Texture1D:
 		{
-			throw NotImplementedException();
+			srcRes = std::dynamic_pointer_cast<Direct3D11Texture1D>(src)->_tex1d;
+			destRes = std::dynamic_pointer_cast<Direct3D11Texture1D>(dest)->_tex1d;
+			bx.left = srcOffsetX ; 
+			bx.right = srcOffsetX + srcWidth;
+			bx.top = 0;
+			bx.bottom = 1;
+			bx.front = 0;
+			bx.back = 1;
 			break;
 		}
 		case ResourceType::Texture2D:

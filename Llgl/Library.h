@@ -8,4 +8,5 @@
 #include "Format.h"
 #include "Resource.h"
 #include "Buffer.h"
+#include "Texture1D.h"
 
