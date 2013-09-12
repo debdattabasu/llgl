@@ -20,7 +20,7 @@ void Direct3D11Format::initialize()
 	switch(getType())
 	{
 	case FormatType::Raw:
-		_dxgiFormat = DXGI_FORMAT_UNKNOWN;
+		_dxgiFormat = DXGI_FORMAT_R32_TYPELESS;
 		break;
 	case FormatType::Float:
 		switch(getVectorSize())
