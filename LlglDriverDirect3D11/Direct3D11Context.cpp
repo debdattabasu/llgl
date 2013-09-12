@@ -71,6 +71,21 @@ void* Direct3D11Context::mapResourceImpl(ResourcePtr resource, uint32_t mipLevel
 			res = std::dynamic_pointer_cast<Direct3D11Buffer>(resource)->_buf;
 			break;
 		}
+		case ResourceType::Texture1D:
+		{
+			throw NotImplementedException();
+			break;
+		}
+		case ResourceType::Texture2D:
+		{
+			throw NotImplementedException();
+			break;
+		}
+		case ResourceType::Texture3D:
+		{
+			throw NotImplementedException();
+			break;
+		}
 	}
 
 	hr = _ctx->Map(res, subRes, d3dMapType, 0, &rs);
@@ -88,6 +103,21 @@ void Direct3D11Context::unmapResourceImpl(ResourcePtr resource, uint32_t mipLeve
 		case ResourceType::Buffer:
 		{
 			res = std::dynamic_pointer_cast<Direct3D11Buffer>(resource)->_buf;
+			break;
+		}
+		case ResourceType::Texture1D:
+		{
+			throw NotImplementedException();
+			break;
+		}
+		case ResourceType::Texture2D:
+		{
+			throw NotImplementedException();
+			break;
+		}
+		case ResourceType::Texture3D:
+		{
+			throw NotImplementedException();
 			break;
 		}
 	}
@@ -108,28 +138,34 @@ void Direct3D11Context::copyResourceImpl(ResourcePtr src, uint32_t srcOffsetX, u
 	D3D11_BOX bx;
 	switch(src->getType())
 	{
-	case ResourceType::Buffer:
-	{
-		auto elementSize = src->getFormat()->getSize();
-		srcRes = std::dynamic_pointer_cast<Direct3D11Buffer>(src)->_buf;
-		destRes = std::dynamic_pointer_cast<Direct3D11Buffer>(dest)->_buf;
-		bx.left = srcOffsetX * elementSize; 
-		bx.right = (srcOffsetX + srcWidth) * elementSize;
-		bx.top = 0;
-		bx.bottom = 1;
-		bx.front = 0;
-		bx.back = 1;
-		break;
-	}
-	case ResourceType::Texture1D:
-
-		break;
-	case ResourceType::Texture2D:
-
-		break;
-	case ResourceType::Texture3D:
-
-		break;
+		case ResourceType::Buffer:
+		{
+			auto elementSize = src->getFormat()->getSize();
+			srcRes = std::dynamic_pointer_cast<Direct3D11Buffer>(src)->_buf;
+			destRes = std::dynamic_pointer_cast<Direct3D11Buffer>(dest)->_buf;
+			bx.left = srcOffsetX * elementSize; 
+			bx.right = (srcOffsetX + srcWidth) * elementSize;
+			bx.top = 0;
+			bx.bottom = 1;
+			bx.front = 0;
+			bx.back = 1;
+			break;
+		}
+		case ResourceType::Texture1D:
+		{
+			throw NotImplementedException();
+			break;
+		}
+		case ResourceType::Texture2D:
+		{
+			throw NotImplementedException();
+			break;
+		}
+		case ResourceType::Texture3D:
+		{
+			throw NotImplementedException();
+			break;
+		}
 	}
 
 	_ctx->CopySubresourceRegion(destRes, destSubRes, destOffsetX , destOffsetY, destOffsetZ, srcRes, srcSubRes, &bx);
