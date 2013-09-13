@@ -11,7 +11,7 @@ int main()
 	void* mem = bufStream->map(0, 0, MapType::Write);
 	memset(mem, 1, 32*4);
 	bufStream->unmap(0,0);
-	buf->copyFrom(bufStream, 0, 0, 0, 32, 1, 1, 0, 0, 0, 0, 0, 0, 0);
+	buf->copyFrom(bufStream, 0, 32, 0, 0, 0, 0, 0);
 	void* mem1 = bufStream->map(0, 0, MapType::Read);
 
 	if(memcmp(mem1, mem, 32*4) == 0)

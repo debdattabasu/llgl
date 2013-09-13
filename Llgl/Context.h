@@ -3,10 +3,19 @@
 
 LLGL_NAMESPACE(Llgl);
 
+LLGL_ENUM(MapType)
+{
+	Read,
+	Write
+};
+
 LLGL_CLASS(Context) : public std::enable_shared_from_this<Context>
 {
 public:
 	friend class Resource;
+	friend class Buffer;
+	friend class Texture1D;
+	friend class Texture2D;
 	virtual ~Context();
 	virtual CapabilitiesPtr getCapabilities() = 0;
 	BufferPtr createBuffer(uint32_t width, FormatPtr format, bool isStreaming = false);

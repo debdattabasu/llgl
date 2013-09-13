@@ -6,7 +6,6 @@
 #include "ContextChild.h"
 #include "Capabilities.h"
 #include "Format.h"
-#include "Resource.h"
 #include "Buffer.h"
 #include "Texture1D.h"
 #include "Texture2D.h"

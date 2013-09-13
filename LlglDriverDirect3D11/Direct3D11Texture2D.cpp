@@ -209,10 +209,9 @@ void Direct3D11Texture2D::unmapImpl(uint32_t mipLevel, uint32_t arrayIndex)
 	ctx->Unmap(_tex2d, subRes);
 }
 
-void Direct3D11Texture2D::copyFromImpl(ResourcePtr src, uint32_t srcOffsetX, uint32_t srcOffsetY, uint32_t srcOffsetZ, 
-	uint32_t srcWidth, uint32_t srcHeight, uint32_t srcDepth, uint32_t srcMipLevel, uint32_t srcArrayIndex, 
-	uint32_t destOffsetX, uint32_t destOffsetY, uint32_t destOffsetZ, 
-	uint32_t destMipLevel, uint32_t destArrayIndex) 
+void Direct3D11Texture2D::copyFromImpl(Texture2DPtr src, uint32_t srcOffsetX, uint32_t srcOffsetY,
+	uint32_t srcWidth, uint32_t srcHeight, uint32_t srcMipLevel, uint32_t srcArrayIndex, 
+	uint32_t destOffsetX, uint32_t destOffsetY, uint32_t destMipLevel, uint32_t destArrayIndex) 
 {
 	auto ctx = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_ctx;
 	ID3D11Resource* srcRes = std::dynamic_pointer_cast<Direct3D11Texture2D>(src)->_tex2d; 
@@ -225,9 +224,9 @@ void Direct3D11Texture2D::copyFromImpl(ResourcePtr src, uint32_t srcOffsetX, uin
 	bx.right = srcOffsetX + srcWidth;
 	bx.top = srcOffsetY;
 	bx.bottom = srcOffsetY + srcHeight;
-	bx.front = srcOffsetZ;
-	bx.back = srcOffsetZ + srcDepth;
-	ctx->CopySubresourceRegion(destRes, destSubRes, destOffsetX , destOffsetY, destOffsetZ, srcRes, srcSubRes, &bx);
+	bx.front = 0;
+	bx.back = 1;
+	ctx->CopySubresourceRegion(destRes, destSubRes, destOffsetX , destOffsetY, 0, srcRes, srcSubRes, &bx);
 }
 
 LLGL_NAMESPACE_END2;
