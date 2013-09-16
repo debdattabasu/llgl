@@ -3,7 +3,7 @@
 
 LLGL_NAMESPACE(Llgl);
 
-LLGL_CLASS(ContextChild) : std::enable_shared_from_this<ContextChild>
+LLGL_CLASS(ContextChild) 
 {
 public:
 	virtual ~ContextChild();

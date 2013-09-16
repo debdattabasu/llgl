@@ -22,4 +22,6 @@ int main()
 	{
 		std::cout<<"failed";
 	}
+
+	bufStream->unmap(0, 0);
 }
