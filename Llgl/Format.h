@@ -18,8 +18,8 @@ LLGL_ENUM(FormatType)
 	Unorm8,
 	Index16,
 	Index32,
-	DepthUnorm24Stencil8, 
-	DepthFloat32Stencil24,
+	DepthUnorm24StencilUint8, 
+	DepthFloat32StencilUint8,
 	DepthFloat32,
 	DepthUnorm16 
 };

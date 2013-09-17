@@ -22,7 +22,7 @@ void Direct3D11Texture1D::initializeStreaming()
 {
 	auto caps = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->getCapabilities();
 	auto dev = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_dev;
-	auto dxgiFmt = std::dynamic_pointer_cast<Direct3D11Format>(getFormat())->getDxgiFormat();
+	auto dxgiFmtTypeless = std::dynamic_pointer_cast<Direct3D11Format>(getFormat())->getDxgiFormatTypeless();
 	HRESULT hr = S_OK;
 
 	D3D11_TEXTURE1D_DESC td; 
@@ -30,7 +30,7 @@ void Direct3D11Texture1D::initializeStreaming()
 	td.Width = getWidth();
 	td.MipLevels = getNumMips();
 	td.ArraySize = getArraySize();
-	td.Format = dxgiFmt;
+	td.Format = dxgiFmtTypeless;
 	td.Usage = D3D11_USAGE_STAGING;
 	td.CPUAccessFlags = D3D11_CPU_ACCESS_READ|D3D11_CPU_ACCESS_WRITE;
 	hr = dev->CreateTexture1D(&td, NULL, &_tex1d);
@@ -41,7 +41,8 @@ void Direct3D11Texture1D::initializeDefault()
 {
 	auto caps = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->getCapabilities();
 	auto dev = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_dev;
-	auto dxgiFmt = std::dynamic_pointer_cast<Direct3D11Format>(getFormat())->getDxgiFormat();
+	auto dxgiFmtTypeless = std::dynamic_pointer_cast<Direct3D11Format>(getFormat())->getDxgiFormatTypeless();
+	auto dxgiFmtTyped = std::dynamic_pointer_cast<Direct3D11Format>(getFormat())->getDxgiFormatTyped();
 	HRESULT hr = S_OK;
 
 	D3D11_TEXTURE1D_DESC td; 
@@ -49,7 +50,7 @@ void Direct3D11Texture1D::initializeDefault()
 	td.Width = getWidth();;
 	td.MipLevels = getNumMips();
 	td.ArraySize = getArraySize();
-	td.Format = dxgiFmt;
+	td.Format = dxgiFmtTypeless;
 	td.Usage = D3D11_USAGE_DEFAULT;
 	td.BindFlags = D3D11_BIND_SHADER_RESOURCE;
 	if(caps->numUnorderedAccessSlots())
@@ -60,7 +61,7 @@ void Direct3D11Texture1D::initializeDefault()
 
 	D3D11_SHADER_RESOURCE_VIEW_DESC srvd ;
 	ZeroMemory(&srvd, sizeof(srvd));
-	srvd.Format = dxgiFmt;
+	srvd.Format = dxgiFmtTyped;
 	if(getArraySize() ==1)
 	{
 		srvd.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE1D;
@@ -85,7 +86,7 @@ void Direct3D11Texture1D::initializeDefault()
 		{
 			D3D11_UNORDERED_ACCESS_VIEW_DESC uavd;
 			ZeroMemory(&uavd, sizeof(uavd));
-			uavd.Format =dxgiFmt;
+			uavd.Format =dxgiFmtTyped;
 			if(getArraySize() ==1)
 			{
 				uavd.ViewDimension = D3D11_UAV_DIMENSION_TEXTURE1D;

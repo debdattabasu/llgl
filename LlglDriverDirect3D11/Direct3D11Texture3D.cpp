@@ -23,7 +23,7 @@ void Direct3D11Texture3D::initializeStreaming()
 {
 	auto caps = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->getCapabilities();
 	auto dev = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_dev;
-	auto dxgiFmt = std::dynamic_pointer_cast<Direct3D11Format>(getFormat())->getDxgiFormat();
+	auto dxgiFmtTypeless = std::dynamic_pointer_cast<Direct3D11Format>(getFormat())->getDxgiFormatTypeless();
 
 	HRESULT hr = S_OK;
 	D3D11_TEXTURE3D_DESC td; 
@@ -32,7 +32,7 @@ void Direct3D11Texture3D::initializeStreaming()
 	td.Height = getHeight();
 	td.Depth = getDepth();
 	td.MipLevels = getNumMips();
-	td.Format = dxgiFmt;
+	td.Format = dxgiFmtTypeless;
 	td.Usage = D3D11_USAGE_STAGING ;
 	td.CPUAccessFlags = D3D11_CPU_ACCESS_READ|D3D11_CPU_ACCESS_WRITE;
 	hr = dev->CreateTexture3D(&td, NULL, &_tex3d);
@@ -43,7 +43,8 @@ void Direct3D11Texture3D::initializeDefault()
 {
 	auto caps = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->getCapabilities();
 	auto dev = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_dev;
-	auto dxgiFmt = std::dynamic_pointer_cast<Direct3D11Format>(getFormat())->getDxgiFormat();
+	auto dxgiFmtTypeless = std::dynamic_pointer_cast<Direct3D11Format>(getFormat())->getDxgiFormatTypeless();
+	auto dxgiFmtTyped = std::dynamic_pointer_cast<Direct3D11Format>(getFormat())->getDxgiFormatTyped();
 	HRESULT hr = S_OK;
 
 	D3D11_TEXTURE3D_DESC td; 
@@ -52,7 +53,7 @@ void Direct3D11Texture3D::initializeDefault()
 	td.Height = getHeight();
 	td.Depth = getDepth();
 	td.MipLevels = getNumMips();
-	td.Format = dxgiFmt;
+	td.Format = dxgiFmtTypeless;
 	td.Usage = D3D11_USAGE_DEFAULT;
 	td.BindFlags = D3D11_BIND_SHADER_RESOURCE;
 	if(caps->numUnorderedAccessSlots()) td.BindFlags |= D3D11_BIND_UNORDERED_ACCESS;
@@ -61,7 +62,7 @@ void Direct3D11Texture3D::initializeDefault()
 
 	D3D11_SHADER_RESOURCE_VIEW_DESC srvd ;
 	ZeroMemory(&srvd, sizeof(srvd));
-	srvd.Format = dxgiFmt;
+	srvd.Format = dxgiFmtTyped;
 	srvd.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE3D;
 	srvd.Texture3D.MostDetailedMip = 0;
 	srvd.Texture3D.MipLevels = -1;
@@ -71,7 +72,7 @@ void Direct3D11Texture3D::initializeDefault()
 	for(uint32_t mipLevel = 0; mipLevel < getNumMips(); mipLevel ++)
 	{
 		D3D11_UNORDERED_ACCESS_VIEW_DESC uavd;
-		uavd.Format = dxgiFmt;
+		uavd.Format = dxgiFmtTyped;
 		uavd.ViewDimension = D3D11_UAV_DIMENSION_TEXTURE3D;
 		uavd.Texture3D.MipSlice = mipLevel;
 		uavd.Texture3D.FirstWSlice = 0;

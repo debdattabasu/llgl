@@ -32,10 +32,10 @@ FormatUsage Format::getUsage()
 	case FormatType::Index32:
 		ret = FormatUsage::IndexBuffer;
 		break;	
-	case FormatType::DepthUnorm24Stencil8:
+	case FormatType::DepthUnorm24StencilUint8:
 		ret = FormatUsage::DepthTexture;
 		break;	
-	case FormatType::DepthFloat32Stencil24:
+	case FormatType::DepthFloat32StencilUint8:
 		ret = FormatUsage::DepthTexture;
 		break;	
 	case FormatType::DepthFloat32:
@@ -105,11 +105,11 @@ uint32_t Format::getSize()
 		size = 4; 
 		break;	
 
-	case FormatType::DepthUnorm24Stencil8:
+	case FormatType::DepthUnorm24StencilUint8:
 		size = 4; 
 		break;	
 
-	case FormatType::DepthFloat32Stencil24:
+	case FormatType::DepthFloat32StencilUint8:
 		size = 8; 
 		break;	
 

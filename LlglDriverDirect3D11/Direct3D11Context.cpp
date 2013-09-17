@@ -66,7 +66,7 @@ void Direct3D11Context::initialize()
 	UINT numFeatureLevels = ARRAYSIZE(featureLevels);
 
 	hr = D3D11CreateDevice(NULL, D3D_DRIVER_TYPE_HARDWARE, NULL, createDeviceFlags, featureLevels, numFeatureLevels, 
-		D3D11_SDK_VERSION, &_dev,  &_featureLevel, &_ctx );
+		D3D11_SDK_VERSION, &_dev,  &_featureLevel, &_ctx);
 	CHECK_HRESULT(hr);
 }
 

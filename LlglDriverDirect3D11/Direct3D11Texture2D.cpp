@@ -31,7 +31,7 @@ void Direct3D11Texture2D::initializeStreaming()
 {
 	auto caps = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->getCapabilities();
 	auto dev = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_dev;
-	auto dxgiFmt = std::dynamic_pointer_cast<Direct3D11Format>(getFormat())->getDxgiFormat();
+	auto dxgiFmtTypeless = std::dynamic_pointer_cast<Direct3D11Format>(getFormat())->getDxgiFormatTypeless();
 
 	HRESULT hr = S_OK;
 	D3D11_TEXTURE2D_DESC td; 
@@ -40,7 +40,7 @@ void Direct3D11Texture2D::initializeStreaming()
 	td.Height = getHeight();
 	td.MipLevels = getNumMips();
 	td.ArraySize = getArraySize();
-	td.Format = dxgiFmt;
+	td.Format = dxgiFmtTypeless;
 	td.SampleDesc.Count = 1;
 	td.Usage = D3D11_USAGE_STAGING ;
 	td.CPUAccessFlags = D3D11_CPU_ACCESS_READ|D3D11_CPU_ACCESS_WRITE;
@@ -52,7 +52,9 @@ void Direct3D11Texture2D::initializeDefault()
 {
 	auto caps = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->getCapabilities();
 	auto dev = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_dev;
-	auto dxgiFmt = std::dynamic_pointer_cast<Direct3D11Format>(getFormat())->getDxgiFormat();
+	auto dxgiFmtTypeless = std::dynamic_pointer_cast<Direct3D11Format>(getFormat())->getDxgiFormatTypeless();
+	auto dxgiFmtTyped = std::dynamic_pointer_cast<Direct3D11Format>(getFormat())->getDxgiFormatTyped();
+	auto dxgiFmtDepthTyped = std::dynamic_pointer_cast<Direct3D11Format>(getFormat())->getDxgiFormatDepthTyped();
 	HRESULT hr = S_OK;
 
 	D3D11_TEXTURE2D_DESC td; 
@@ -61,7 +63,7 @@ void Direct3D11Texture2D::initializeDefault()
 	td.Height = getHeight();
 	td.MipLevels = getNumMips();
 	td.ArraySize = getArraySize();
-	td.Format = dxgiFmt;
+	td.Format = dxgiFmtTypeless;
 	td.SampleDesc.Count = 1;
 	td.Usage = D3D11_USAGE_DEFAULT;
 	bool isDepth = getFormat()->getUsage() == FormatUsage::DepthTexture;
@@ -76,7 +78,7 @@ void Direct3D11Texture2D::initializeDefault()
 
 	D3D11_SHADER_RESOURCE_VIEW_DESC srvd ;
 	ZeroMemory(&srvd, sizeof(srvd));
-	srvd.Format = dxgiFmt;
+	srvd.Format = dxgiFmtTyped;
 	if(getArraySize() ==1)
 	{
 		srvd.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
@@ -104,7 +106,7 @@ void Direct3D11Texture2D::initializeDefault()
 			{
 				D3D11_DEPTH_STENCIL_VIEW_DESC dsvd;
 				ZeroMemory(&dsvd, sizeof(dsvd));
-				dsvd.Format = dxgiFmt;
+				dsvd.Format = dxgiFmtDepthTyped;
 				if(getArraySize() ==1)
 				{
 					dsvd.ViewDimension= D3D11_DSV_DIMENSION_TEXTURE2D;
@@ -124,7 +126,7 @@ void Direct3D11Texture2D::initializeDefault()
 			{
 				D3D11_RENDER_TARGET_VIEW_DESC rtvd ;
 				ZeroMemory(&rtvd, sizeof(rtvd));
-				rtvd.Format = dxgiFmt;
+				rtvd.Format = dxgiFmtTyped;
 				if(getArraySize() ==1)
 				{
 					rtvd.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
@@ -144,7 +146,7 @@ void Direct3D11Texture2D::initializeDefault()
 		if(!isDepth)
 		{
 			D3D11_UNORDERED_ACCESS_VIEW_DESC uavd;
-			uavd.Format = dxgiFmt;
+			uavd.Format = dxgiFmtTyped;
 			if(getArraySize() ==1)
 			{
 				uavd.ViewDimension = D3D11_UAV_DIMENSION_TEXTURE2D;

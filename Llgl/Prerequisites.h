@@ -6,6 +6,7 @@
 #include <vector>
 #include <mutex>
 
+
 #pragma warning(disable : 4251)
 
 #define LLGL_NAMESPACE(ns) namespace ns { 
@@ -76,6 +77,10 @@
 			exceptionClassName##Exception();\
 		};
 	#define LLGL_EXCEPTION(exceptionClassName) class exceptionClassName##Exception
+#endif
+
+#ifndef max
+	#define max(x, y) (((x) > (y)) ? (x) : (y))
 #endif
 
 LLGL_NAMESPACE(Llgl);

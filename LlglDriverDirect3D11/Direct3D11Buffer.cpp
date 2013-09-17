@@ -35,7 +35,7 @@ void Direct3D11Buffer::initializeRaw()
 {
 	auto caps = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->getCapabilities();
 	auto dev = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_dev;
-	auto dxgiFmt = std::dynamic_pointer_cast<Direct3D11Format>(getFormat())->getDxgiFormat();
+	auto dxgiFmtTyped = std::dynamic_pointer_cast<Direct3D11Format>(getFormat())->getDxgiFormatTyped();
 	auto elementSize = getFormat()->getSize();
 	auto numElements = getWidth();
 	HRESULT hr = S_OK;
@@ -59,7 +59,7 @@ void Direct3D11Buffer::initializeRaw()
 
 		D3D11_SHADER_RESOURCE_VIEW_DESC srvd;
 		ZeroMemory(&srvd, sizeof(srvd));
-		srvd.Format = dxgiFmt;
+		srvd.Format = dxgiFmtTyped;
 		srvd.ViewDimension = D3D11_SRV_DIMENSION_BUFFEREX;
 		srvd.BufferEx.FirstElement = 0;
 		srvd.BufferEx.NumElements = numElements;
@@ -73,7 +73,7 @@ void Direct3D11Buffer::initializeRaw()
 	{
 		D3D11_UNORDERED_ACCESS_VIEW_DESC uavd;
 		ZeroMemory(&uavd, sizeof(uavd));
-		uavd.Format = dxgiFmt;
+		uavd.Format = dxgiFmtTyped;
 		uavd.ViewDimension = D3D11_UAV_DIMENSION_BUFFER;
 		uavd.Buffer.FirstElement = 0;
 		uavd.Buffer.NumElements =  numElements;
@@ -88,7 +88,7 @@ void Direct3D11Buffer::initializeVertexIndex()
 	auto caps = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->getCapabilities();
 	auto dev = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_dev;
 
-	auto dxgiFmt = std::dynamic_pointer_cast<Direct3D11Format>(getFormat())->getDxgiFormat();
+	auto dxgiFmtTyped = std::dynamic_pointer_cast<Direct3D11Format>(getFormat())->getDxgiFormatTyped();
 	auto elementSize = getFormat()->getSize();
 	auto numElements = getWidth();
 	HRESULT hr = S_OK;
@@ -120,7 +120,7 @@ void Direct3D11Buffer::initializeVertexIndex()
 
 		D3D11_SHADER_RESOURCE_VIEW_DESC srvd;
 		ZeroMemory(&srvd, sizeof(srvd));
-		srvd.Format = dxgiFmt;
+		srvd.Format = dxgiFmtTyped;
 		srvd.ViewDimension = D3D11_SRV_DIMENSION_BUFFER;
 		srvd.Buffer.FirstElement = 0;
 		srvd.Buffer.ElementWidth = elementSize;
@@ -135,7 +135,7 @@ void Direct3D11Buffer::initializeVertexIndex()
 	{
 		D3D11_UNORDERED_ACCESS_VIEW_DESC uavd;
 		ZeroMemory(&uavd, sizeof(uavd));
-		uavd.Format = dxgiFmt;
+		uavd.Format = dxgiFmtTyped;
 		uavd.ViewDimension = D3D11_UAV_DIMENSION_BUFFER;
 		uavd.Buffer.FirstElement = 0;
 		uavd.Buffer.NumElements =  numElements;
