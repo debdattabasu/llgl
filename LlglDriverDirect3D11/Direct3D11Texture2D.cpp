@@ -163,9 +163,8 @@ void Direct3D11Texture2D::initializeDefault()
 	}
 }
 
-void Direct3D11Texture2D::initialize()
+void Direct3D11Texture2D::initializeImpl()
 {
-	Texture2D::initialize();
 
 	_uavs.resize(getNumMips());
 	for(auto i : _uavs)

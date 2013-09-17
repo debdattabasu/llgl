@@ -8,7 +8,7 @@ LLGL_CLASS(Direct3D11Texture2D) : public Texture2D
 public:
 	Direct3D11Texture2D(ContextPtr parentContext, uint32_t width, uint32_t height, uint32_t numMips, uint32_t arraySize, FormatPtr format, bool isStreaming);
 	~Direct3D11Texture2D() override;
-	void initialize() override;
+	void initializeImpl() override;
 	void initializeStreaming();
 	void initializeDefault();
 

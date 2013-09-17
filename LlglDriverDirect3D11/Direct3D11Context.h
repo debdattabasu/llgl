@@ -12,6 +12,7 @@ public:
 	BufferPtr createBufferImpl(uint32_t width, FormatPtr format, bool isStreaming) override;
 	Texture1DPtr createTexture1DImpl(uint32_t width, uint32_t numMips, uint32_t arraySize, FormatPtr format, bool isStreaming) override;
 	Texture2DPtr createTexture2DImpl(uint32_t width, uint32_t height, uint32_t numMips, uint32_t arraySize, FormatPtr format, bool isStreaming) override;
+	Texture3DPtr createTexture3DImpl(uint32_t width, uint32_t height, uint32_t depth, uint32_t numMips, FormatPtr format, bool isStreaming) override;
 	FormatPtr createFormatImpl(FormatType type, uint32_t vectorSize) override;
 	void initialize();
 

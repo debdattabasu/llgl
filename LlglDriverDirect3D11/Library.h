@@ -6,3 +6,4 @@
 #include "Direct3D11Buffer.h"
 #include "Direct3D11Texture1D.h"
 #include "Direct3D11Texture2D.h"
+#include "Direct3D11Texture3D.h"

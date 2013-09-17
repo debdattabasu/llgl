@@ -15,21 +15,27 @@ public:
 	friend class Buffer;
 	friend class Texture1D;
 	friend class Texture2D;
+	friend class Texture3D;
+	friend class Format;
 	virtual ~Context();
 	virtual CapabilitiesPtr getCapabilities() = 0;
 	BufferPtr createBuffer(uint32_t width, FormatPtr format, bool isStreaming = false);
 	Texture1DPtr createTexture1D(uint32_t width, uint32_t numMips, uint32_t arraySize, FormatPtr format, bool isStreaming = false);
 	Texture2DPtr createTexture2D(uint32_t width, uint32_t height, uint32_t numMips, uint32_t arraySize, FormatPtr format, bool isStreaming = false);
+	Texture3DPtr createTexture3D(uint32_t width, uint32_t height, uint32_t depth, uint32_t numMips, FormatPtr format, bool isStreaming = false);
 	FormatPtr createFormat(FormatType type, uint32_t vectorSize = 1);
 
 protected:
 	Context();
+
 	virtual BufferPtr createBufferImpl(uint32_t width, FormatPtr format, bool isStreaming) = 0;
 	virtual Texture1DPtr createTexture1DImpl(uint32_t width, uint32_t numMips, uint32_t arraySize, FormatPtr format, bool isStreaming) = 0;
 	virtual Texture2DPtr createTexture2DImpl(uint32_t width, uint32_t height, uint32_t numMips, uint32_t arraySize, FormatPtr format, bool isStreaming) = 0;
+	virtual Texture3DPtr createTexture3DImpl(uint32_t width, uint32_t height, uint32_t depth, uint32_t numMips, FormatPtr format, bool isStreaming) = 0;
 	virtual FormatPtr createFormatImpl(FormatType type, uint32_t vectorSize) = 0;
+
+
 private:
-	void checkChild(ContextChildPtr child);
 	std::mutex _mutex;
 };
 

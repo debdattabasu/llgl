@@ -67,6 +67,7 @@ void Buffer::copyFrom(BufferPtr src, uint32_t srcOffset, uint32_t srcWidth, uint
 
 void Buffer::initialize() 
 {
+	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
 	if(_width == 0) throw InvalidArgumentException("dimensions invalid");
 	auto caps = getParentContext()->getCapabilities();
 
@@ -86,6 +87,7 @@ void Buffer::initialize()
 	default:
 		throw InvalidArgumentException("format type unsupported by buffers");
 	}
+	initializeImpl();
 }
 
 LLGL_NAMESPACE_END;

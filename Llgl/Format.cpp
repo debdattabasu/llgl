@@ -140,8 +140,10 @@ bool Format::equals(FormatPtr other)
 
 void Format::initialize()
 {
+	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
 	if(_vectorSize != 1 && _vectorSize != 2 && _vectorSize != 4) throw InvalidArgumentException("vector size must be 1, 2, or 4");
 	if(getUsage() != FormatUsage::General && _vectorSize != 1) throw InvalidArgumentException("vector size for given format must be 1");
+	initializeImpl();
 }
 
 LLGL_NAMESPACE_END;

@@ -14,9 +14,8 @@ Direct3D11Format::~Direct3D11Format()
 
 }
 
-void Direct3D11Format::initialize()
+void Direct3D11Format::initializeImpl()
 {
-	Format::initialize();
 	switch(getType())
 	{
 	case FormatType::Raw:

@@ -35,6 +35,7 @@ LLGL_ENUM(FormatUsage)
 LLGL_CLASS(Format) : public ContextChild
 {
 public:
+	friend class Context;
 	virtual ~Format() override;
 	FormatType getType();
 	FormatUsage getUsage();
@@ -43,7 +44,8 @@ public:
 	bool equals(FormatPtr other);
 protected:
 	Format(ContextPtr parentContext, FormatType type, uint32_t vectorSize);
-	virtual void initialize();
+	void initialize();
+	virtual void initializeImpl() = 0;
 private:
 	FormatType _type;
 	uint32_t _vectorSize;

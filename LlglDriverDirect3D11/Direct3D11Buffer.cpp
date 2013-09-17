@@ -144,9 +144,8 @@ void Direct3D11Buffer::initializeVertexIndex()
 	}
 }
 
-void Direct3D11Buffer::initialize()
+void Direct3D11Buffer::initializeImpl()
 {
-	Buffer::initialize();
 	if (isStreaming()) initializeStreaming();
 	else if (getFormat()->getUsage() == FormatUsage::RawBuffer) initializeRaw();
 	else initializeVertexIndex();

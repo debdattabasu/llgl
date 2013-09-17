@@ -14,7 +14,7 @@ public:
 	void copyFromImpl(BufferPtr src, uint32_t srcOffset, uint32_t srcWidth, uint32_t destOffset) override;
 
 
-	void initialize() override;
+	void initializeImpl() override;
 	void initializeStreaming();
 	void initializeRaw();
 	void initializeVertexIndex();
