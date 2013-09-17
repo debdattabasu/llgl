@@ -12,11 +12,14 @@ public:
 		Load(const std::string& driverName);
 		~Load();
 	};
+
 	static Driver* get();
 	virtual ~Driver();
 	virtual ContextPtr createContext() = 0;
+
 protected:
 	Driver();
+	
 private:
 	static Driver* _singleton;
 };

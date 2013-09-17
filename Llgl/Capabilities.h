@@ -10,6 +10,7 @@ public:
 	virtual bool supportsRawBuffer() = 0;
 	virtual bool supportsShaderResourceBuffer() = 0;
 	virtual uint32_t numUnorderedAccessSlots() = 0;
+	
 protected:
 	Capabilities(ContextPtr parentContext);
 };

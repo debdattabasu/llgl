@@ -100,7 +100,6 @@ LLGL_CLASS(Capabilities);
 LLGL_ENUM(FormatType);
 LLGL_ENUM(FormatUsage);
 LLGL_CLASS(Format);
-LLGL_ENUM(MapType);
 LLGL_CLASS(BufferStream);
 LLGL_CLASS(Buffer);
 LLGL_CLASS(Texture1DStream);

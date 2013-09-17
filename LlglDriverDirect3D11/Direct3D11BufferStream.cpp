@@ -13,7 +13,6 @@ Direct3D11BufferStream::~Direct3D11BufferStream()
 	SAFE_RELEASE(_buf);
 }
 
-
 void Direct3D11BufferStream::initializeImpl()
 {
 	auto dev = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_dev;
@@ -28,7 +27,6 @@ void Direct3D11BufferStream::initializeImpl()
 	bd.CPUAccessFlags = D3D11_CPU_ACCESS_READ | D3D11_CPU_ACCESS_WRITE;
 	hr = dev->CreateBuffer(&bd, NULL, &_buf);
 	CHECK_HRESULT(hr);
-
 }
 
 void* Direct3D11BufferStream::mapImpl() 

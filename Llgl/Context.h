@@ -3,12 +3,6 @@
 
 LLGL_NAMESPACE(Llgl);
 
-LLGL_ENUM(MapType)
-{
-	Read,
-	Write
-};
-
 LLGL_CLASS(Context) : public std::enable_shared_from_this<Context>
 {
 public:
@@ -35,7 +29,6 @@ public:
 
 protected:
 	Context();
-
 	virtual BufferPtr createBufferImpl(uint32_t width, FormatPtr format) = 0;
 	virtual BufferStreamPtr createBufferStreamImpl(uint32_t width, FormatPtr format) = 0;
 	virtual Texture1DPtr createTexture1DImpl(uint32_t width, uint32_t numMips, uint32_t arraySize, FormatPtr format) = 0;
@@ -45,8 +38,7 @@ protected:
 	virtual Texture3DPtr createTexture3DImpl(uint32_t width, uint32_t height, uint32_t depth, uint32_t numMips, FormatPtr format) = 0;
 	virtual Texture3DStreamPtr createTexture3DStreamImpl(uint32_t width, uint32_t height, uint32_t depth, FormatPtr format) = 0;
 	virtual FormatPtr createFormatImpl(FormatType type, uint32_t vectorSize) = 0;
-
-
+	
 private:
 	std::mutex _mutex;
 };

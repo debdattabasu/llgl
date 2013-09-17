@@ -9,7 +9,6 @@ public:
 	Direct3D11Texture1D(ContextPtr parentContext, uint32_t width, uint32_t numMips, uint32_t arraySize, FormatPtr format);
 	~Direct3D11Texture1D() override;
 	void initializeImpl() override;
-
 	void copyFromImpl(Texture1DPtr src, uint32_t srcOffset, uint32_t srcWidth, uint32_t srcMipLevel, uint32_t srcArrayIndex, 
 		uint32_t destOffset, uint32_t destMipLevel, uint32_t destArrayIndex) override;
 

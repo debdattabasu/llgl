@@ -11,6 +11,7 @@ public:
 	void* mapImpl() override;
 	void unmapImpl() override;
 	void initializeImpl() override;
+	
 	ID3D11Buffer* _buf;
 };
 

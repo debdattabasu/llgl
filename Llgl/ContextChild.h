@@ -8,8 +8,10 @@ LLGL_CLASS(ContextChild)
 public:
 	virtual ~ContextChild();
 	ContextPtr getParentContext() const;
+
 protected:
 	ContextChild(ContextPtr parentContext);
+	
 private:
 	ContextPtr _parentContext;
 };

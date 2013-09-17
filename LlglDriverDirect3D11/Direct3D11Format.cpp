@@ -2,7 +2,6 @@
 
 LLGL_NAMESPACE2(Llgl, Direct3D11);
 
-
 Direct3D11Format::Direct3D11Format(ContextPtr parentContext, FormatType type, uint32_t vectorSize) : 
 	Format(parentContext, type, vectorSize)
 {

@@ -96,5 +96,4 @@ void Texture1D::copyFrom(Texture1DPtr src, uint32_t srcOffset, uint32_t srcWidth
 		destOffset, destMipLevel, destArrayIndex);
 }
 
-
 LLGL_NAMESPACE_END;

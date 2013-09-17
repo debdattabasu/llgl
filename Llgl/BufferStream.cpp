@@ -5,6 +5,7 @@ LLGL_NAMESPACE(Llgl);
 BufferStream::BufferStream(ContextPtr parentContext, uint32_t width, FormatPtr format): 
 	ContextChild(parentContext), _width(width), _format(format), _isMapped(0)
 {
+	
 }
 
 BufferStream::~BufferStream()

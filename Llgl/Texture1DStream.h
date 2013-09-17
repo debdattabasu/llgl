@@ -20,6 +20,7 @@ protected:
 	virtual void initializeImpl() = 0;
 	virtual void* mapImpl() =0;
 	virtual void unmapImpl() =0;
+	
 private:
 	FormatPtr _format;
 	bool _isMapped;

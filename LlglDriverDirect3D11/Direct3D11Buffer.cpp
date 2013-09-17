@@ -86,10 +86,12 @@ void Direct3D11Buffer::initializeVertexIndex()
 	case FormatUsage::General:
 		bd.BindFlags |= D3D11_BIND_VERTEX_BUFFER;
 		break;
+
 	case FormatUsage::IndexBuffer:
 		bd.BindFlags |= D3D11_BIND_INDEX_BUFFER;
 		break;
 	}
+	
 	if(caps->supportsShaderResourceBuffer()) 
 		bd.BindFlags |= D3D11_BIND_SHADER_RESOURCE;
 
