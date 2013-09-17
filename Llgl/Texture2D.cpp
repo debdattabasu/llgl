@@ -2,8 +2,8 @@
 
 LLGL_NAMESPACE(Llgl);
 
-Texture2D::Texture2D(ContextPtr parentContext, uint32_t width, uint32_t height, uint32_t numMips, uint32_t arraySize, FormatPtr format, bool isStreaming):
-	ContextChild(parentContext), _width(width), _height(height), _numMips(numMips), _arraySize(arraySize), _format(format), _isStreaming(isStreaming)
+Texture2D::Texture2D(ContextPtr parentContext, uint32_t width, uint32_t height, uint32_t numMips, uint32_t arraySize, FormatPtr format):
+	ContextChild(parentContext), _width(width), _height(height), _numMips(numMips), _arraySize(arraySize), _format(format)
 {
 
 }
@@ -21,9 +21,6 @@ void Texture2D::initialize()
 	_numMips =  _numMips? _numMips: maxNumMips;
 	if(_numMips > maxNumMips) throw InvalidArgumentException("dimensions invalid");
 
-	_isMapped.resize(_numMips * _arraySize);
-	for(auto i : _isMapped) i = 0;
-
 	switch(getFormat()->getUsage())
 	{
 	case FormatUsage::General:
@@ -39,17 +36,6 @@ void Texture2D::initialize()
 FormatPtr Texture2D::getFormat() const
 {
 	return _format;
-}
-
-bool Texture2D::isStreaming() const
-{
-	return _isStreaming;
-}
-
-bool Texture2D::isMapped(uint32_t mipLevel, uint32_t arrayIndex) const
-{
-	if((mipLevel + 1) > getNumMips() || (arrayIndex + 1)>getArraySize()) throw InvalidArgumentException("out of bounds");
-	return _isMapped[getNumMips() * arrayIndex + mipLevel];
 }
 
 uint32_t Texture2D::getWidth(uint32_t mipLevel) const
@@ -74,24 +60,6 @@ uint32_t Texture2D::getArraySize() const
 	return _arraySize;
 }
 
-void* Texture2D::map(uint32_t mipLevel, uint32_t arrayIndex, MapType type)
-{
-	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
-	if(!_isStreaming) throw InvalidOperationException("can not map non-streaming texture");
-	if(isMapped(mipLevel, arrayIndex)) throw InvalidOperationException("resource already mapped");
-	auto ret = mapImpl(mipLevel, arrayIndex, type);
-	_isMapped[_numMips * arrayIndex + mipLevel] = 1;
-	return ret;
-}
-
-void Texture2D::unmap(uint32_t mipLevel, uint32_t arrayIndex)
-{
-	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
-	if(!isMapped(mipLevel, arrayIndex)) throw InvalidOperationException("resource already unmapped");
-	unmapImpl(mipLevel, arrayIndex);
-	_isMapped[_numMips * arrayIndex + mipLevel] = 0;
-}
-
 void Texture2D::copyFrom(Texture2DPtr src, uint32_t srcOffsetX, uint32_t srcOffsetY,
 	uint32_t srcWidth, uint32_t srcHeight, uint32_t srcMipLevel, uint32_t srcArrayIndex, 
 	uint32_t destOffsetX, uint32_t destOffsetY, uint32_t destMipLevel, uint32_t destArrayIndex)
@@ -113,6 +81,32 @@ void Texture2D::copyFrom(Texture2DPtr src, uint32_t srcOffsetX, uint32_t srcOffs
 	copyFromImpl(src, srcOffsetX, srcOffsetY, srcWidth, srcHeight, srcMipLevel, srcArrayIndex, 
 		destOffsetX, destOffsetY, destMipLevel, destArrayIndex);
 
+}
+
+void Texture2D::read(Texture2DStreamPtr stream, uint32_t offsetX, uint32_t offsetY, uint32_t mipLevel, uint32_t arrayIndex)
+{
+	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
+	if(!stream->getFormat()->equals(getFormat()))
+		throw InvalidArgumentException("stream format mismatch");
+
+	if((offsetX + stream->getWidth()) > getWidth(mipLevel)
+		|| (offsetY + stream->getHeight()) > getHeight(mipLevel))
+		throw InvalidArgumentException("out of bounds");
+
+	readImpl(stream, offsetX, offsetY, mipLevel, arrayIndex);
+}
+
+void Texture2D::write(Texture2DStreamPtr stream, uint32_t offsetX, uint32_t offsetY, uint32_t mipLevel, uint32_t arrayIndex)
+{
+	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
+	if(!stream->getFormat()->equals(getFormat()))
+		throw InvalidArgumentException("stream format mismatch");
+
+	if((offsetX + stream->getWidth()) > getWidth(mipLevel)
+		|| (offsetY + stream->getHeight()) > getHeight(mipLevel))
+		throw InvalidArgumentException("out of bounds");
+
+	writeImpl(stream, offsetX, offsetY, mipLevel, arrayIndex);
 }
 
 LLGL_NAMESPACE_END;

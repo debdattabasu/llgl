@@ -101,9 +101,13 @@ LLGL_ENUM(FormatType);
 LLGL_ENUM(FormatUsage);
 LLGL_CLASS(Format);
 LLGL_ENUM(MapType);
+LLGL_CLASS(BufferStream);
 LLGL_CLASS(Buffer);
+LLGL_CLASS(Texture1DStream);
 LLGL_CLASS(Texture1D);
+LLGL_CLASS(Texture2DStream);
 LLGL_CLASS(Texture2D);
+LLGL_CLASS(Texture3DStream);
 LLGL_CLASS(Texture3D);
 
 LLGL_NAMESPACE_END;

@@ -3,8 +3,8 @@
 LLGL_NAMESPACE2(Llgl, Direct3D11);
 
 Direct3D11Texture2D::Direct3D11Texture2D(ContextPtr parentContext, uint32_t width, uint32_t height,
-	uint32_t numMips, uint32_t arraySize, FormatPtr format, bool isStreaming):
-	Texture2D(parentContext, width, height, numMips, arraySize, format, isStreaming), _tex2d(0), _srv(0), _uavs(0), _rtvs(0), _dsvs(0)
+	uint32_t numMips, uint32_t arraySize, FormatPtr format):
+	Texture2D(parentContext, width, height, numMips, arraySize, format), _tex2d(0), _srv(0), _uavs(0), _rtvs(0), _dsvs(0)
 {
 
 }
@@ -27,29 +27,25 @@ Direct3D11Texture2D::~Direct3D11Texture2D()
 	}
 }
 
-void Direct3D11Texture2D::initializeStreaming()
+void Direct3D11Texture2D::initializeImpl()
 {
-	auto caps = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->getCapabilities();
-	auto dev = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_dev;
-	auto dxgiFmtTypeless = std::dynamic_pointer_cast<Direct3D11Format>(getFormat())->getDxgiFormatTypeless();
 
-	HRESULT hr = S_OK;
-	D3D11_TEXTURE2D_DESC td; 
-	ZeroMemory(&td, sizeof(td));
-	td.Width = getWidth();
-	td.Height = getHeight();
-	td.MipLevels = getNumMips();
-	td.ArraySize = getArraySize();
-	td.Format = dxgiFmtTypeless;
-	td.SampleDesc.Count = 1;
-	td.Usage = D3D11_USAGE_STAGING ;
-	td.CPUAccessFlags = D3D11_CPU_ACCESS_READ|D3D11_CPU_ACCESS_WRITE;
-	hr = dev->CreateTexture2D(&td, NULL, &_tex2d);
-	CHECK_HRESULT(hr);
-}
+	_uavs.resize(getNumMips());
+	for(auto i : _uavs)
+	{
+		i = 0;
+	}
+	_rtvs.resize(getNumMips() * getArraySize());
+	for(auto i : _rtvs)
+	{
+		i = 0;
+	}
+	_dsvs.resize(getNumMips() * getArraySize());
+	for(auto i : _dsvs)
+	{
+		i = 0;
+	}
 
-void Direct3D11Texture2D::initializeDefault()
-{
 	auto caps = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->getCapabilities();
 	auto dev = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_dev;
 	auto dxgiFmtTypeless = std::dynamic_pointer_cast<Direct3D11Format>(getFormat())->getDxgiFormatTypeless();
@@ -165,51 +161,6 @@ void Direct3D11Texture2D::initializeDefault()
 	}
 }
 
-void Direct3D11Texture2D::initializeImpl()
-{
-
-	_uavs.resize(getNumMips());
-	for(auto i : _uavs)
-	{
-		i = 0;
-	}
-	_rtvs.resize(getNumMips() * getArraySize());
-	for(auto i : _rtvs)
-	{
-		i = 0;
-	}
-	_dsvs.resize(getNumMips() * getArraySize());
-	for(auto i : _dsvs)
-	{
-		i = 0;
-	}
-
-	if (isStreaming()) initializeStreaming();
-	else initializeDefault();
-}
-
-void* Direct3D11Texture2D::mapImpl(uint32_t mipLevel, uint32_t arrayIndex, MapType type) 
-{
-	auto ctx = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_ctx;
-	auto d3dMapType = (type == MapType::Read)? D3D11_MAP_READ: D3D11_MAP_WRITE;
-	HRESULT hr = S_OK;
-	D3D11_MAPPED_SUBRESOURCE rs;
-	rs.RowPitch = 0;
-	rs.pData = 0;
-	uint32_t subRes = getNumMips() * arrayIndex + mipLevel;
-	hr = ctx->Map(_tex2d, subRes, d3dMapType, 0, &rs);
-	CHECK_HRESULT(hr);
-	return rs.pData;
-
-}
-
-void Direct3D11Texture2D::unmapImpl(uint32_t mipLevel, uint32_t arrayIndex) 
-{
-	auto ctx = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_ctx;
-	uint32_t subRes = getNumMips() * arrayIndex + mipLevel;
-	ctx->Unmap(_tex2d, subRes);
-}
-
 void Direct3D11Texture2D::copyFromImpl(Texture2DPtr src, uint32_t srcOffsetX, uint32_t srcOffsetY,
 	uint32_t srcWidth, uint32_t srcHeight, uint32_t srcMipLevel, uint32_t srcArrayIndex, 
 	uint32_t destOffsetX, uint32_t destOffsetY, uint32_t destMipLevel, uint32_t destArrayIndex) 
@@ -228,6 +179,38 @@ void Direct3D11Texture2D::copyFromImpl(Texture2DPtr src, uint32_t srcOffsetX, ui
 	bx.front = 0;
 	bx.back = 1;
 	ctx->CopySubresourceRegion(destRes, destSubRes, destOffsetX , destOffsetY, 0, srcRes, srcSubRes, &bx);
+}
+
+void Direct3D11Texture2D::readImpl(Texture2DStreamPtr stream, uint32_t offsetX, uint32_t offsetY, uint32_t mipLevel, uint32_t arrayIndex)
+{
+	auto ctx = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_ctx;
+	ID3D11Resource* srcRes = _tex2d;
+	ID3D11Resource* destRes = std::dynamic_pointer_cast<Direct3D11Texture2DStream>(stream)->_tex2d; 
+	uint32_t srcSubRes = getNumMips() * arrayIndex + mipLevel;
+	D3D11_BOX bx;
+	bx.left = offsetX; 
+	bx.right = offsetX + stream->getWidth();
+	bx.top = offsetY;
+	bx.bottom = offsetY + stream->getHeight();
+	bx.front = 0;
+	bx.back = 1;
+	ctx->CopySubresourceRegion(destRes, 0, 0, 0, 0, srcRes, srcSubRes, &bx);
+}
+
+void Direct3D11Texture2D::writeImpl(Texture2DStreamPtr stream, uint32_t offsetX, uint32_t offsetY, uint32_t mipLevel, uint32_t arrayIndex)
+{
+	auto ctx = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_ctx;
+	ID3D11Resource* srcRes = std::dynamic_pointer_cast<Direct3D11Texture2DStream>(stream)->_tex2d; 
+	ID3D11Resource* destRes = _tex2d;
+	uint32_t destSubRes = getNumMips() * arrayIndex + mipLevel;
+	D3D11_BOX bx;
+	bx.left = 0; 
+	bx.right = stream->getWidth();
+	bx.top = 0;
+	bx.bottom = stream->getHeight();
+	bx.front = 0;
+	bx.back = 1;
+	ctx->CopySubresourceRegion(destRes, destSubRes, offsetX, offsetY, 0, srcRes, 0, &bx);
 }
 
 LLGL_NAMESPACE_END2;

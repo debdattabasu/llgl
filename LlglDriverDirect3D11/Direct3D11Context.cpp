@@ -15,37 +15,52 @@ Direct3D11Context::~Direct3D11Context()
 
 CapabilitiesPtr Direct3D11Context::getCapabilities()
 {
-	return std::shared_ptr<Direct3D11Capabilities>(new Direct3D11Capabilities(shared_from_this())); 
+	return CapabilitiesPtr(new Direct3D11Capabilities(shared_from_this())); 
 }
 
-BufferPtr Direct3D11Context::createBufferImpl(uint32_t width, FormatPtr format, bool isStreaming)
+BufferPtr Direct3D11Context::createBufferImpl(uint32_t width, FormatPtr format)
 {
-	auto ret =  std::shared_ptr<Direct3D11Buffer>(new Direct3D11Buffer(shared_from_this(), width, format, isStreaming));
-	return ret;
+	return BufferPtr(new Direct3D11Buffer(shared_from_this(), width, format));
 }
 
-Texture1DPtr Direct3D11Context::createTexture1DImpl(uint32_t width, uint32_t numMips, uint32_t arraySize, FormatPtr format, bool isStreaming)
+BufferStreamPtr Direct3D11Context::createBufferStreamImpl(uint32_t width, FormatPtr format)
 {
-	auto ret =  std::shared_ptr<Direct3D11Texture1D>(new Direct3D11Texture1D(shared_from_this(), width, numMips, arraySize, format, isStreaming));
-	return ret;
+	return BufferStreamPtr(new Direct3D11BufferStream(shared_from_this(), width, format));
 }
 
-Texture2DPtr Direct3D11Context::createTexture2DImpl(uint32_t width, uint32_t height, uint32_t numMips, uint32_t arraySize, FormatPtr format, bool isStreaming)
+Texture1DPtr Direct3D11Context::createTexture1DImpl(uint32_t width, uint32_t numMips, uint32_t arraySize, FormatPtr format)
 {
-	auto ret =  std::shared_ptr<Direct3D11Texture2D>(new Direct3D11Texture2D(shared_from_this(), width, height, numMips, arraySize, format, isStreaming));
-	return ret;
+	return Texture1DPtr(new Direct3D11Texture1D(shared_from_this(), width, numMips, arraySize, format));
+}
+
+Texture1DStreamPtr Direct3D11Context::createTexture1DStreamImpl(uint32_t width, FormatPtr format)
+{
+	return Texture1DStreamPtr(new Direct3D11Texture1DStream(shared_from_this(), width, format));
+}
+
+Texture2DPtr Direct3D11Context::createTexture2DImpl(uint32_t width, uint32_t height, uint32_t numMips, uint32_t arraySize, FormatPtr format)
+{
+	return Texture2DPtr(new Direct3D11Texture2D(shared_from_this(), width, height, numMips, arraySize, format));
+}
+
+Texture2DStreamPtr Direct3D11Context::createTexture2DStreamImpl(uint32_t width, uint32_t height, FormatPtr format)
+{
+	return Texture2DStreamPtr(new Direct3D11Texture2DStream(shared_from_this(), width, height, format));
 }
 
 FormatPtr Direct3D11Context::createFormatImpl(FormatType type, uint32_t vectorSize)
 {
-	auto ret =  std::shared_ptr<Direct3D11Format>(new Direct3D11Format(shared_from_this(), type, vectorSize));
-	return ret;
+	return FormatPtr(new Direct3D11Format(shared_from_this(), type, vectorSize));
 }
 
-Texture3DPtr Direct3D11Context::createTexture3DImpl(uint32_t width, uint32_t height, uint32_t depth, uint32_t numMips, FormatPtr format, bool isStreaming)
+Texture3DPtr Direct3D11Context::createTexture3DImpl(uint32_t width, uint32_t height, uint32_t depth, uint32_t numMips, FormatPtr format)
 {
-	auto ret = std::shared_ptr<Direct3D11Texture3D>(new Direct3D11Texture3D(shared_from_this(), width, height, depth, numMips, format, isStreaming));
-	return ret;
+	return Texture3DPtr(new Direct3D11Texture3D(shared_from_this(), width, height, depth, numMips, format));
+}
+
+Texture3DStreamPtr Direct3D11Context::createTexture3DStreamImpl(uint32_t width, uint32_t height, uint32_t depth, FormatPtr format) 
+{
+	return Texture3DStreamPtr(new Direct3D11Texture3DStream(shared_from_this(), width, height, depth, format));
 }
 
 void Direct3D11Context::initialize()

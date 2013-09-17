@@ -2,8 +2,8 @@
 
 LLGL_NAMESPACE2(Llgl, Direct3D11);
 
-Direct3D11Buffer::Direct3D11Buffer(ContextPtr parentContext, uint32_t width, FormatPtr format, bool isStreaming):
-	Buffer(parentContext, width, format, isStreaming), _buf(0), _srv(0), _uav(0)
+Direct3D11Buffer::Direct3D11Buffer(ContextPtr parentContext, uint32_t width, FormatPtr format):
+	Buffer(parentContext, width, format), _buf(0), _srv(0), _uav(0)
 {
 
 }
@@ -13,22 +13,6 @@ Direct3D11Buffer::~Direct3D11Buffer()
 	SAFE_RELEASE(_buf);
 	SAFE_RELEASE(_srv);
 	SAFE_RELEASE(_uav);
-}
-
-void Direct3D11Buffer::initializeStreaming()
-{
-	auto dev = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_dev;
-	auto elementSize = getFormat()->getSize();
-	auto numElements = getWidth();
-
-	HRESULT hr = S_OK;
-	D3D11_BUFFER_DESC bd;
-	ZeroMemory(&bd, sizeof(bd));
-	bd.ByteWidth = numElements * elementSize;
-	bd.Usage = D3D11_USAGE_STAGING;
-	bd.CPUAccessFlags = D3D11_CPU_ACCESS_READ | D3D11_CPU_ACCESS_WRITE;
-	hr = dev->CreateBuffer(&bd, NULL, &_buf);
-	CHECK_HRESULT(hr);
 }
 
 void Direct3D11Buffer::initializeRaw()
@@ -146,28 +130,8 @@ void Direct3D11Buffer::initializeVertexIndex()
 
 void Direct3D11Buffer::initializeImpl()
 {
-	if (isStreaming()) initializeStreaming();
-	else if (getFormat()->getUsage() == FormatUsage::RawBuffer) initializeRaw();
+	if (getFormat()->getUsage() == FormatUsage::RawBuffer) initializeRaw();
 	else initializeVertexIndex();
-}
-
-void* Direct3D11Buffer::mapImpl(MapType type) 
-{
-	auto ctx = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_ctx;
-	auto d3dMapType = (type == MapType::Read)? D3D11_MAP_READ: D3D11_MAP_WRITE;
-	HRESULT hr = S_OK;
-	D3D11_MAPPED_SUBRESOURCE rs;
-	rs.RowPitch = 0;
-	rs.pData = 0;
-	hr = ctx->Map(_buf, 0, d3dMapType, 0, &rs);
-	CHECK_HRESULT(hr);
-	return rs.pData;
-}
-
-void Direct3D11Buffer::unmapImpl() 
-{
-	auto ctx = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_ctx;
-	ctx->Unmap(_buf, 0);
 }
 
 void Direct3D11Buffer::copyFromImpl(BufferPtr src, uint32_t srcOffset, uint32_t srcWidth, uint32_t destOffset) 
@@ -186,5 +150,36 @@ void Direct3D11Buffer::copyFromImpl(BufferPtr src, uint32_t srcOffset, uint32_t 
 	ctx->CopySubresourceRegion(destRes, 0, destOffset , 0, 0, srcRes, 0, &bx);
 }
 
+void Direct3D11Buffer::writeImpl(BufferStreamPtr stream, uint32_t offset) 
+{
+	auto ctx = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_ctx;
+	ID3D11Resource* srcRes = std::dynamic_pointer_cast<Direct3D11BufferStream>(stream)->_buf; 
+	ID3D11Resource* destRes = _buf;
+	D3D11_BOX bx;
+	auto elementSize = getFormat()->getSize();
+	bx.left = 0; 
+	bx.right = stream->getWidth() * elementSize;
+	bx.top = 0;
+	bx.bottom = 1;
+	bx.front = 0;
+	bx.back = 1;
+	ctx->CopySubresourceRegion(destRes, 0, offset , 0, 0, srcRes, 0, &bx);
+}
+
+void Direct3D11Buffer::readImpl(BufferStreamPtr stream, uint32_t offset) 
+{
+	auto ctx = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_ctx;
+	ID3D11Resource* srcRes = _buf;
+	ID3D11Resource* destRes = std::dynamic_pointer_cast<Direct3D11BufferStream>(stream)->_buf; 
+	D3D11_BOX bx;
+	auto elementSize = getFormat()->getSize();
+	bx.left = offset * elementSize; 
+	bx.right = (offset + stream->getWidth()) * elementSize;
+	bx.top = 0;
+	bx.bottom = 1;
+	bx.front = 0;
+	bx.back = 1;
+	ctx->CopySubresourceRegion(destRes, 0, 0 , 0, 0, srcRes, 0, &bx);
+}
 
 LLGL_NAMESPACE_END2;

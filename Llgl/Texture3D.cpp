@@ -2,8 +2,8 @@
 
 LLGL_NAMESPACE(Llgl);
 
-Texture3D::Texture3D(ContextPtr parentContext, uint32_t width, uint32_t height, uint32_t depth, uint32_t numMips, FormatPtr format, bool isStreaming):
-	ContextChild(parentContext), _width(width), _height(height), _depth(depth), _numMips(numMips), _format(format), _isStreaming(isStreaming)
+Texture3D::Texture3D(ContextPtr parentContext, uint32_t width, uint32_t height, uint32_t depth, uint32_t numMips, FormatPtr format):
+	ContextChild(parentContext), _width(width), _height(height), _depth(depth), _numMips(numMips), _format(format)
 {
 
 }
@@ -21,9 +21,6 @@ void Texture3D::initialize()
 	_numMips =  _numMips? _numMips: maxNumMips;
 	if(_numMips > maxNumMips) throw InvalidArgumentException("dimensions invalid");
 
-	_isMapped.resize(_numMips);
-	for(auto i : _isMapped) i = 0;
-
 	switch(getFormat()->getUsage())
 	{
 	case FormatUsage::General:
@@ -37,17 +34,6 @@ void Texture3D::initialize()
 FormatPtr Texture3D::getFormat() const
 {
 	return _format;
-}
-
-bool Texture3D::isStreaming() const
-{
-	return _isStreaming;
-}
-
-bool Texture3D::isMapped(uint32_t mipLevel) const
-{
-	if((mipLevel + 1) > getNumMips()) throw InvalidArgumentException("out of bounds");
-	return _isMapped[mipLevel];
 }
 
 uint32_t Texture3D::getWidth(uint32_t mipLevel) const
@@ -73,24 +59,6 @@ uint32_t Texture3D::getNumMips()  const
 	return _numMips;
 }
 
-void* Texture3D::map(uint32_t mipLevel, MapType type)
-{
-	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
-	if(!_isStreaming) throw InvalidOperationException("can not map non-streaming texture");
-	if(isMapped(mipLevel)) throw InvalidOperationException("resource already mapped");
-	auto ret = mapImpl(mipLevel, type);
-	_isMapped[mipLevel] = 1;
-	return ret;
-}
-
-void Texture3D::unmap(uint32_t mipLevel)
-{
-	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
-	if(!isMapped(mipLevel)) throw InvalidOperationException("resource already unmapped");
-	unmapImpl(mipLevel);
-	_isMapped[mipLevel] = 0;
-}
-
 void Texture3D::copyFrom(Texture3DPtr src, uint32_t srcOffsetX, uint32_t srcOffsetY, uint32_t srcOffsetZ,
 	uint32_t srcWidth, uint32_t srcHeight, uint32_t srcDepth, uint32_t srcMipLevel, 
 	uint32_t destOffsetX, uint32_t destOffsetY, uint32_t destOffsetZ, uint32_t destMipLevel)
@@ -112,6 +80,34 @@ void Texture3D::copyFrom(Texture3DPtr src, uint32_t srcOffsetX, uint32_t srcOffs
 	copyFromImpl(src, srcOffsetX, srcOffsetY, srcOffsetZ, srcWidth, srcHeight, srcDepth, srcMipLevel, 
 		destOffsetX, destOffsetY, destOffsetZ, destMipLevel);
 
+}
+
+void Texture3D::read(Texture3DStreamPtr stream, uint32_t offsetX, uint32_t offsetY, uint32_t offsetZ, uint32_t mipLevel)
+{
+	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
+	if(!stream->getFormat()->equals(getFormat()))
+		throw InvalidArgumentException("stream format mismatch");
+
+	if((offsetX + stream->getWidth()) > getWidth(mipLevel)
+		|| (offsetY + stream->getHeight()) > getHeight(mipLevel)
+		|| (offsetZ + stream->getDepth()) > getDepth(mipLevel))
+		throw InvalidArgumentException("out of bounds");
+
+	readImpl(stream, offsetX, offsetY, offsetZ, mipLevel);
+}
+
+void Texture3D::write(Texture3DStreamPtr stream, uint32_t offsetX, uint32_t offsetY, uint32_t offsetZ, uint32_t mipLevel)
+{
+	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
+	if(!stream->getFormat()->equals(getFormat()))
+		throw InvalidArgumentException("stream format mismatch");
+
+	if((offsetX + stream->getWidth()) > getWidth(mipLevel)
+		|| (offsetY + stream->getHeight()) > getHeight(mipLevel)
+		|| (offsetZ + stream->getDepth()) > getDepth(mipLevel))
+		throw InvalidArgumentException("out of bounds");
+
+	writeImpl(stream, offsetX, offsetY, offsetZ, mipLevel);
 }
 
 LLGL_NAMESPACE_END;

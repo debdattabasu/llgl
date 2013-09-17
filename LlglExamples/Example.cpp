@@ -6,15 +6,20 @@ Driver::Load loader("Direct3D11");
 int main()
 {
 	auto ctx = Driver::get()->createContext();
-	auto buf = ctx->createTexture2D(32, 32, 1, 1, ctx->createFormat(FormatType::Float, 1));
-	auto bufStream = ctx->createTexture2D(32, 32, 1, 1, ctx->createFormat(FormatType::Float, 1), true);
-	void* mem = bufStream->map(0, 0, MapType::Write);
-	memset(mem, 45, 32*32*4);
-	bufStream->unmap(0,0);
-	buf->copyFrom(bufStream, 0, 0, 32, 32, 0, 0, 0, 0, 0, 0);
-	void* mem1 = bufStream->map(0, 0, MapType::Read);
+	auto buf = ctx->createTexture3D(32, 1, 1, 1, ctx->createFormat(FormatType::Float, 4));
+	auto bufStream = ctx->createTexture3DStream(32, 1, 1, ctx->createFormat(FormatType::Float, 4));
+	auto bufStream1 = ctx->createTexture3DStream(32, 1, 1, ctx->createFormat(FormatType::Float, 4));
+	{
+		void* mem = bufStream->map();
+		memset(mem, 1, 32*16);
+		bufStream->unmap();
+	}
+	buf->write(bufStream, 0, 0, 0, 0);
+	buf->read(bufStream1, 0, 0, 0, 0);
+	void* mem = bufStream->map();
+	void* mem1 = bufStream1->map();
 
-	if(memcmp(mem1, mem, 32*32*4) == 0)
+	if(memcmp(mem1, mem, 32*16) == 0)
 	{
 		std::cout<<"passed";
 	}
@@ -22,6 +27,6 @@ int main()
 	{
 		std::cout<<"failed";
 	}
-
-	bufStream->unmap(0, 0);
+	bufStream->unmap();
+	bufStream1->unmap();
 }
