@@ -19,7 +19,6 @@ void Direct3D11Texture1DStream::initializeImpl()
 	auto dev = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_dev;
 	auto dxgiFmtTypeless = std::dynamic_pointer_cast<Direct3D11Format>(getFormat())->getDxgiFormatTypeless();
 	HRESULT hr = S_OK;
-
 	D3D11_TEXTURE1D_DESC td; 
 	ZeroMemory(&td, sizeof(td));
 	td.Width = getWidth();

@@ -11,7 +11,6 @@ public:
 	void initializeImpl() override;
 	void copyFromImpl(Texture1DPtr src, uint32_t srcOffset, uint32_t srcWidth, uint32_t srcMipLevel, uint32_t srcArrayIndex, 
 		uint32_t destOffset, uint32_t destMipLevel, uint32_t destArrayIndex) override;
-
 	void readImpl(Texture1DStreamPtr stream, uint32_t offset, uint32_t mipLevel, uint32_t arrayIndex) override;
 	void writeImpl(Texture1DStreamPtr stream, uint32_t offset, uint32_t mipLevel, uint32_t arrayIndex) override;
 

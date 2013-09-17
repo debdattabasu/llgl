@@ -142,7 +142,6 @@ void Direct3D11Format::initializeImpl()
 			break;
 		}
 		break;
-
 	case FormatType::Snorm16:
 		switch(getVectorSize())
 		{
@@ -223,44 +222,37 @@ void Direct3D11Format::initializeImpl()
 			break;
 		}
 		break;	
-
 	case FormatType::Index32:
 		_dxgiFormatTyped = DXGI_FORMAT_R32_UINT;
 		_dxgiFormatTypeless = DXGI_FORMAT_R32_TYPELESS;
 		_dxgiFormatDepthTyped = DXGI_FORMAT_UNKNOWN;
 		break;	
-
 	case FormatType::Index16:
 		_dxgiFormatTyped = DXGI_FORMAT_R16_UINT;
 		_dxgiFormatTypeless = DXGI_FORMAT_R16_TYPELESS;
 		_dxgiFormatDepthTyped = DXGI_FORMAT_UNKNOWN;
 		break;
-
 	case FormatType::DepthUnorm24StencilUint8: 
 		_dxgiFormatTyped = DXGI_FORMAT_R24_UNORM_X8_TYPELESS;
 		_dxgiFormatTypeless = DXGI_FORMAT_R24G8_TYPELESS;
 		_dxgiFormatDepthTyped = DXGI_FORMAT_D24_UNORM_S8_UINT;
 		break;
-
 	case FormatType::DepthFloat32StencilUint8:
 		_dxgiFormatTyped = DXGI_FORMAT_R32_FLOAT_X8X24_TYPELESS;
 		_dxgiFormatTypeless = DXGI_FORMAT_R32G8X24_TYPELESS;
 		_dxgiFormatDepthTyped = DXGI_FORMAT_D32_FLOAT_S8X24_UINT;
 		break;
-
 	case FormatType::DepthFloat32:
 		_dxgiFormatTyped = DXGI_FORMAT_R32_FLOAT;
 		_dxgiFormatTypeless = DXGI_FORMAT_R32_TYPELESS;
 		_dxgiFormatDepthTyped = DXGI_FORMAT_D32_FLOAT;
-		break;
-		
+		break;	
 	case FormatType::DepthUnorm16:
 		_dxgiFormatTyped = DXGI_FORMAT_R16_UNORM;
 		_dxgiFormatTypeless = DXGI_FORMAT_R16_TYPELESS;
 		_dxgiFormatDepthTyped =  DXGI_FORMAT_D16_UNORM;
 		break;
 	}
-
 }
 
 DXGI_FORMAT Direct3D11Format::getDxgiFormatTyped()

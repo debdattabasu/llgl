@@ -20,7 +20,6 @@ void Texture3D::initialize()
 	auto maxNumMips = uint32_t(1 + floor(log(double(max(max(_width, _height), _depth))) /log(2.f)));
 	_numMips =  _numMips? _numMips: maxNumMips;
 	if(_numMips > maxNumMips) throw InvalidArgumentException("dimensions invalid");
-
 	switch(getFormat()->getUsage())
 	{
 	case FormatUsage::General:
@@ -66,20 +65,15 @@ void Texture3D::copyFrom(Texture3DPtr src, uint32_t srcOffsetX, uint32_t srcOffs
 	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
 	if (!src->getFormat()->equals(getFormat()))
 		throw InvalidArgumentException("resource format mismatch");
-
 	if(srcWidth == 0 || srcHeight == 0 || srcDepth == 0) throw InvalidArgumentException("invalid dimensions");
-
 	if((srcMipLevel + 1) > src->getNumMips() || (destMipLevel + 1) > getNumMips())
 	   	throw InvalidArgumentException("out of bounds");
-
 	if((srcOffsetX + srcWidth) > src->getWidth(srcMipLevel) || (destOffsetX + srcWidth) > getWidth(destMipLevel) 
 	  	|| (srcOffsetY + srcHeight) > src->getHeight(srcMipLevel) || (destOffsetY + srcHeight) > getHeight(destMipLevel)
 	  	|| (srcOffsetZ + srcDepth) > src->getDepth(srcMipLevel) || (destOffsetZ + srcDepth) > getDepth(destMipLevel))
 			throw InvalidArgumentException("out of bounds");
-
 	copyFromImpl(src, srcOffsetX, srcOffsetY, srcOffsetZ, srcWidth, srcHeight, srcDepth, srcMipLevel, 
 		destOffsetX, destOffsetY, destOffsetZ, destMipLevel);
-
 }
 
 void Texture3D::read(Texture3DStreamPtr stream, uint32_t offsetX, uint32_t offsetY, uint32_t offsetZ, uint32_t mipLevel)
@@ -87,12 +81,10 @@ void Texture3D::read(Texture3DStreamPtr stream, uint32_t offsetX, uint32_t offse
 	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
 	if(!stream->getFormat()->equals(getFormat()))
 		throw InvalidArgumentException("stream format mismatch");
-
 	if((offsetX + stream->getWidth()) > getWidth(mipLevel)
 		|| (offsetY + stream->getHeight()) > getHeight(mipLevel)
 		|| (offsetZ + stream->getDepth()) > getDepth(mipLevel))
 		throw InvalidArgumentException("out of bounds");
-
 	readImpl(stream, offsetX, offsetY, offsetZ, mipLevel);
 }
 
@@ -101,12 +93,10 @@ void Texture3D::write(Texture3DStreamPtr stream, uint32_t offsetX, uint32_t offs
 	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
 	if(!stream->getFormat()->equals(getFormat()))
 		throw InvalidArgumentException("stream format mismatch");
-
 	if((offsetX + stream->getWidth()) > getWidth(mipLevel)
 		|| (offsetY + stream->getHeight()) > getHeight(mipLevel)
 		|| (offsetZ + stream->getDepth()) > getDepth(mipLevel))
 		throw InvalidArgumentException("out of bounds");
-
 	writeImpl(stream, offsetX, offsetY, offsetZ, mipLevel);
 }
 

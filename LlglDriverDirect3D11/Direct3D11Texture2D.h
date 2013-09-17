@@ -12,7 +12,6 @@ public:
 	void copyFromImpl(Texture2DPtr src, uint32_t srcOffsetX, uint32_t srcOffsetY,
 		uint32_t srcWidth, uint32_t srcHeight, uint32_t srcMipLevel, uint32_t srcArrayIndex, 
 		uint32_t destOffsetX, uint32_t destOffsetY, uint32_t destMipLevel, uint32_t destArrayIndex) override;
-
 	void readImpl(Texture2DStreamPtr stream, uint32_t offsetX, uint32_t offsetY, uint32_t mipLevel, uint32_t arrayIndex) override;
 	void writeImpl(Texture2DStreamPtr stream, uint32_t offsetX, uint32_t offsetY, uint32_t mipLevel, uint32_t arrayIndex) override;
 

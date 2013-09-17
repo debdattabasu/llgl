@@ -20,7 +20,6 @@ void Texture2D::initialize()
 	auto maxNumMips = uint32_t(1 + floor(log(double(max(_width, _height))) /log(2.f)));
 	_numMips =  _numMips? _numMips: maxNumMips;
 	if(_numMips > maxNumMips) throw InvalidArgumentException("dimensions invalid");
-
 	switch(getFormat()->getUsage())
 	{
 	case FormatUsage::General:
@@ -67,20 +66,15 @@ void Texture2D::copyFrom(Texture2DPtr src, uint32_t srcOffsetX, uint32_t srcOffs
 	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
 	if (!src->getFormat()->equals(getFormat()))
 		throw InvalidArgumentException("resource format mismatch");
-
 	if(srcWidth == 0 || srcHeight == 0) throw InvalidArgumentException("invalid dimensions");
-
 	if((srcMipLevel + 1) > src->getNumMips() || (srcArrayIndex + 1) > src->getArraySize() 
 	   	|| (destMipLevel + 1) > getNumMips() || (destArrayIndex + 1) > getArraySize())
 	   	throw InvalidArgumentException("out of bounds");
-
 	if((srcOffsetX + srcWidth) > src->getWidth(srcMipLevel) || (destOffsetX + srcWidth) > getWidth(destMipLevel) 
 	  	|| (srcOffsetY + srcHeight) > src->getHeight(srcMipLevel) || (destOffsetY + srcHeight) > getHeight(destMipLevel))
 			throw InvalidArgumentException("out of bounds");
-
 	copyFromImpl(src, srcOffsetX, srcOffsetY, srcWidth, srcHeight, srcMipLevel, srcArrayIndex, 
 		destOffsetX, destOffsetY, destMipLevel, destArrayIndex);
-
 }
 
 void Texture2D::read(Texture2DStreamPtr stream, uint32_t offsetX, uint32_t offsetY, uint32_t mipLevel, uint32_t arrayIndex)
@@ -88,11 +82,9 @@ void Texture2D::read(Texture2DStreamPtr stream, uint32_t offsetX, uint32_t offse
 	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
 	if(!stream->getFormat()->equals(getFormat()))
 		throw InvalidArgumentException("stream format mismatch");
-
 	if((offsetX + stream->getWidth()) > getWidth(mipLevel)
 		|| (offsetY + stream->getHeight()) > getHeight(mipLevel))
 		throw InvalidArgumentException("out of bounds");
-
 	readImpl(stream, offsetX, offsetY, mipLevel, arrayIndex);
 }
 
@@ -101,11 +93,9 @@ void Texture2D::write(Texture2DStreamPtr stream, uint32_t offsetX, uint32_t offs
 	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
 	if(!stream->getFormat()->equals(getFormat()))
 		throw InvalidArgumentException("stream format mismatch");
-
 	if((offsetX + stream->getWidth()) > getWidth(mipLevel)
 		|| (offsetY + stream->getHeight()) > getHeight(mipLevel))
 		throw InvalidArgumentException("out of bounds");
-
 	writeImpl(stream, offsetX, offsetY, mipLevel, arrayIndex);
 }
 

@@ -50,20 +50,16 @@ void BufferStream::initialize()
 	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
 	if(_width == 0) throw InvalidArgumentException("dimensions invalid");
 	auto caps = getParentContext()->getCapabilities();
-
 	switch(getFormat()->getUsage())
 	{
 	case FormatUsage::General:
 		break;
-
 	case FormatUsage::RawBuffer:
 		if(!caps->supportsRawBuffer())
 			throw InvalidArgumentException("raw buffer streams unsupported");
 		break;
-
 	case FormatUsage::IndexBuffer:
 		break;
-		
 	default:
 		throw InvalidArgumentException("format type unsupported by buffer streams");
 	}

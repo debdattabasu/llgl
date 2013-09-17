@@ -26,7 +26,6 @@ public:
 	Texture3DPtr createTexture3D(uint32_t width, uint32_t height, uint32_t depth, uint32_t numMips, FormatPtr format);
 	Texture3DStreamPtr createTexture3DStream(uint32_t width, uint32_t height, uint32_t depth, FormatPtr format);
 	FormatPtr createFormat(FormatType type, uint32_t vectorSize = 1);
-
 protected:
 	Context();
 	virtual BufferPtr createBufferImpl(uint32_t width, FormatPtr format) = 0;
@@ -38,7 +37,6 @@ protected:
 	virtual Texture3DPtr createTexture3DImpl(uint32_t width, uint32_t height, uint32_t depth, uint32_t numMips, FormatPtr format) = 0;
 	virtual Texture3DStreamPtr createTexture3DStreamImpl(uint32_t width, uint32_t height, uint32_t depth, FormatPtr format) = 0;
 	virtual FormatPtr createFormatImpl(FormatType type, uint32_t vectorSize) = 0;
-	
 private:
 	std::mutex _mutex;
 };

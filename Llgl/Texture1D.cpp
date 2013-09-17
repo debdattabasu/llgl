@@ -20,7 +20,6 @@ void Texture1D::initialize()
 	auto maxNumMips = uint32_t(1 + floor(log(double(_width)) /log(2.f)));
 	_numMips =  _numMips? _numMips: maxNumMips;
 	if(_numMips > maxNumMips) throw InvalidArgumentException("dimensions invalid");
-
 	switch(getFormat()->getUsage())
 	{
 	case FormatUsage::General:
@@ -57,10 +56,8 @@ void Texture1D::read(Texture1DStreamPtr stream, uint32_t offset, uint32_t mipLev
 	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
 	if(!stream->getFormat()->equals(getFormat()))
 		throw InvalidArgumentException("stream format mismatch");
-
 	if((offset + stream->getWidth()) > getWidth(mipLevel))
 		throw InvalidArgumentException("out of bounds");
-
 	readImpl(stream, offset, mipLevel, arrayIndex);
 }
 
@@ -69,10 +66,8 @@ void Texture1D::write(Texture1DStreamPtr stream, uint32_t offset, uint32_t mipLe
 	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
 	if(!stream->getFormat()->equals(getFormat()))
 		throw InvalidArgumentException("stream format mismatch");
-
 	if((offset + stream->getWidth()) > getWidth(mipLevel))
 		throw InvalidArgumentException("out of bounds");
-
 	writeImpl(stream, offset, mipLevel, arrayIndex);
 }
 
@@ -82,16 +77,12 @@ void Texture1D::copyFrom(Texture1DPtr src, uint32_t srcOffset, uint32_t srcWidth
 	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
 	if (!src->getFormat()->equals(getFormat()))
 		throw InvalidArgumentException("resource format mismatch");
-
 	if(srcWidth == 0) throw InvalidArgumentException("invalid dimensions");
-
 	if((srcMipLevel + 1) > src->getNumMips() || (srcArrayIndex + 1) > src->getArraySize() 
 	   	|| (destMipLevel + 1) > getNumMips() || (destArrayIndex + 1) > getArraySize())
 			throw InvalidArgumentException("out of bounds");
-
 	if((srcOffset + srcWidth) > src->getWidth(srcMipLevel) || (destOffset + srcWidth) > getWidth(destMipLevel))
-		throw InvalidArgumentException("out of bounds");
-	   	
+		throw InvalidArgumentException("out of bounds");	   	
 	copyFromImpl(src, srcOffset, srcWidth, srcMipLevel, srcArrayIndex, 
 		destOffset, destMipLevel, destArrayIndex);
 }

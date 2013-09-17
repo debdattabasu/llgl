@@ -42,12 +42,10 @@ public:
 	uint32_t getSize();
 	uint32_t getVectorSize();
 	bool equals(FormatPtr other);
-
 protected:
 	Format(ContextPtr parentContext, FormatType type, uint32_t vectorSize);
 	void initialize();
 	virtual void initializeImpl() = 0;
-	
 private:
 	FormatType _type;
 	uint32_t _vectorSize;

@@ -18,7 +18,6 @@ void Direct3D11BufferStream::initializeImpl()
 	auto dev = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_dev;
 	auto elementSize = getFormat()->getSize();
 	auto numElements = getWidth();
-
 	HRESULT hr = S_OK;
 	D3D11_BUFFER_DESC bd;
 	ZeroMemory(&bd, sizeof(bd));

@@ -29,7 +29,6 @@ Direct3D11Texture2D::~Direct3D11Texture2D()
 
 void Direct3D11Texture2D::initializeImpl()
 {
-
 	_uavs.resize(getNumMips());
 	for(auto i : _uavs)
 	{
@@ -45,14 +44,12 @@ void Direct3D11Texture2D::initializeImpl()
 	{
 		i = 0;
 	}
-
 	auto caps = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->getCapabilities();
 	auto dev = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_dev;
 	auto dxgiFmtTypeless = std::dynamic_pointer_cast<Direct3D11Format>(getFormat())->getDxgiFormatTypeless();
 	auto dxgiFmtTyped = std::dynamic_pointer_cast<Direct3D11Format>(getFormat())->getDxgiFormatTyped();
 	auto dxgiFmtDepthTyped = std::dynamic_pointer_cast<Direct3D11Format>(getFormat())->getDxgiFormatDepthTyped();
 	HRESULT hr = S_OK;
-
 	D3D11_TEXTURE2D_DESC td; 
 	ZeroMemory(&td, sizeof(td));
 	td.Width = getWidth();
@@ -65,13 +62,10 @@ void Direct3D11Texture2D::initializeImpl()
 	bool isDepth = getFormat()->getUsage() == FormatUsage::DepthTexture;
 	td.BindFlags = (isDepth)? D3D11_BIND_DEPTH_STENCIL: D3D11_BIND_RENDER_TARGET;	
 	td.BindFlags |= D3D11_BIND_SHADER_RESOURCE;
-
 	if(!isDepth && caps->numUnorderedAccessSlots())
 		td.BindFlags |= D3D11_BIND_UNORDERED_ACCESS;
 	hr = dev->CreateTexture2D(&td, NULL, &_tex2d);
 	CHECK_HRESULT(hr);
-
-
 	D3D11_SHADER_RESOURCE_VIEW_DESC srvd ;
 	ZeroMemory(&srvd, sizeof(srvd));
 	srvd.Format = dxgiFmtTyped;
@@ -91,8 +85,6 @@ void Direct3D11Texture2D::initializeImpl()
 	}
 	hr = dev->CreateShaderResourceView(_tex2d, &srvd, &_srv);
 	CHECK_HRESULT(hr);
-
-
 	for(uint32_t mipLevel = 0; mipLevel < getNumMips(); mipLevel ++)
 	{
 		for(uint32_t arrayIndex = 0; arrayIndex < getArraySize(); arrayIndex ++)
@@ -170,7 +162,6 @@ void Direct3D11Texture2D::copyFromImpl(Texture2DPtr src, uint32_t srcOffsetX, ui
 	ID3D11Resource* destRes = _tex2d;
 	uint32_t srcSubRes = src->getNumMips() * srcArrayIndex + srcMipLevel;
 	uint32_t destSubRes = getNumMips()  * destArrayIndex + destMipLevel;
-
 	D3D11_BOX bx;
 	bx.left = srcOffsetX ; 
 	bx.right = srcOffsetX + srcWidth;

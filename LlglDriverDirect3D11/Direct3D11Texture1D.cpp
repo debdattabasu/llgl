@@ -25,13 +25,11 @@ void Direct3D11Texture1D::initializeImpl()
 	{
 		i = 0;
 	}
-
 	auto caps = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->getCapabilities();
 	auto dev = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_dev;
 	auto dxgiFmtTypeless = std::dynamic_pointer_cast<Direct3D11Format>(getFormat())->getDxgiFormatTypeless();
 	auto dxgiFmtTyped = std::dynamic_pointer_cast<Direct3D11Format>(getFormat())->getDxgiFormatTyped();
 	HRESULT hr = S_OK;
-
 	D3D11_TEXTURE1D_DESC td; 
 	ZeroMemory(&td, sizeof(td));
 	td.Width = getWidth();;
@@ -42,10 +40,8 @@ void Direct3D11Texture1D::initializeImpl()
 	td.BindFlags = D3D11_BIND_SHADER_RESOURCE;
 	if(caps->numUnorderedAccessSlots())
 		td.BindFlags |= D3D11_BIND_UNORDERED_ACCESS;
-
 	hr =dev->CreateTexture1D(&td, NULL, &_tex1d);
 	CHECK_HRESULT(hr);
-
 	D3D11_SHADER_RESOURCE_VIEW_DESC srvd ;
 	ZeroMemory(&srvd, sizeof(srvd));
 	srvd.Format = dxgiFmtTyped;
@@ -63,10 +59,8 @@ void Direct3D11Texture1D::initializeImpl()
 		srvd.Texture1DArray.ArraySize = getArraySize();
 		srvd.Texture1DArray.FirstArraySlice = 0;
 	}
-
 	hr = dev->CreateShaderResourceView(_tex1d, &srvd, &_srv);
 	CHECK_HRESULT(hr);
-
 	if(caps->numUnorderedAccessSlots())
 	{
 		for(uint32_t mipLevel = 0; mipLevel < getNumMips(); mipLevel ++)
@@ -100,7 +94,6 @@ void Direct3D11Texture1D::copyFromImpl(Texture1DPtr src, uint32_t srcOffset, uin
 	ID3D11Resource* destRes = _tex1d;
 	uint32_t srcSubRes = src->getNumMips() * srcArrayIndex + srcMipLevel;
 	uint32_t destSubRes = getNumMips()  * destArrayIndex + destMipLevel;
-
 	D3D11_BOX bx;
 	bx.left = srcOffset ; 
 	bx.right = srcOffset + srcWidth;

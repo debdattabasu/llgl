@@ -13,17 +13,14 @@ public:
 	uint32_t getHeight() const;
 	uint32_t getDepth() const;
 	bool isMapped() const;
-
 	void* map();
 	void unmap();
-
 protected:
 	Texture3DStream(ContextPtr parentContext, uint32_t width, uint32_t height, uint32_t depth, FormatPtr format);
 	void initialize();
 	virtual void initializeImpl() = 0;
 	virtual void* mapImpl() = 0;
 	virtual void unmapImpl() = 0;
-
 private:
 	bool _isMapped;
 	uint32_t _width;

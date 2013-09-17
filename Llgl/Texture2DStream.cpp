@@ -17,7 +17,6 @@ void Texture2DStream::initialize()
 {
 	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
 	if(_width == 0 || _height == 0) throw InvalidArgumentException("dimensions invalid");
-
 	switch(getFormat()->getUsage())
 	{
 	case FormatUsage::General:

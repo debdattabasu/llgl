@@ -29,18 +29,13 @@ void Direct3D11Buffer::initializeRaw()
 	bd.Usage = D3D11_USAGE_DEFAULT;
 	if(caps->supportsShaderResourceBuffer()) 
 		bd.BindFlags |= D3D11_BIND_SHADER_RESOURCE;
-
 	if(caps->numUnorderedAccessSlots())
 		bd.BindFlags |= D3D11_BIND_UNORDERED_ACCESS;
-
 	bd.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_ALLOW_RAW_VIEWS; 
-
 	hr = dev->CreateBuffer(&bd, NULL, &_buf);
 	CHECK_HRESULT(hr);
-
 	if(caps->supportsShaderResourceBuffer()) 
 	{
-
 		D3D11_SHADER_RESOURCE_VIEW_DESC srvd;
 		ZeroMemory(&srvd, sizeof(srvd));
 		srvd.Format = dxgiFmtTyped;
@@ -52,7 +47,6 @@ void Direct3D11Buffer::initializeRaw()
 		hr = dev->CreateShaderResourceView(_buf, &srvd, &_srv);
 		CHECK_HRESULT(hr);
 	}
-
 	if(caps->numUnorderedAccessSlots())
 	{
 		D3D11_UNORDERED_ACCESS_VIEW_DESC uavd;
@@ -80,30 +74,23 @@ void Direct3D11Buffer::initializeVertexIndex()
 	ZeroMemory(&bd, sizeof(bd));
 	bd.ByteWidth = numElements * elementSize;
 	bd.Usage = D3D11_USAGE_DEFAULT;
-
 	switch(getFormat()->getUsage())
 	{
 	case FormatUsage::General:
 		bd.BindFlags |= D3D11_BIND_VERTEX_BUFFER;
 		break;
-
 	case FormatUsage::IndexBuffer:
 		bd.BindFlags |= D3D11_BIND_INDEX_BUFFER;
 		break;
 	}
-	
 	if(caps->supportsShaderResourceBuffer()) 
 		bd.BindFlags |= D3D11_BIND_SHADER_RESOURCE;
-
 	if(caps->numUnorderedAccessSlots())
 		bd.BindFlags |= D3D11_BIND_UNORDERED_ACCESS;
-
 	hr = dev->CreateBuffer(&bd, NULL, &_buf);
 	CHECK_HRESULT(hr);
-
 	if(caps->supportsShaderResourceBuffer()) 
 	{
-
 		D3D11_SHADER_RESOURCE_VIEW_DESC srvd;
 		ZeroMemory(&srvd, sizeof(srvd));
 		srvd.Format = dxgiFmtTyped;
@@ -112,11 +99,9 @@ void Direct3D11Buffer::initializeVertexIndex()
 		srvd.Buffer.ElementWidth = elementSize;
 		srvd.Buffer.ElementOffset = 0;
 		srvd.Buffer.NumElements = numElements;
-
 		hr = dev->CreateShaderResourceView(_buf, &srvd, &_srv);
 		CHECK_HRESULT(hr);
 	}
-
 	if(caps->numUnorderedAccessSlots())
 	{
 		D3D11_UNORDERED_ACCESS_VIEW_DESC uavd;

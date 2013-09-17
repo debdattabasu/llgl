@@ -56,71 +56,54 @@ uint32_t Format::getSize()
 	case FormatType::Raw:
 		size = 4; 
 		break;
-
 	case FormatType::Float:
 		size = 4; 
 		break;
-
 	case FormatType::Half:
 		size = 2; 
 		break;
-
 	case FormatType::Int32:
 		size = 4; 
 		break;
-
 	case FormatType::Int16:
 		size = 2; 
 		break;
-
 	case FormatType::Uint32:
 		size = 4; 
 		break;
-
 	case FormatType::Uint16:
 		size = 2; 
 		break;
-
 	case FormatType::Snorm16:
 		size = 2; 
 		break;
-
 	case FormatType::Snorm8:
 		size = 1; 
 		break;
-
 	case FormatType::Unorm16:
 		size = 2; 
 		break;
-
 	case FormatType::Unorm8:
 		size = 1; 
 		break;
-
 	case FormatType::Index16:
 		size = 2; 
 		break;
-
 	case FormatType::Index32:
 		size = 4; 
 		break;	
-
 	case FormatType::DepthUnorm24StencilUint8:
 		size = 4; 
 		break;	
-
 	case FormatType::DepthFloat32StencilUint8:
 		size = 8; 
 		break;	
-
 	case FormatType::DepthFloat32:
 		size = 4; 
-		break;	
-		
+		break;			
 	case FormatType::DepthUnorm16:
 		size = 2; 
 		break;	
-
 	}
 	size *= _vectorSize;
 	return size;

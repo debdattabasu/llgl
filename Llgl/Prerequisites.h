@@ -91,7 +91,6 @@ LLGL_EXCEPTION(OutOfMemory);
 LLGL_EXCEPTION(UnexpectedError);
 LLGL_EXCEPTION(NotImplemented);
 LLGL_EXCEPTION(FileAccess);
-
 LLGL_CLASS(Exception);
 LLGL_CLASS(Driver);
 LLGL_CLASS(Context);
@@ -110,7 +109,3 @@ LLGL_CLASS(Texture3DStream);
 LLGL_CLASS(Texture3D);
 
 LLGL_NAMESPACE_END;
-
-
-
-

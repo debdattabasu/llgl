@@ -13,7 +13,6 @@ public:
 	bool isMapped() const;
 	void* map();
 	void unmap();
-
 protected:
 	BufferStream(ContextPtr parentContext, uint32_t width, FormatPtr format);
 	void initialize();

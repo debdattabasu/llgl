@@ -14,14 +14,12 @@ public:
 	uint32_t getHeight() const;
 	void* map();
 	void unmap();
-
 protected:
 	Texture2DStream(ContextPtr parentContext, uint32_t width, uint32_t height, FormatPtr format);
 	void initialize();
 	virtual void initializeImpl() = 0;
 	virtual void* mapImpl() = 0;
 	virtual void unmapImpl() = 0;
-
 private:
 	FormatPtr _format;
 	bool _isMapped;
