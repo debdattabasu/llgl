@@ -8,7 +8,7 @@ LLGL_CLASS(Direct3D11BufferStream) : public BufferStream
 public:
 	Direct3D11BufferStream(ContextPtr parentContext, uint32_t width, FormatPtr format);
 	~Direct3D11BufferStream() override;
-	void* mapImpl() override;
+	MapDesc mapImpl() override;
 	void unmapImpl() override;
 	void initializeImpl() override;
 	

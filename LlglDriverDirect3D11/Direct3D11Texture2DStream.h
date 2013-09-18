@@ -9,7 +9,7 @@ public:
 	Direct3D11Texture2DStream(ContextPtr parentContext, uint32_t width, uint32_t height, FormatPtr format);
 	~Direct3D11Texture2DStream() override;
 	void initializeImpl() override;
-	void* mapImpl() override;
+	MapDesc mapImpl() override;
 	void unmapImpl() override;
 	
 	ID3D11Texture2D* _tex2d;

@@ -31,7 +31,7 @@ void Direct3D11Texture1DStream::initializeImpl()
 	CHECK_HRESULT(hr);
 }
 
-void* Direct3D11Texture1DStream::mapImpl() 
+Texture1DStream::MapDesc Direct3D11Texture1DStream::mapImpl() 
 {
 	auto ctx = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_ctx;
 	HRESULT hr = S_OK;
@@ -40,7 +40,8 @@ void* Direct3D11Texture1DStream::mapImpl()
 	rs.pData = 0;
 	hr = ctx->Map(_tex1d, 0, D3D11_MAP_READ_WRITE, 0, &rs);
 	CHECK_HRESULT(hr);
-	return rs.pData;
+	Texture1DStream::MapDesc ret = {(char*) rs.pData};
+	return ret;
 }
 
 void Direct3D11Texture1DStream::unmapImpl() 

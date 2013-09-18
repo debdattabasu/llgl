@@ -7,18 +7,24 @@ LLGL_CLASS(Texture2DStream) : public ContextChild
 {
 public:
 	friend class Context;
+	LLGL_CLASS(MapDesc)
+	{
+	public:
+		char* data;
+		uint32_t rowPitch;
+	};
 	virtual ~Texture2DStream() override;
 	FormatPtr getFormat() const;
 	bool isMapped() const;
 	uint32_t getWidth() const;
 	uint32_t getHeight() const;
-	void* map();
+	MapDesc map();
 	void unmap();
 protected:
 	Texture2DStream(ContextPtr parentContext, uint32_t width, uint32_t height, FormatPtr format);
 	void initialize();
 	virtual void initializeImpl() = 0;
-	virtual void* mapImpl() = 0;
+	virtual MapDesc mapImpl() = 0;
 	virtual void unmapImpl() = 0;
 private:
 	FormatPtr _format;

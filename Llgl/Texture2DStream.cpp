@@ -49,7 +49,7 @@ uint32_t Texture2DStream::getHeight() const
 	return _height;
 }
 
-void* Texture2DStream::map()
+Texture2DStream::MapDesc Texture2DStream::map()
 {
 	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
 	if(_isMapped) throw InvalidOperationException("Texture2DStream already mapped");

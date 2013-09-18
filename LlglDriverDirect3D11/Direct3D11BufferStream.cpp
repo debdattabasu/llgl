@@ -28,7 +28,7 @@ void Direct3D11BufferStream::initializeImpl()
 	CHECK_HRESULT(hr);
 }
 
-void* Direct3D11BufferStream::mapImpl() 
+BufferStream::MapDesc Direct3D11BufferStream::mapImpl() 
 {
 	auto ctx = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_ctx;
 	HRESULT hr = S_OK;
@@ -37,7 +37,8 @@ void* Direct3D11BufferStream::mapImpl()
 	rs.pData = 0;
 	hr = ctx->Map(_buf, 0, D3D11_MAP_READ_WRITE, 0, &rs);
 	CHECK_HRESULT(hr);
-	return rs.pData;
+	BufferStream::MapDesc ret = {(char*)rs.pData};
+	return ret;
 }
 
 void Direct3D11BufferStream::unmapImpl() 

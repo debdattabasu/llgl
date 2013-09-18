@@ -42,7 +42,7 @@ uint32_t Texture1DStream::getWidth() const
 	return _width;
 }
 
-void* Texture1DStream::map()
+Texture1DStream::MapDesc Texture1DStream::map()
 {
 	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
 	if(_isMapped) throw InvalidOperationException("texture already mapped");

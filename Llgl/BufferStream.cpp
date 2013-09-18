@@ -28,7 +28,7 @@ bool BufferStream::isMapped() const
 	return _isMapped;
 }
 
-void* BufferStream::map()
+BufferStream::MapDesc BufferStream::map()
 {
 	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
 	if(isMapped()) throw InvalidOperationException("buffer already mapped");

@@ -7,17 +7,22 @@ LLGL_CLASS(Texture1DStream) : public ContextChild
 {
 public:
 	friend class Context;
+	LLGL_CLASS(MapDesc)
+	{
+	public:
+		char* data;
+	};
 	virtual ~Texture1DStream() override;
 	FormatPtr getFormat() const;
 	bool isMapped() const;
 	uint32_t getWidth() const;
-	void* map();
+	MapDesc map();
 	void unmap();
 protected:
 	Texture1DStream(ContextPtr parentContext, uint32_t width, FormatPtr format);
 	void initialize();
 	virtual void initializeImpl() = 0;
-	virtual void* mapImpl() =0;
+	virtual MapDesc mapImpl() =0;
 	virtual void unmapImpl() =0;
 private:
 	FormatPtr _format;

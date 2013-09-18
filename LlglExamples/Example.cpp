@@ -10,23 +10,36 @@ int main()
 	auto bufStream = ctx->createTexture2DStream(32, 32, ctx->createFormat(FormatType::Float, 1));
 	auto bufStream1 = ctx->createTexture2DStream(32, 32, ctx->createFormat(FormatType::Float, 1));
 	{
-		void* mem = bufStream->map();
-		memset(mem, 1, 32*32*4);
+		auto mem = bufStream->map();
+
+		for(uint32_t i = 0; i < 32; i++)
+		{
+			memset(mem.data, i, 32*4);
+			mem.data += mem.rowPitch;
+		}
+		
 		bufStream->unmap();
 	}
 	buf->write(bufStream, 0, 0, 0, 0);
 	buf->read(bufStream1, 0, 0, 0, 0);
-	void* mem = bufStream->map();
-	void* mem1 = bufStream1->map();
+	auto mem = bufStream->map();
+	auto mem1 = bufStream1->map();
 
-	if(memcmp(mem1, mem, 32*32*4) == 0)
+	bool passed = true;
+
+	for(uint32_t i = 0; i < 32; i++)
 	{
-		std::cout<<"passed";
+		if(memcmp(mem1.data, mem.data, 32*4))
+		{
+			passed = false;
+			break;
+		}
+		mem1.data += mem1.rowPitch;
+		mem.data += mem.rowPitch;
 	}
-	else
-	{
-		std::cout<<"failed";
-	}
+
+	passed? std::cout<<"passed" : std::cout<<"failed";
+
 	bufStream->unmap();
 	bufStream1->unmap();
 }

@@ -52,7 +52,7 @@ uint32_t Texture3DStream::getDepth() const
 	return _depth;
 }
 
-void* Texture3DStream::map()
+Texture3DStream::MapDesc Texture3DStream::map()
 {
 	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
 	if(_isMapped) throw InvalidOperationException("Texture3DStream already mapped");
