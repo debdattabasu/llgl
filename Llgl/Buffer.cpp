@@ -31,7 +31,7 @@ void Buffer::copyFrom(BufferPtr src, uint32_t srcOffset, uint32_t srcWidth, uint
 {
 	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
 	if (!src->getFormat()->equals(getFormat()))
-		throw InvalidArgumentException("resource format mismatch");
+		throw InvalidArgumentException("format mismatch");
 	if((srcOffset + srcWidth) > src->getWidth() || (destOffset + srcWidth) > getWidth())
 		throw InvalidArgumentException("out of bounds");
 	copyFromImpl(src, srcOffset, srcWidth, destOffset);
@@ -41,7 +41,7 @@ void Buffer::copyFrom(BufferStreamPtr src, uint32_t srcOffset, uint32_t srcWidth
 {
 	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
 	if (!src->getFormat()->equals(getFormat()))
-		throw InvalidArgumentException("resource format mismatch");
+		throw InvalidArgumentException("format mismatch");
 	if((srcOffset + srcWidth) > src->getWidth() || (destOffset + srcWidth) > getWidth())
 		throw InvalidArgumentException("out of bounds");
 	copyFromImpl(src, srcOffset, srcWidth, destOffset);
@@ -50,7 +50,7 @@ void Buffer::copyFrom(BufferStreamPtr src, uint32_t srcOffset, uint32_t srcWidth
 void Buffer::initialize() 
 {
 	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
-	if(_width == 0) throw InvalidArgumentException("dimensions invalid");
+	if(_width == 0) throw InvalidArgumentException("invalid dimensions");
 	auto caps = getParentContext()->getCapabilities();
 	switch(getFormat()->getUsage())
 	{

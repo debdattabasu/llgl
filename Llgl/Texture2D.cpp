@@ -16,10 +16,10 @@ Texture2D::~Texture2D()
 void Texture2D::initialize() 
 {
 	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
-	if(_width == 0 || _height == 0 || _arraySize == 0) throw InvalidArgumentException("dimensions invalid");
+	if(_width == 0 || _height == 0 || _arraySize == 0) throw InvalidArgumentException("invalid dimensions");
 	auto maxNumMips = uint32_t(1 + floor(log(double(max(_width, _height))) /log(2.f)));
 	_numMips =  _numMips? _numMips: maxNumMips;
-	if(_numMips > maxNumMips) throw InvalidArgumentException("dimensions invalid");
+	if(_numMips > maxNumMips) throw InvalidArgumentException("invalid dimensions");
 	switch(getFormat()->getUsage())
 	{
 	case FormatUsage::General:
@@ -27,7 +27,7 @@ void Texture2D::initialize()
 	case FormatUsage::DepthTexture:
 		break;
 	default:
-		throw InvalidArgumentException("format type unsupported by Texture2D");
+		throw InvalidArgumentException("format type unsupported by texture2d");
 	}
 	initializeImpl();
 }
@@ -65,7 +65,7 @@ void Texture2D::copyFrom(Texture2DPtr src, uint32_t srcOffsetX, uint32_t srcOffs
 {
 	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
 	if (!src->getFormat()->equals(getFormat()))
-		throw InvalidArgumentException("resource format mismatch");
+		throw InvalidArgumentException("format mismatch");
 	if(srcWidth == 0 || srcHeight == 0) throw InvalidArgumentException("invalid dimensions");
 	if((srcMipLevel + 1) > src->getNumMips() || (srcArrayIndex + 1) > src->getArraySize() 
 	   	|| (destMipLevel + 1) > getNumMips() || (destArrayIndex + 1) > getArraySize())
@@ -82,7 +82,7 @@ void Texture2D::copyFrom(Texture2DStreamPtr src, uint32_t srcOffsetX, uint32_t s
 {
 	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
 	if (!src->getFormat()->equals(getFormat()))
-		throw InvalidArgumentException("resource format mismatch");
+		throw InvalidArgumentException("format mismatch");
 	if(srcWidth == 0 || srcHeight == 0) throw InvalidArgumentException("invalid dimensions");
 	if((destMipLevel + 1) > getNumMips() || (destArrayIndex + 1) > getArraySize())
 	   	throw InvalidArgumentException("out of bounds");

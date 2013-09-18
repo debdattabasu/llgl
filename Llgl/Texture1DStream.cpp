@@ -16,13 +16,13 @@ Texture1DStream::~Texture1DStream()
 void Texture1DStream::initialize() 
 {
 	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
-	if(_width == 0) throw InvalidArgumentException("dimensions invalid");
+	if(_width == 0) throw InvalidArgumentException("invalid dimensions");
 	switch(getFormat()->getUsage())
 	{
 	case FormatUsage::General:
 		break;
 	default:
-		throw InvalidArgumentException("format type unsupported by Texture1DStream");
+		throw InvalidArgumentException("format type unsupported by texture1d stream");
 	}
 	initializeImpl();
 }
@@ -45,7 +45,7 @@ uint32_t Texture1DStream::getWidth() const
 Texture1DStream::MapDesc Texture1DStream::map()
 {
 	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
-	if(_isMapped) throw InvalidOperationException("texture already mapped");
+	if(_isMapped) throw InvalidOperationException("already mapped");
 	auto ret = mapImpl();
 	_isMapped = 1;
 	return ret; 
@@ -54,7 +54,7 @@ Texture1DStream::MapDesc Texture1DStream::map()
 void Texture1DStream::unmap()
 {
 	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
-	if(!_isMapped) throw InvalidOperationException("texture already unmapped");
+	if(!_isMapped) throw InvalidOperationException("already unmapped");
 	unmapImpl();
 	_isMapped = 0;
 }
@@ -64,7 +64,7 @@ void Texture1DStream::copyFrom(Texture1DPtr src, uint32_t srcOffset, uint32_t sr
 {
 	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
 	if (!src->getFormat()->equals(getFormat()))
-		throw InvalidArgumentException("resource format mismatch");
+		throw InvalidArgumentException("format mismatch");
 	if(srcWidth == 0) throw InvalidArgumentException("invalid dimensions");
 	if((srcMipLevel + 1) > src->getNumMips() || (srcArrayIndex + 1) > src->getArraySize())
 			throw InvalidArgumentException("out of bounds");
@@ -78,7 +78,7 @@ void Texture1DStream::copyFrom(Texture1DStreamPtr src, uint32_t srcOffset, uint3
 {
 	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
 	if (!src->getFormat()->equals(getFormat()))
-		throw InvalidArgumentException("resource format mismatch");
+		throw InvalidArgumentException("format mismatch");
 	if(srcWidth == 0) throw InvalidArgumentException("invalid dimensions");
 	if((srcOffset + srcWidth) > src->getWidth() || (destOffset + srcWidth) > getWidth())
 		throw InvalidArgumentException("out of bounds");	   	

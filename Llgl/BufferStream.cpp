@@ -31,7 +31,7 @@ bool BufferStream::isMapped() const
 BufferStream::MapDesc BufferStream::map()
 {
 	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
-	if(isMapped()) throw InvalidOperationException("buffer already mapped");
+	if(isMapped()) throw InvalidOperationException("already mapped");
 	auto ret = mapImpl();
 	_isMapped = true;
 	return ret;
@@ -40,7 +40,7 @@ BufferStream::MapDesc BufferStream::map()
 void BufferStream::unmap()
 {
 	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
-	if(!isMapped()) throw InvalidOperationException("resource already unmapped");
+	if(!isMapped()) throw InvalidOperationException("already unmapped");
 	unmapImpl();
 	_isMapped = false;
 }
@@ -48,7 +48,7 @@ void BufferStream::unmap()
 void BufferStream::initialize() 
 {
 	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
-	if(_width == 0) throw InvalidArgumentException("dimensions invalid");
+	if(_width == 0) throw InvalidArgumentException("invalid dimensions");
 	auto caps = getParentContext()->getCapabilities();
 	switch(getFormat()->getUsage())
 	{
@@ -70,7 +70,7 @@ void BufferStream::copyFrom(BufferPtr src, uint32_t srcOffset, uint32_t srcWidth
 {
 	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
 	if (!src->getFormat()->equals(getFormat()))
-		throw InvalidArgumentException("resource format mismatch");
+		throw InvalidArgumentException("format mismatch");
 	if((srcOffset + srcWidth) > src->getWidth() || (destOffset + srcWidth) > getWidth())
 		throw InvalidArgumentException("out of bounds");
 	copyFromImpl(src, srcOffset, srcWidth, destOffset);
@@ -80,7 +80,7 @@ void BufferStream::copyFrom(BufferStreamPtr src, uint32_t srcOffset, uint32_t sr
 {
 	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
 	if (!src->getFormat()->equals(getFormat()))
-		throw InvalidArgumentException("resource format mismatch");
+		throw InvalidArgumentException("format mismatch");
 	if((srcOffset + srcWidth) > src->getWidth() || (destOffset + srcWidth) > getWidth())
 		throw InvalidArgumentException("out of bounds");
 	copyFromImpl(src, srcOffset, srcWidth, destOffset);

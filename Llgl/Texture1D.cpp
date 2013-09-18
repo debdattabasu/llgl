@@ -16,16 +16,16 @@ Texture1D::~Texture1D()
 void Texture1D::initialize() 
 {
 	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
-	if(_width == 0 || _arraySize == 0) throw InvalidArgumentException("dimensions invalid");
+	if(_width == 0 || _arraySize == 0) throw InvalidArgumentException("invalid dimensions");
 	auto maxNumMips = uint32_t(1 + floor(log(double(_width)) /log(2.f)));
 	_numMips =  _numMips? _numMips: maxNumMips;
-	if(_numMips > maxNumMips) throw InvalidArgumentException("dimensions invalid");
+	if(_numMips > maxNumMips) throw InvalidArgumentException("invalid dimensions");
 	switch(getFormat()->getUsage())
 	{
 	case FormatUsage::General:
 		break;
 	default:
-		throw InvalidArgumentException("format type unsupported by Texture1D");
+		throw InvalidArgumentException("format type unsupported by texture1d");
 	}
 	initializeImpl();
 }
@@ -56,7 +56,7 @@ void Texture1D::copyFrom(Texture1DPtr src, uint32_t srcOffset, uint32_t srcWidth
 {
 	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
 	if (!src->getFormat()->equals(getFormat()))
-		throw InvalidArgumentException("resource format mismatch");
+		throw InvalidArgumentException("format mismatch");
 	if(srcWidth == 0) throw InvalidArgumentException("invalid dimensions");
 	if((srcMipLevel + 1) > src->getNumMips() || (srcArrayIndex + 1) > src->getArraySize() 
 	   	|| (destMipLevel + 1) > getNumMips() || (destArrayIndex + 1) > getArraySize())
@@ -71,7 +71,7 @@ void Texture1D::copyFrom(Texture1DStreamPtr src, uint32_t srcOffset, uint32_t sr
 {
 	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
 	if (!src->getFormat()->equals(getFormat()))
-		throw InvalidArgumentException("resource format mismatch");
+		throw InvalidArgumentException("format mismatch");
 	if(srcWidth == 0) throw InvalidArgumentException("invalid dimensions");
 	if((destMipLevel + 1) > getNumMips() || (destArrayIndex + 1) > getArraySize())
 			throw InvalidArgumentException("out of bounds");

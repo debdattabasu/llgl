@@ -16,16 +16,16 @@ Texture3D::~Texture3D()
 void Texture3D::initialize() 
 {
 	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
-	if(_width == 0 || _height == 0 || _depth == 0) throw InvalidArgumentException("dimensions invalid");
+	if(_width == 0 || _height == 0 || _depth == 0) throw InvalidArgumentException("invalid dimensions");
 	auto maxNumMips = uint32_t(1 + floor(log(double(max(max(_width, _height), _depth))) /log(2.f)));
 	_numMips =  _numMips? _numMips: maxNumMips;
-	if(_numMips > maxNumMips) throw InvalidArgumentException("dimensions invalid");
+	if(_numMips > maxNumMips) throw InvalidArgumentException("invalid dimensions");
 	switch(getFormat()->getUsage())
 	{
 	case FormatUsage::General:
 		break;
 	default:
-		throw InvalidArgumentException("format type unsupported by Texture3D");
+		throw InvalidArgumentException("format type unsupported by texture3d");
 	}
 	initializeImpl();
 }
@@ -64,7 +64,7 @@ void Texture3D::copyFrom(Texture3DPtr src, uint32_t srcOffsetX, uint32_t srcOffs
 {
 	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
 	if (!src->getFormat()->equals(getFormat()))
-		throw InvalidArgumentException("resource format mismatch");
+		throw InvalidArgumentException("format mismatch");
 	if(srcWidth == 0 || srcHeight == 0 || srcDepth == 0) throw InvalidArgumentException("invalid dimensions");
 	if((srcMipLevel + 1) > src->getNumMips() || (destMipLevel + 1) > getNumMips())
 	   	throw InvalidArgumentException("out of bounds");
@@ -82,7 +82,7 @@ void Texture3D::copyFrom(Texture3DStreamPtr src, uint32_t srcOffsetX, uint32_t s
 {
 	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
 	if (!src->getFormat()->equals(getFormat()))
-		throw InvalidArgumentException("resource format mismatch");
+		throw InvalidArgumentException("format mismatch");
 	if(srcWidth == 0 || srcHeight == 0 || srcDepth == 0) throw InvalidArgumentException("invalid dimensions");
 	if((destMipLevel + 1) > getNumMips()) throw InvalidArgumentException("out of bounds");
 	if((srcOffsetX + srcWidth) > src->getWidth() || (destOffsetX + srcWidth) > getWidth(destMipLevel) 

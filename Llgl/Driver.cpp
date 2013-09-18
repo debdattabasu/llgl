@@ -10,7 +10,7 @@ Driver::Load::Load(const std::string& driverName)
 {
 	if(g_module) throw InvalidOperationException("driver already loaded");
 	g_module = LoadLibrary((std::string("LlglDriver") + driverName + ".dll").c_str());
-	if(!g_module || !Driver::_singleton) throw FileAccessException("driver not found");
+	if(!g_module || !Driver::_singleton) throw InvalidArgumentException("driver not found");
 }
 
 Driver::Load::~Load()
