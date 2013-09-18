@@ -52,4 +52,41 @@ void Direct3D11Texture3DStream::unmapImpl()
 	ctx->Unmap(_tex3d, 0);
 }
 
+void Direct3D11Texture3DStream::copyFromImpl(Texture3DPtr src, uint32_t srcOffsetX, uint32_t srcOffsetY, uint32_t srcOffsetZ,
+		uint32_t srcWidth, uint32_t srcHeight, uint32_t srcDepth, uint32_t srcMipLevel, 
+		uint32_t destOffsetX, uint32_t destOffsetY, uint32_t destOffsetZ) 
+{
+	auto ctx = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_ctx;
+	ID3D11Resource* srcRes = std::dynamic_pointer_cast<Direct3D11Texture3D>(src)->_tex3d; 
+	ID3D11Resource* destRes = _tex3d;
+	uint32_t srcSubRes = srcMipLevel;
+	uint32_t destSubRes = 0;
+	D3D11_BOX bx;
+	bx.left = srcOffsetX ; 
+	bx.right = srcOffsetX + srcWidth;
+	bx.top = srcOffsetY;
+	bx.bottom = srcOffsetY + srcHeight;
+	bx.front = srcOffsetZ;
+	bx.back = srcOffsetZ + srcDepth;
+	ctx->CopySubresourceRegion(destRes, destSubRes, destOffsetX , destOffsetY, destOffsetZ, srcRes, srcSubRes, &bx);
+}
+
+void Direct3D11Texture3DStream::copyFromImpl(Texture3DStreamPtr src, uint32_t srcOffsetX, uint32_t srcOffsetY, uint32_t srcOffsetZ,
+		uint32_t srcWidth, uint32_t srcHeight, uint32_t srcDepth, uint32_t destOffsetX, uint32_t destOffsetY, uint32_t destOffsetZ) 
+{
+	auto ctx = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_ctx;
+	ID3D11Resource* srcRes = std::dynamic_pointer_cast<Direct3D11Texture3DStream>(src)->_tex3d; 
+	ID3D11Resource* destRes = _tex3d;
+	uint32_t srcSubRes = 0;
+	uint32_t destSubRes = 0;
+	D3D11_BOX bx;
+	bx.left = srcOffsetX ; 
+	bx.right = srcOffsetX + srcWidth;
+	bx.top = srcOffsetY;
+	bx.bottom = srcOffsetY + srcHeight;
+	bx.front = srcOffsetZ;
+	bx.back = srcOffsetZ + srcDepth;
+	ctx->CopySubresourceRegion(destRes, destSubRes, destOffsetX , destOffsetY, destOffsetZ, srcRes, srcSubRes, &bx);
+}
+
 LLGL_NAMESPACE_END2;

@@ -59,4 +59,30 @@ void Texture1DStream::unmap()
 	_isMapped = 0;
 }
 
+void Texture1DStream::copyFrom(Texture1DPtr src, uint32_t srcOffset, uint32_t srcWidth, uint32_t srcMipLevel, uint32_t srcArrayIndex, 
+		uint32_t destOffset)
+{
+	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
+	if (!src->getFormat()->equals(getFormat()))
+		throw InvalidArgumentException("resource format mismatch");
+	if(srcWidth == 0) throw InvalidArgumentException("invalid dimensions");
+	if((srcMipLevel + 1) > src->getNumMips() || (srcArrayIndex + 1) > src->getArraySize())
+			throw InvalidArgumentException("out of bounds");
+	if((srcOffset + srcWidth) > src->getWidth(srcMipLevel) || (destOffset + srcWidth) > getWidth())
+		throw InvalidArgumentException("out of bounds");	   	
+	copyFromImpl(src, srcOffset, srcWidth, srcMipLevel, srcArrayIndex, 
+		destOffset);
+}
+
+void Texture1DStream::copyFrom(Texture1DStreamPtr src, uint32_t srcOffset, uint32_t srcWidth, uint32_t destOffset)
+{
+	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
+	if (!src->getFormat()->equals(getFormat()))
+		throw InvalidArgumentException("resource format mismatch");
+	if(srcWidth == 0) throw InvalidArgumentException("invalid dimensions");
+	if((srcOffset + srcWidth) > src->getWidth() || (destOffset + srcWidth) > getWidth())
+		throw InvalidArgumentException("out of bounds");	   	
+	copyFromImpl(src, srcOffset, srcWidth, destOffset);
+}
+
 LLGL_NAMESPACE_END;

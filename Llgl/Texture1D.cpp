@@ -51,26 +51,6 @@ uint32_t Texture1D::getArraySize() const
 	return _arraySize;
 }
 
-void Texture1D::read(Texture1DStreamPtr stream, uint32_t offset, uint32_t mipLevel, uint32_t arrayIndex)
-{
-	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
-	if(!stream->getFormat()->equals(getFormat()))
-		throw InvalidArgumentException("stream format mismatch");
-	if((offset + stream->getWidth()) > getWidth(mipLevel))
-		throw InvalidArgumentException("out of bounds");
-	readImpl(stream, offset, mipLevel, arrayIndex);
-}
-
-void Texture1D::write(Texture1DStreamPtr stream, uint32_t offset, uint32_t mipLevel, uint32_t arrayIndex)
-{
-	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
-	if(!stream->getFormat()->equals(getFormat()))
-		throw InvalidArgumentException("stream format mismatch");
-	if((offset + stream->getWidth()) > getWidth(mipLevel))
-		throw InvalidArgumentException("out of bounds");
-	writeImpl(stream, offset, mipLevel, arrayIndex);
-}
-
 void Texture1D::copyFrom(Texture1DPtr src, uint32_t srcOffset, uint32_t srcWidth, uint32_t srcMipLevel, uint32_t srcArrayIndex, 
 	uint32_t destOffset, uint32_t destMipLevel, uint32_t destArrayIndex)
 {
@@ -85,6 +65,19 @@ void Texture1D::copyFrom(Texture1DPtr src, uint32_t srcOffset, uint32_t srcWidth
 		throw InvalidArgumentException("out of bounds");	   	
 	copyFromImpl(src, srcOffset, srcWidth, srcMipLevel, srcArrayIndex, 
 		destOffset, destMipLevel, destArrayIndex);
+}
+
+void Texture1D::copyFrom(Texture1DStreamPtr src, uint32_t srcOffset, uint32_t srcWidth, uint32_t destOffset, uint32_t destMipLevel, uint32_t destArrayIndex)
+{
+	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
+	if (!src->getFormat()->equals(getFormat()))
+		throw InvalidArgumentException("resource format mismatch");
+	if(srcWidth == 0) throw InvalidArgumentException("invalid dimensions");
+	if((destMipLevel + 1) > getNumMips() || (destArrayIndex + 1) > getArraySize())
+			throw InvalidArgumentException("out of bounds");
+	if((srcOffset + srcWidth) > src->getWidth() || (destOffset + srcWidth) > getWidth(destMipLevel))
+		throw InvalidArgumentException("out of bounds");	   	
+	copyFromImpl(src, srcOffset, srcWidth, destOffset, destMipLevel, destArrayIndex);
 }
 
 LLGL_NAMESPACE_END;

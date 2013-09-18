@@ -76,28 +76,20 @@ void Texture3D::copyFrom(Texture3DPtr src, uint32_t srcOffsetX, uint32_t srcOffs
 		destOffsetX, destOffsetY, destOffsetZ, destMipLevel);
 }
 
-void Texture3D::read(Texture3DStreamPtr stream, uint32_t offsetX, uint32_t offsetY, uint32_t offsetZ, uint32_t mipLevel)
+void Texture3D::copyFrom(Texture3DStreamPtr src, uint32_t srcOffsetX, uint32_t srcOffsetY, uint32_t srcOffsetZ,
+		uint32_t srcWidth, uint32_t srcHeight, uint32_t srcDepth, uint32_t destOffsetX, uint32_t destOffsetY, uint32_t destOffsetZ, 
+		uint32_t destMipLevel)
 {
 	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
-	if(!stream->getFormat()->equals(getFormat()))
-		throw InvalidArgumentException("stream format mismatch");
-	if((offsetX + stream->getWidth()) > getWidth(mipLevel)
-		|| (offsetY + stream->getHeight()) > getHeight(mipLevel)
-		|| (offsetZ + stream->getDepth()) > getDepth(mipLevel))
-		throw InvalidArgumentException("out of bounds");
-	readImpl(stream, offsetX, offsetY, offsetZ, mipLevel);
-}
-
-void Texture3D::write(Texture3DStreamPtr stream, uint32_t offsetX, uint32_t offsetY, uint32_t offsetZ, uint32_t mipLevel)
-{
-	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
-	if(!stream->getFormat()->equals(getFormat()))
-		throw InvalidArgumentException("stream format mismatch");
-	if((offsetX + stream->getWidth()) > getWidth(mipLevel)
-		|| (offsetY + stream->getHeight()) > getHeight(mipLevel)
-		|| (offsetZ + stream->getDepth()) > getDepth(mipLevel))
-		throw InvalidArgumentException("out of bounds");
-	writeImpl(stream, offsetX, offsetY, offsetZ, mipLevel);
+	if (!src->getFormat()->equals(getFormat()))
+		throw InvalidArgumentException("resource format mismatch");
+	if(srcWidth == 0 || srcHeight == 0 || srcDepth == 0) throw InvalidArgumentException("invalid dimensions");
+	if((destMipLevel + 1) > getNumMips()) throw InvalidArgumentException("out of bounds");
+	if((srcOffsetX + srcWidth) > src->getWidth() || (destOffsetX + srcWidth) > getWidth(destMipLevel) 
+	  	|| (srcOffsetY + srcHeight) > src->getHeight() || (destOffsetY + srcHeight) > getHeight(destMipLevel)
+	  	|| (srcOffsetZ + srcDepth) > src->getDepth() || (destOffsetZ + srcDepth) > getDepth(destMipLevel))
+			throw InvalidArgumentException("out of bounds");
+	copyFromImpl(src, srcOffsetX, srcOffsetY, srcOffsetZ, srcWidth, srcHeight, srcDepth, destOffsetX, destOffsetY, destOffsetZ, destMipLevel);
 }
 
 LLGL_NAMESPACE_END;

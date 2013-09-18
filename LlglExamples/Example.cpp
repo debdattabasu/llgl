@@ -20,8 +20,8 @@ int main()
 		
 		bufStream->unmap();
 	}
-	buf->write(bufStream, 0, 0, 0, 0);
-	buf->read(bufStream1, 0, 0, 0, 0);
+	buf->copyFrom(bufStream, 0, 0, 32, 32, 0, 0, 0, 0);
+	bufStream1->copyFrom(buf, 0, 0, 32, 32, 0, 0, 0, 0);
 	auto mem = bufStream->map();
 	auto mem1 = bufStream1->map();
 

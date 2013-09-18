@@ -69,4 +69,36 @@ void Texture3DStream::unmap()
 	_isMapped = 0;
 }
 
+void Texture3DStream::copyFrom(Texture3DPtr src, uint32_t srcOffsetX, uint32_t srcOffsetY, uint32_t srcOffsetZ,
+	uint32_t srcWidth, uint32_t srcHeight, uint32_t srcDepth, uint32_t srcMipLevel, 
+	uint32_t destOffsetX, uint32_t destOffsetY, uint32_t destOffsetZ)
+{
+	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
+	if (!src->getFormat()->equals(getFormat()))
+		throw InvalidArgumentException("resource format mismatch");
+	if(srcWidth == 0 || srcHeight == 0 || srcDepth == 0) throw InvalidArgumentException("invalid dimensions");
+	if((srcMipLevel + 1) > src->getNumMips())
+	   	throw InvalidArgumentException("out of bounds");
+	if((srcOffsetX + srcWidth) > src->getWidth(srcMipLevel) || (destOffsetX + srcWidth) > getWidth() 
+	  	|| (srcOffsetY + srcHeight) > src->getHeight(srcMipLevel) || (destOffsetY + srcHeight) > getHeight()
+	  	|| (srcOffsetZ + srcDepth) > src->getDepth(srcMipLevel) || (destOffsetZ + srcDepth) > getDepth())
+			throw InvalidArgumentException("out of bounds");
+	copyFromImpl(src, srcOffsetX, srcOffsetY, srcOffsetZ, srcWidth, srcHeight, srcDepth, srcMipLevel, 
+		destOffsetX, destOffsetY, destOffsetZ);
+}
+
+void Texture3DStream::copyFrom(Texture3DStreamPtr src, uint32_t srcOffsetX, uint32_t srcOffsetY, uint32_t srcOffsetZ,
+		uint32_t srcWidth, uint32_t srcHeight, uint32_t srcDepth, uint32_t destOffsetX, uint32_t destOffsetY, uint32_t destOffsetZ)
+{
+	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
+	if (!src->getFormat()->equals(getFormat()))
+		throw InvalidArgumentException("resource format mismatch");
+	if(srcWidth == 0 || srcHeight == 0 || srcDepth == 0) throw InvalidArgumentException("invalid dimensions");
+	if((srcOffsetX + srcWidth) > src->getWidth() || (destOffsetX + srcWidth) > getWidth() 
+	  	|| (srcOffsetY + srcHeight) > src->getHeight() || (destOffsetY + srcHeight) > getHeight()
+	  	|| (srcOffsetZ + srcDepth) > src->getDepth() || (destOffsetZ + srcDepth) > getDepth())
+			throw InvalidArgumentException("out of bounds");
+	copyFromImpl(src, srcOffsetX, srcOffsetY, srcOffsetZ, srcWidth, srcHeight, srcDepth, destOffsetX, destOffsetY, destOffsetZ);
+}
+
 LLGL_NAMESPACE_END;

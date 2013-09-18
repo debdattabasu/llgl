@@ -12,8 +12,9 @@ public:
 	void copyFromImpl(Texture3DPtr src, uint32_t srcOffsetX, uint32_t srcOffsetY, uint32_t srcOffsetZ,
 		uint32_t srcWidth, uint32_t srcHeight, uint32_t srcDepth, uint32_t srcMipLevel, 
 		uint32_t destOffsetX, uint32_t destOffsetY, uint32_t destOffsetZ, uint32_t destMipLevel) override;
-	void readImpl(Texture3DStreamPtr stream, uint32_t offsetX, uint32_t offsetY, uint32_t offsetZ, uint32_t mipLevel) override;
-	void writeImpl(Texture3DStreamPtr stream, uint32_t offsetX, uint32_t offsetY, uint32_t offsetZ, uint32_t mipLevel) override;
+	void copyFromImpl(Texture3DStreamPtr src, uint32_t srcOffsetX, uint32_t srcOffsetY, uint32_t srcOffsetZ,
+		uint32_t srcWidth, uint32_t srcHeight, uint32_t srcDepth, uint32_t destOffsetX, uint32_t destOffsetY, uint32_t destOffsetZ, 
+		uint32_t destMipLevel) override;
 
 	ID3D11Texture3D* _tex3d;
 	ID3D11ShaderResourceView* _srv;

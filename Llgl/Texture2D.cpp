@@ -77,26 +77,19 @@ void Texture2D::copyFrom(Texture2DPtr src, uint32_t srcOffsetX, uint32_t srcOffs
 		destOffsetX, destOffsetY, destMipLevel, destArrayIndex);
 }
 
-void Texture2D::read(Texture2DStreamPtr stream, uint32_t offsetX, uint32_t offsetY, uint32_t mipLevel, uint32_t arrayIndex)
+void Texture2D::copyFrom(Texture2DStreamPtr src, uint32_t srcOffsetX, uint32_t srcOffsetY, uint32_t srcWidth, uint32_t srcHeight, 
+		uint32_t destOffsetX, uint32_t destOffsetY, uint32_t destMipLevel, uint32_t destArrayIndex)
 {
 	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
-	if(!stream->getFormat()->equals(getFormat()))
-		throw InvalidArgumentException("stream format mismatch");
-	if((offsetX + stream->getWidth()) > getWidth(mipLevel)
-		|| (offsetY + stream->getHeight()) > getHeight(mipLevel))
-		throw InvalidArgumentException("out of bounds");
-	readImpl(stream, offsetX, offsetY, mipLevel, arrayIndex);
-}
-
-void Texture2D::write(Texture2DStreamPtr stream, uint32_t offsetX, uint32_t offsetY, uint32_t mipLevel, uint32_t arrayIndex)
-{
-	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
-	if(!stream->getFormat()->equals(getFormat()))
-		throw InvalidArgumentException("stream format mismatch");
-	if((offsetX + stream->getWidth()) > getWidth(mipLevel)
-		|| (offsetY + stream->getHeight()) > getHeight(mipLevel))
-		throw InvalidArgumentException("out of bounds");
-	writeImpl(stream, offsetX, offsetY, mipLevel, arrayIndex);
+	if (!src->getFormat()->equals(getFormat()))
+		throw InvalidArgumentException("resource format mismatch");
+	if(srcWidth == 0 || srcHeight == 0) throw InvalidArgumentException("invalid dimensions");
+	if((destMipLevel + 1) > getNumMips() || (destArrayIndex + 1) > getArraySize())
+	   	throw InvalidArgumentException("out of bounds");
+	if((srcOffsetX + srcWidth) > src->getWidth() || (destOffsetX + srcWidth) > getWidth(destMipLevel) 
+	  	|| (srcOffsetY + srcHeight) > src->getHeight() || (destOffsetY + srcHeight) > getHeight(destMipLevel))
+			throw InvalidArgumentException("out of bounds");
+	copyFromImpl(src, srcOffsetX, srcOffsetY, srcWidth, srcHeight, destOffsetX, destOffsetY, destMipLevel, destArrayIndex);
 }
 
 LLGL_NAMESPACE_END;

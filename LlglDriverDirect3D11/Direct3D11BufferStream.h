@@ -11,6 +11,8 @@ public:
 	MapDesc mapImpl() override;
 	void unmapImpl() override;
 	void initializeImpl() override;
+	void copyFromImpl(BufferPtr src, uint32_t srcOffset, uint32_t srcWidth, uint32_t destOffset) override;
+	void copyFromImpl(BufferStreamPtr src, uint32_t srcOffset, uint32_t srcWidth, uint32_t destOffset) override;
 	
 	ID3D11Buffer* _buf;
 };

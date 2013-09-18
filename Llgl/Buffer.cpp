@@ -37,24 +37,14 @@ void Buffer::copyFrom(BufferPtr src, uint32_t srcOffset, uint32_t srcWidth, uint
 	copyFromImpl(src, srcOffset, srcWidth, destOffset);
 }
 
-void Buffer::write(BufferStreamPtr stream, uint32_t offset)
+void Buffer::copyFrom(BufferStreamPtr src, uint32_t srcOffset, uint32_t srcWidth, uint32_t destOffset)
 {
 	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
-	if (!stream->getFormat()->equals(getFormat()))
-		throw InvalidArgumentException("stream format mismatch");
-	if((offset + stream->getWidth()) > getWidth())
+	if (!src->getFormat()->equals(getFormat()))
+		throw InvalidArgumentException("resource format mismatch");
+	if((srcOffset + srcWidth) > src->getWidth() || (destOffset + srcWidth) > getWidth())
 		throw InvalidArgumentException("out of bounds");
-	writeImpl(stream, offset);
-}
-
-void Buffer::read(BufferStreamPtr stream, uint32_t offset)
-{
-	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
-	if (!stream->getFormat()->equals(getFormat()))
-		throw InvalidArgumentException("stream format mismatch");
-	if((offset + stream->getWidth()) > getWidth())
-		throw InvalidArgumentException("out of bounds");
-	readImpl(stream, offset);
+	copyFromImpl(src, srcOffset, srcWidth, destOffset);
 }
 
 void Buffer::initialize() 

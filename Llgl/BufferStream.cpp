@@ -66,4 +66,24 @@ void BufferStream::initialize()
 	initializeImpl();
 }
 
+void BufferStream::copyFrom(BufferPtr src, uint32_t srcOffset, uint32_t srcWidth, uint32_t destOffset)
+{
+	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
+	if (!src->getFormat()->equals(getFormat()))
+		throw InvalidArgumentException("resource format mismatch");
+	if((srcOffset + srcWidth) > src->getWidth() || (destOffset + srcWidth) > getWidth())
+		throw InvalidArgumentException("out of bounds");
+	copyFromImpl(src, srcOffset, srcWidth, destOffset);
+}
+
+void BufferStream::copyFrom(BufferStreamPtr src, uint32_t srcOffset, uint32_t srcWidth, uint32_t destOffset)
+{
+	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
+	if (!src->getFormat()->equals(getFormat()))
+		throw InvalidArgumentException("resource format mismatch");
+	if((srcOffset + srcWidth) > src->getWidth() || (destOffset + srcWidth) > getWidth())
+		throw InvalidArgumentException("out of bounds");
+	copyFromImpl(src, srcOffset, srcWidth, destOffset);
+}
+
 LLGL_NAMESPACE_END;

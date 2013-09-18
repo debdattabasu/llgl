@@ -95,7 +95,7 @@ void Direct3D11Texture1D::copyFromImpl(Texture1DPtr src, uint32_t srcOffset, uin
 	uint32_t srcSubRes = src->getNumMips() * srcArrayIndex + srcMipLevel;
 	uint32_t destSubRes = getNumMips()  * destArrayIndex + destMipLevel;
 	D3D11_BOX bx;
-	bx.left = srcOffset ; 
+	bx.left = srcOffset; 
 	bx.right = srcOffset + srcWidth;
 	bx.top = 0;
 	bx.bottom = 1;
@@ -104,36 +104,22 @@ void Direct3D11Texture1D::copyFromImpl(Texture1DPtr src, uint32_t srcOffset, uin
 	ctx->CopySubresourceRegion(destRes, destSubRes, destOffset , 0, 0, srcRes, srcSubRes, &bx);
 }
 
-void Direct3D11Texture1D::readImpl(Texture1DStreamPtr stream, uint32_t offset, uint32_t mipLevel, uint32_t arrayIndex)
+void Direct3D11Texture1D::copyFromImpl(Texture1DStreamPtr src, uint32_t srcOffset, uint32_t srcWidth,
+		uint32_t destOffset, uint32_t destMipLevel, uint32_t destArrayIndex) 
 {
 	auto ctx = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_ctx;
-	ID3D11Resource* srcRes = _tex1d;
-	ID3D11Resource* destRes = std::dynamic_pointer_cast<Direct3D11Texture1DStream>(stream)->_tex1d; 
-	uint32_t srcSubRes = getNumMips() * arrayIndex + mipLevel;
-	D3D11_BOX bx;
-	bx.left = offset; 
-	bx.right = offset + stream->getWidth();
-	bx.top = 0;
-	bx.bottom = 1;
-	bx.front = 0;
-	bx.back = 1;
-	ctx->CopySubresourceRegion(destRes, 0, 0, 0, 0, srcRes, srcSubRes, &bx);
-}
-
-void Direct3D11Texture1D::writeImpl(Texture1DStreamPtr stream, uint32_t offset, uint32_t mipLevel, uint32_t arrayIndex)
-{
-	auto ctx = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_ctx;
-	ID3D11Resource* srcRes = std::dynamic_pointer_cast<Direct3D11Texture1DStream>(stream)->_tex1d; 
+	ID3D11Resource* srcRes = std::dynamic_pointer_cast<Direct3D11Texture1DStream>(src)->_tex1d; 
 	ID3D11Resource* destRes = _tex1d;
-	uint32_t destSubRes = getNumMips() * arrayIndex + mipLevel;
+	uint32_t srcSubRes = 0;
+	uint32_t destSubRes = getNumMips()  * destArrayIndex + destMipLevel;
 	D3D11_BOX bx;
-	bx.left = 0; 
-	bx.right = stream->getWidth();
+	bx.left = srcOffset; 
+	bx.right = srcOffset + srcWidth;
 	bx.top = 0;
 	bx.bottom = 1;
 	bx.front = 0;
 	bx.back = 1;
-	ctx->CopySubresourceRegion(destRes, destSubRes, offset , 0, 0, srcRes, 0, &bx);
+	ctx->CopySubresourceRegion(destRes, destSubRes, destOffset , 0, 0, srcRes, srcSubRes, &bx);
 }
 
 LLGL_NAMESPACE_END2;
