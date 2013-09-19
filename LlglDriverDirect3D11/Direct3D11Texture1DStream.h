@@ -11,9 +11,8 @@ public:
 	void initializeImpl() override;
 	MapDesc mapImpl() override;
 	void unmapImpl() override;
-	void copyFromImpl(Texture1DPtr src, uint32_t srcOffset, uint32_t srcWidth, uint32_t srcMipLevel, uint32_t srcArrayIndex, 
-		uint32_t destOffset) override;
-	void copyFromImpl(Texture1DStreamPtr src, uint32_t srcOffset, uint32_t srcWidth, uint32_t destOffset) override;
+	void readDataImpl(Texture1DSlicePtr src, uint32_t offset) override;
+	void writeDataImpl(Texture1DSlicePtr dest, uint32_t offset) override;
 
 	ID3D11Texture1D* _tex1d;
 };

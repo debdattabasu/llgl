@@ -26,9 +26,9 @@ BufferStreamPtr Context::createBufferStream(uint32_t width, FormatPtr format)
 	return ret;
 }
 
-Texture1DPtr Context::createTexture1D(uint32_t width, uint32_t numMips, uint32_t arraySize, FormatPtr format)
+Texture1DPtr Context::createTexture1D(uint32_t width, uint32_t numMips, FormatPtr format)
 {
-	auto ret = createTexture1DImpl(width, numMips, arraySize, format);
+	auto ret = createTexture1DImpl(width, numMips, format);
 	ret->initialize();
 	return ret;
 }
@@ -40,9 +40,9 @@ Texture1DStreamPtr Context::createTexture1DStream(uint32_t width, FormatPtr form
 	return ret;
 }
 
-Texture2DPtr Context::createTexture2D(uint32_t width, uint32_t height, uint32_t numMips, uint32_t arraySize, FormatPtr format)
+Texture2DPtr Context::createTexture2D(uint32_t width, uint32_t height, uint32_t numMips, FormatPtr format)
 {
-	auto ret = createTexture2DImpl(width, height, numMips, arraySize, format);
+	auto ret = createTexture2DImpl(width, height, numMips, format);
 	ret->initialize();
 	return ret;
 }

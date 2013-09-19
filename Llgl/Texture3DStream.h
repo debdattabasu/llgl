@@ -22,22 +22,16 @@ public:
 	bool isMapped() const;
 	MapDesc map();
 	void unmap();
-	void copyFrom(Texture3DPtr src, uint32_t srcOffsetX, uint32_t srcOffsetY, uint32_t srcOffsetZ,
-		uint32_t srcWidth, uint32_t srcHeight, uint32_t srcDepth, uint32_t srcMipLevel, 
-		uint32_t destOffsetX, uint32_t destOffsetY, uint32_t destOffsetZ);
-	void copyFrom(Texture3DStreamPtr src, uint32_t srcOffsetX, uint32_t srcOffsetY, uint32_t srcOffsetZ,
-		uint32_t srcWidth, uint32_t srcHeight, uint32_t srcDepth, uint32_t destOffsetX, uint32_t destOffsetY, uint32_t destOffsetZ);
+	void readData(Texture3DSlicePtr src, uint32_t offsetX, uint32_t offsetY, uint32_t offsetZ);
+	void writeData(Texture3DSlicePtr dest, uint32_t offsetX, uint32_t offsetY, uint32_t offsetZ);
 protected:
 	Texture3DStream(ContextPtr parentContext, uint32_t width, uint32_t height, uint32_t depth, FormatPtr format);
 	void initialize();
 	virtual void initializeImpl() = 0;
 	virtual MapDesc mapImpl() = 0;
 	virtual void unmapImpl() = 0;
-	virtual void copyFromImpl(Texture3DPtr src, uint32_t srcOffsetX, uint32_t srcOffsetY, uint32_t srcOffsetZ,
-		uint32_t srcWidth, uint32_t srcHeight, uint32_t srcDepth, uint32_t srcMipLevel, 
-		uint32_t destOffsetX, uint32_t destOffsetY, uint32_t destOffsetZ) = 0;
-	virtual void copyFromImpl(Texture3DStreamPtr src, uint32_t srcOffsetX, uint32_t srcOffsetY, uint32_t srcOffsetZ,
-		uint32_t srcWidth, uint32_t srcHeight, uint32_t srcDepth, uint32_t destOffsetX, uint32_t destOffsetY, uint32_t destOffsetZ) = 0;
+	virtual void readDataImpl(Texture3DSlicePtr src, uint32_t offsetX, uint32_t offsetY, uint32_t offsetZ) = 0;
+	virtual void writeDataImpl(Texture3DSlicePtr dest, uint32_t offsetX, uint32_t offsetY, uint32_t offsetZ) = 0;
 private:
 	bool _isMapped;
 	uint32_t _width;

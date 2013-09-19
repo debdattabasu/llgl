@@ -11,9 +11,9 @@ public:
 	CapabilitiesPtr getCapabilities() override;
 	BufferPtr createBufferImpl(uint32_t width, FormatPtr format) override;
 	BufferStreamPtr createBufferStreamImpl(uint32_t width, FormatPtr format) override;
-	Texture1DPtr createTexture1DImpl(uint32_t width, uint32_t numMips, uint32_t arraySize, FormatPtr format) override;
+	Texture1DPtr createTexture1DImpl(uint32_t width, uint32_t numMips, FormatPtr format) override;
 	Texture1DStreamPtr createTexture1DStreamImpl(uint32_t width, FormatPtr format) override;
-	Texture2DPtr createTexture2DImpl(uint32_t width, uint32_t height, uint32_t numMips, uint32_t arraySize, FormatPtr format) override;
+	Texture2DPtr createTexture2DImpl(uint32_t width, uint32_t height, uint32_t numMips, FormatPtr format) override;
 	Texture2DStreamPtr createTexture2DStreamImpl(uint32_t width, uint32_t height, FormatPtr format) override;
 	Texture3DPtr createTexture3DImpl(uint32_t width, uint32_t height, uint32_t depth, uint32_t numMips, FormatPtr format) override;
 	Texture3DStreamPtr createTexture3DStreamImpl(uint32_t width, uint32_t height, uint32_t depth, FormatPtr format) override;

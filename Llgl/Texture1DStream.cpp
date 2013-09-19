@@ -59,30 +59,24 @@ void Texture1DStream::unmap()
 	_isMapped = 0;
 }
 
-void Texture1DStream::copyFrom(Texture1DPtr src, uint32_t srcOffset, uint32_t srcWidth, uint32_t srcMipLevel, uint32_t srcArrayIndex, 
-		uint32_t destOffset)
+void Texture1DStream::readData(Texture1DSlicePtr src, uint32_t offset)
 {
 	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
 	if (!src->getFormat()->equals(getFormat()))
 		throw InvalidArgumentException("format mismatch");
-	if(srcWidth == 0) throw InvalidArgumentException("invalid dimensions");
-	if((srcMipLevel + 1) > src->getNumMips() || (srcArrayIndex + 1) > src->getArraySize())
-			throw InvalidArgumentException("out of bounds");
-	if((srcOffset + srcWidth) > src->getWidth(srcMipLevel) || (destOffset + srcWidth) > getWidth())
+	if((offset + getWidth()) > src->getWidth())
 		throw InvalidArgumentException("out of bounds");	   	
-	copyFromImpl(src, srcOffset, srcWidth, srcMipLevel, srcArrayIndex, 
-		destOffset);
+	readDataImpl(src, offset);
 }
 
-void Texture1DStream::copyFrom(Texture1DStreamPtr src, uint32_t srcOffset, uint32_t srcWidth, uint32_t destOffset)
+void Texture1DStream::writeData(Texture1DSlicePtr dest, uint32_t offset)
 {
 	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
-	if (!src->getFormat()->equals(getFormat()))
+	if (!dest->getFormat()->equals(getFormat()))
 		throw InvalidArgumentException("format mismatch");
-	if(srcWidth == 0) throw InvalidArgumentException("invalid dimensions");
-	if((srcOffset + srcWidth) > src->getWidth() || (destOffset + srcWidth) > getWidth())
+	if((offset + getWidth()) > dest->getWidth())
 		throw InvalidArgumentException("out of bounds");	   	
-	copyFromImpl(src, srcOffset, srcWidth, destOffset);
+	writeDataImpl(dest, offset);
 }
 
 LLGL_NAMESPACE_END;

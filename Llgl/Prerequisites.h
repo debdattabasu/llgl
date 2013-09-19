@@ -101,10 +101,14 @@ LLGL_CLASS(Format);
 LLGL_CLASS(BufferStream);
 LLGL_CLASS(Buffer);
 LLGL_CLASS(Texture1DStream);
+LLGL_CLASS(Texture1DSlice);
 LLGL_CLASS(Texture1D);
 LLGL_CLASS(Texture2DStream);
+LLGL_CLASS(Texture2DSlice);
 LLGL_CLASS(Texture2D);
+LLGL_CLASS(Texture3DSlice);
 LLGL_CLASS(Texture3DStream);
 LLGL_CLASS(Texture3D);
+
 
 LLGL_NAMESPACE_END;

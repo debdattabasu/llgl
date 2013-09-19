@@ -66,34 +66,25 @@ void Texture2DStream::unmap()
 	_isMapped= 0;
 }
 
-void Texture2DStream::copyFrom(Texture2DPtr src, uint32_t srcOffsetX, uint32_t srcOffsetY,
-	uint32_t srcWidth, uint32_t srcHeight, uint32_t srcMipLevel, uint32_t srcArrayIndex, 
-	uint32_t destOffsetX, uint32_t destOffsetY)
+void Texture2DStream::readData(Texture2DSlicePtr src, uint32_t offsetX, uint32_t offsetY)
 {
 	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
 	if (!src->getFormat()->equals(getFormat()))
 		throw InvalidArgumentException("format mismatch");
-	if(srcWidth == 0 || srcHeight == 0) throw InvalidArgumentException("invalid dimensions");
-	if((srcMipLevel + 1) > src->getNumMips() || (srcArrayIndex + 1) > src->getArraySize())
-	   	throw InvalidArgumentException("out of bounds");
-	if((srcOffsetX + srcWidth) > src->getWidth(srcMipLevel) || (destOffsetX + srcWidth) > getWidth() 
-	  	|| (srcOffsetY + srcHeight) > src->getHeight(srcMipLevel) || (destOffsetY + srcHeight) > getHeight())
+	if((offsetX + getWidth()) > src->getWidth() || (offsetY + getHeight()) > src->getHeight())
 			throw InvalidArgumentException("out of bounds");
-	copyFromImpl(src, srcOffsetX, srcOffsetY, srcWidth, srcHeight, srcMipLevel, srcArrayIndex, 
-		destOffsetX, destOffsetY);
+	readDataImpl(src, offsetX, offsetY);
+
 }
 
-void Texture2DStream::copyFrom(Texture2DStreamPtr src, uint32_t srcOffsetX, uint32_t srcOffsetY, uint32_t srcWidth, uint32_t srcHeight, 
-		uint32_t destOffsetX, uint32_t destOffsetY)
+void Texture2DStream::writeData(Texture2DSlicePtr dest, uint32_t offsetX, uint32_t offsetY)
 {
 	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
-	if (!src->getFormat()->equals(getFormat()))
+	if (!dest->getFormat()->equals(getFormat()))
 		throw InvalidArgumentException("format mismatch");
-	if(srcWidth == 0 || srcHeight == 0) throw InvalidArgumentException("invalid dimensions");
-	if((srcOffsetX + srcWidth) > src->getWidth() || (destOffsetX + srcWidth) > getWidth() 
-	  	|| (srcOffsetY + srcHeight) > src->getHeight() || (destOffsetY + srcHeight) > getHeight())
+	if((offsetX + getWidth()) > dest->getWidth() || (offsetY + getHeight()) > dest->getHeight())
 			throw InvalidArgumentException("out of bounds");
-	copyFromImpl(src, srcOffsetX, srcOffsetY, srcWidth, srcHeight, destOffsetX, destOffsetY);
+	writeDataImpl(dest, offsetX, offsetY);
 }
 
 LLGL_NAMESPACE_END;

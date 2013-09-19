@@ -134,23 +134,7 @@ void Direct3D11Buffer::copyFromImpl(BufferPtr src, uint32_t srcOffset, uint32_t 
 	bx.bottom = 1;
 	bx.front = 0;
 	bx.back = 1;
-	ctx->CopySubresourceRegion(destRes, 0, destOffset , 0, 0, srcRes, 0, &bx);
-}
-
-void Direct3D11Buffer::copyFromImpl(BufferStreamPtr src, uint32_t srcOffset, uint32_t srcWidth, uint32_t destOffset) 
-{
-	auto ctx = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_ctx;
-	ID3D11Resource* srcRes = std::dynamic_pointer_cast<Direct3D11BufferStream>(src)->_buf; 
-	ID3D11Resource* destRes = _buf;
-	D3D11_BOX bx;
-	auto elementSize = getFormat()->getSize();
-	bx.left = srcOffset * elementSize; 
-	bx.right = (srcOffset + srcWidth) * elementSize;
-	bx.top = 0;
-	bx.bottom = 1;
-	bx.front = 0;
-	bx.back = 1;
-	ctx->CopySubresourceRegion(destRes, 0, destOffset , 0, 0, srcRes, 0, &bx);
+	ctx->CopySubresourceRegion(destRes, 0, destOffset*elementSize , 0, 0, srcRes, 0, &bx);
 }
 
 LLGL_NAMESPACE_END2;

@@ -37,16 +37,6 @@ void Buffer::copyFrom(BufferPtr src, uint32_t srcOffset, uint32_t srcWidth, uint
 	copyFromImpl(src, srcOffset, srcWidth, destOffset);
 }
 
-void Buffer::copyFrom(BufferStreamPtr src, uint32_t srcOffset, uint32_t srcWidth, uint32_t destOffset)
-{
-	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
-	if (!src->getFormat()->equals(getFormat()))
-		throw InvalidArgumentException("format mismatch");
-	if((srcOffset + srcWidth) > src->getWidth() || (destOffset + srcWidth) > getWidth())
-		throw InvalidArgumentException("out of bounds");
-	copyFromImpl(src, srcOffset, srcWidth, destOffset);
-}
-
 void Buffer::initialize() 
 {
 	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 

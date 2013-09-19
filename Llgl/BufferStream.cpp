@@ -66,24 +66,24 @@ void BufferStream::initialize()
 	initializeImpl();
 }
 
-void BufferStream::copyFrom(BufferPtr src, uint32_t srcOffset, uint32_t srcWidth, uint32_t destOffset)
+void BufferStream::readData(BufferPtr src, uint32_t offset)
 {
 	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
 	if (!src->getFormat()->equals(getFormat()))
 		throw InvalidArgumentException("format mismatch");
-	if((srcOffset + srcWidth) > src->getWidth() || (destOffset + srcWidth) > getWidth())
+	if((offset + getWidth()) > src->getWidth())
 		throw InvalidArgumentException("out of bounds");
-	copyFromImpl(src, srcOffset, srcWidth, destOffset);
+	readDataImpl(src, offset);
 }
 
-void BufferStream::copyFrom(BufferStreamPtr src, uint32_t srcOffset, uint32_t srcWidth, uint32_t destOffset)
+void BufferStream::writeData(BufferPtr dest, uint32_t offset)
 {
 	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
-	if (!src->getFormat()->equals(getFormat()))
+	if (!dest->getFormat()->equals(getFormat()))
 		throw InvalidArgumentException("format mismatch");
-	if((srcOffset + srcWidth) > src->getWidth() || (destOffset + srcWidth) > getWidth())
+	if((offset + getWidth()) > dest->getWidth())
 		throw InvalidArgumentException("out of bounds");
-	copyFromImpl(src, srcOffset, srcWidth, destOffset);
+	writeDataImpl(dest, offset);
 }
 
 LLGL_NAMESPACE_END;

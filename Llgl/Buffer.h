@@ -12,13 +12,11 @@ public:
 	FormatPtr getFormat() const;
 	bool isMapped() const;
 	void copyFrom(BufferPtr src, uint32_t srcOffset, uint32_t srcWidth, uint32_t destOffset);
-	void copyFrom(BufferStreamPtr src, uint32_t srcOffset, uint32_t srcWidth, uint32_t destOffset);
 protected:
 	Buffer(ContextPtr parentContext, uint32_t width, FormatPtr format);
 	void initialize();
 	virtual void initializeImpl() = 0;
 	virtual void copyFromImpl(BufferPtr src, uint32_t srcOffset, uint32_t srcWidth, uint32_t destOffset) = 0;
-	virtual void copyFromImpl(BufferStreamPtr src, uint32_t srcOffset, uint32_t srcWidth, uint32_t destOffset) = 0;
 private:
 	FormatPtr _format;
 	bool _isMapped;

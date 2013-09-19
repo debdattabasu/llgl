@@ -11,11 +11,8 @@ public:
 	void initializeImpl() override;
 	MapDesc mapImpl() override;
 	void unmapImpl() override;
-	void copyFromImpl(Texture2DPtr src, uint32_t srcOffsetX, uint32_t srcOffsetY,
-		uint32_t srcWidth, uint32_t srcHeight, uint32_t srcMipLevel, uint32_t srcArrayIndex, 
-		uint32_t destOffsetX, uint32_t destOffsetY) override;
-	void copyFromImpl(Texture2DStreamPtr src, uint32_t srcOffsetX, uint32_t srcOffsetY, uint32_t srcWidth, uint32_t srcHeight, 
-		uint32_t destOffsetX, uint32_t destOffsetY) override;
+	void readDataImpl(Texture2DSlicePtr src, uint32_t offsetX, uint32_t offsetY) override;
+	void writeDataImpl(Texture2DSlicePtr dest, uint32_t offsetX, uint32_t offsetY) override;
 	
 	ID3D11Texture2D* _tex2d;
 };

@@ -28,9 +28,9 @@ BufferStreamPtr Direct3D11Context::createBufferStreamImpl(uint32_t width, Format
 	return BufferStreamPtr(new Direct3D11BufferStream(shared_from_this(), width, format));
 }
 
-Texture1DPtr Direct3D11Context::createTexture1DImpl(uint32_t width, uint32_t numMips, uint32_t arraySize, FormatPtr format)
+Texture1DPtr Direct3D11Context::createTexture1DImpl(uint32_t width, uint32_t numMips, FormatPtr format)
 {
-	return Texture1DPtr(new Direct3D11Texture1D(shared_from_this(), width, numMips, arraySize, format));
+	return Texture1DPtr(new Direct3D11Texture1D(shared_from_this(), width, numMips, format));
 }
 
 Texture1DStreamPtr Direct3D11Context::createTexture1DStreamImpl(uint32_t width, FormatPtr format)
@@ -38,9 +38,9 @@ Texture1DStreamPtr Direct3D11Context::createTexture1DStreamImpl(uint32_t width, 
 	return Texture1DStreamPtr(new Direct3D11Texture1DStream(shared_from_this(), width, format));
 }
 
-Texture2DPtr Direct3D11Context::createTexture2DImpl(uint32_t width, uint32_t height, uint32_t numMips, uint32_t arraySize, FormatPtr format)
+Texture2DPtr Direct3D11Context::createTexture2DImpl(uint32_t width, uint32_t height, uint32_t numMips, FormatPtr format)
 {
-	return Texture2DPtr(new Direct3D11Texture2D(shared_from_this(), width, height, numMips, arraySize, format));
+	return Texture2DPtr(new Direct3D11Texture2D(shared_from_this(), width, height, numMips, format));
 }
 
 Texture2DStreamPtr Direct3D11Context::createTexture2DStreamImpl(uint32_t width, uint32_t height, FormatPtr format)
