@@ -50,7 +50,7 @@ void Direct3D11Texture1DStream::unmapImpl()
 	ctx->Unmap(_tex1d, 0);
 }
 
-void Direct3D11Texture1DStream::readDataImpl(Texture1DSlicePtr src, uint32_t offset)
+void Direct3D11Texture1DStream::readFromImpl(Texture1DSlicePtr src, uint32_t offset)
 {
 	auto ctx = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_ctx;
 	ID3D11Resource* srcRes = std::dynamic_pointer_cast<Direct3D11Texture1D>(src->getParentTexture())->_tex1d; 
@@ -67,7 +67,7 @@ void Direct3D11Texture1DStream::readDataImpl(Texture1DSlicePtr src, uint32_t off
 	ctx->CopySubresourceRegion(destRes, destSubRes, 0, 0, 0, srcRes, srcSubRes, &bx);
 }
 
-void Direct3D11Texture1DStream::writeDataImpl(Texture1DSlicePtr dest, uint32_t offset)
+void Direct3D11Texture1DStream::writeToImpl(Texture1DSlicePtr dest, uint32_t offset)
 {
 	auto ctx = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_ctx;
 	ID3D11Resource* srcRes = _tex1d; 

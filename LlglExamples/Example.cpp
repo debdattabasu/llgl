@@ -14,8 +14,8 @@ int main()
 		memset(mem.data, 1, 32*4);
 		bufStream->unmap();
 	}
-	bufStream->writeData(buf, 0);
-	bufStream1->readData(buf, 0);
+	bufStream->writeTo(buf, 0);
+	bufStream1->readFrom(buf, 0);
 	auto mem = bufStream->map();
 	auto mem1 = bufStream1->map();
 

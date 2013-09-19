@@ -47,7 +47,7 @@ void Direct3D11BufferStream::unmapImpl()
 	ctx->Unmap(_buf, 0);
 }
 
-void Direct3D11BufferStream::readDataImpl(BufferPtr src, uint32_t offset) 
+void Direct3D11BufferStream::readFromImpl(BufferPtr src, uint32_t offset) 
 {
 	auto ctx = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_ctx;
 	ID3D11Resource* srcRes = std::dynamic_pointer_cast<Direct3D11Buffer>(src)->_buf; 
@@ -63,7 +63,7 @@ void Direct3D11BufferStream::readDataImpl(BufferPtr src, uint32_t offset)
 	ctx->CopySubresourceRegion(destRes, 0, 0, 0, 0, srcRes, 0, &bx);
 }
 
-void Direct3D11BufferStream::writeDataImpl(BufferPtr dest, uint32_t offset) 
+void Direct3D11BufferStream::writeToImpl(BufferPtr dest, uint32_t offset) 
 {
 	auto ctx = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_ctx;
 	ID3D11Resource* srcRes = _buf; 

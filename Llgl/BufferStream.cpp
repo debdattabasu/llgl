@@ -66,24 +66,24 @@ void BufferStream::initialize()
 	initializeImpl();
 }
 
-void BufferStream::readData(BufferPtr src, uint32_t offset)
+void BufferStream::readFrom(BufferPtr src, uint32_t offset)
 {
 	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
 	if (!src->getFormat()->equals(getFormat()))
 		throw InvalidArgumentException("format mismatch");
 	if((offset + getWidth()) > src->getWidth())
 		throw InvalidArgumentException("out of bounds");
-	readDataImpl(src, offset);
+	readFromImpl(src, offset);
 }
 
-void BufferStream::writeData(BufferPtr dest, uint32_t offset)
+void BufferStream::writeTo(BufferPtr dest, uint32_t offset)
 {
 	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
 	if (!dest->getFormat()->equals(getFormat()))
 		throw InvalidArgumentException("format mismatch");
 	if((offset + getWidth()) > dest->getWidth())
 		throw InvalidArgumentException("out of bounds");
-	writeDataImpl(dest, offset);
+	writeToImpl(dest, offset);
 }
 
 LLGL_NAMESPACE_END;

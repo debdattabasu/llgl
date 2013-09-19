@@ -52,7 +52,7 @@ void Direct3D11Texture2DStream::unmapImpl()
 	ctx->Unmap(_tex2d, 0);
 }
 
-void Direct3D11Texture2DStream::readDataImpl(Texture2DSlicePtr src, uint32_t offsetX, uint32_t offsetY) 
+void Direct3D11Texture2DStream::readFromImpl(Texture2DSlicePtr src, uint32_t offsetX, uint32_t offsetY) 
 {
 	auto ctx = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_ctx;
 	ID3D11Resource* srcRes = std::dynamic_pointer_cast<Direct3D11Texture2D>(src->getParentTexture())->_tex2d; 
@@ -70,7 +70,7 @@ void Direct3D11Texture2DStream::readDataImpl(Texture2DSlicePtr src, uint32_t off
 
 }
 
-void Direct3D11Texture2DStream::writeDataImpl(Texture2DSlicePtr dest, uint32_t offsetX, uint32_t offsetY) 
+void Direct3D11Texture2DStream::writeToImpl(Texture2DSlicePtr dest, uint32_t offsetX, uint32_t offsetY) 
 {
 	auto ctx = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_ctx;
 	ID3D11Resource* srcRes = _tex2d; 

@@ -69,7 +69,7 @@ void Texture3DStream::unmap()
 	_isMapped = 0;
 }
 
-void Texture3DStream::readData(Texture3DSlicePtr src, uint32_t offsetX, uint32_t offsetY, uint32_t offsetZ)
+void Texture3DStream::readFrom(Texture3DSlicePtr src, uint32_t offsetX, uint32_t offsetY, uint32_t offsetZ)
 {
 	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
 	if (!src->getFormat()->equals(getFormat()))
@@ -77,10 +77,10 @@ void Texture3DStream::readData(Texture3DSlicePtr src, uint32_t offsetX, uint32_t
 	if((offsetX + getWidth()) > src->getWidth() || (offsetY + getHeight()) > src->getHeight()
 		|| (offsetZ + getDepth()) > src->getDepth())
 			throw InvalidArgumentException("out of bounds");
-	readDataImpl(src, offsetX, offsetY, offsetZ);
+	readFromImpl(src, offsetX, offsetY, offsetZ);
 }
 
-void Texture3DStream::writeData(Texture3DSlicePtr dest, uint32_t offsetX, uint32_t offsetY, uint32_t offsetZ)
+void Texture3DStream::writeTo(Texture3DSlicePtr dest, uint32_t offsetX, uint32_t offsetY, uint32_t offsetZ)
 {
 	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
 	if (!dest->getFormat()->equals(getFormat()))
@@ -88,7 +88,7 @@ void Texture3DStream::writeData(Texture3DSlicePtr dest, uint32_t offsetX, uint32
 	if((offsetX + getWidth()) > dest->getWidth() || (offsetY + getHeight()) > dest->getHeight()
 		|| (offsetZ + getDepth()) > dest->getDepth())
 			throw InvalidArgumentException("out of bounds");
-	writeDataImpl(dest, offsetX, offsetY, offsetZ);
+	writeToImpl(dest, offsetX, offsetY, offsetZ);
 }
 
 LLGL_NAMESPACE_END;

@@ -18,16 +18,16 @@ public:
 	uint32_t getWidth() const;
 	MapDesc map();
 	void unmap();
-	void readData(Texture1DSlicePtr src, uint32_t offset);
-	void writeData(Texture1DSlicePtr dest, uint32_t offset);
+	void readFrom(Texture1DSlicePtr src, uint32_t offset);
+	void writeTo(Texture1DSlicePtr dest, uint32_t offset);
 protected:
 	Texture1DStream(ContextPtr parentContext, uint32_t width, FormatPtr format);
 	void initialize();
 	virtual void initializeImpl() = 0;
 	virtual MapDesc mapImpl() =0;
 	virtual void unmapImpl() =0;
-	virtual void readDataImpl(Texture1DSlicePtr src, uint32_t offset) = 0;
-	virtual void writeDataImpl(Texture1DSlicePtr dest, uint32_t offset) = 0;
+	virtual void readFromImpl(Texture1DSlicePtr src, uint32_t offset) = 0;
+	virtual void writeToImpl(Texture1DSlicePtr dest, uint32_t offset) = 0;
 private:
 	FormatPtr _format;
 	bool _isMapped;

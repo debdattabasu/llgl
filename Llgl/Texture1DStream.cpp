@@ -59,24 +59,24 @@ void Texture1DStream::unmap()
 	_isMapped = 0;
 }
 
-void Texture1DStream::readData(Texture1DSlicePtr src, uint32_t offset)
+void Texture1DStream::readFrom(Texture1DSlicePtr src, uint32_t offset)
 {
 	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
 	if (!src->getFormat()->equals(getFormat()))
 		throw InvalidArgumentException("format mismatch");
 	if((offset + getWidth()) > src->getWidth())
 		throw InvalidArgumentException("out of bounds");	   	
-	readDataImpl(src, offset);
+	readFromImpl(src, offset);
 }
 
-void Texture1DStream::writeData(Texture1DSlicePtr dest, uint32_t offset)
+void Texture1DStream::writeTo(Texture1DSlicePtr dest, uint32_t offset)
 {
 	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
 	if (!dest->getFormat()->equals(getFormat()))
 		throw InvalidArgumentException("format mismatch");
 	if((offset + getWidth()) > dest->getWidth())
 		throw InvalidArgumentException("out of bounds");	   	
-	writeDataImpl(dest, offset);
+	writeToImpl(dest, offset);
 }
 
 LLGL_NAMESPACE_END;

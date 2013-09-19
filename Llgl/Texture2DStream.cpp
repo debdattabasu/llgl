@@ -66,25 +66,25 @@ void Texture2DStream::unmap()
 	_isMapped= 0;
 }
 
-void Texture2DStream::readData(Texture2DSlicePtr src, uint32_t offsetX, uint32_t offsetY)
+void Texture2DStream::readFrom(Texture2DSlicePtr src, uint32_t offsetX, uint32_t offsetY)
 {
 	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
 	if (!src->getFormat()->equals(getFormat()))
 		throw InvalidArgumentException("format mismatch");
 	if((offsetX + getWidth()) > src->getWidth() || (offsetY + getHeight()) > src->getHeight())
 			throw InvalidArgumentException("out of bounds");
-	readDataImpl(src, offsetX, offsetY);
+	readFromImpl(src, offsetX, offsetY);
 
 }
 
-void Texture2DStream::writeData(Texture2DSlicePtr dest, uint32_t offsetX, uint32_t offsetY)
+void Texture2DStream::writeTo(Texture2DSlicePtr dest, uint32_t offsetX, uint32_t offsetY)
 {
 	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
 	if (!dest->getFormat()->equals(getFormat()))
 		throw InvalidArgumentException("format mismatch");
 	if((offsetX + getWidth()) > dest->getWidth() || (offsetY + getHeight()) > dest->getHeight())
 			throw InvalidArgumentException("out of bounds");
-	writeDataImpl(dest, offsetX, offsetY);
+	writeToImpl(dest, offsetX, offsetY);
 }
 
 LLGL_NAMESPACE_END;

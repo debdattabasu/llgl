@@ -20,8 +20,8 @@ public:
 	uint32_t getHeight() const;
 	MapDesc map();
 	void unmap();
-	void readData(Texture2DSlicePtr src, uint32_t offsetX, uint32_t offsetY);
-	void writeData(Texture2DSlicePtr dest, uint32_t offsetX, uint32_t offsetY);
+	void readFrom(Texture2DSlicePtr src, uint32_t offsetX, uint32_t offsetY);
+	void writeTo(Texture2DSlicePtr dest, uint32_t offsetX, uint32_t offsetY);
 
 protected:
 	Texture2DStream(ContextPtr parentContext, uint32_t width, uint32_t height, FormatPtr format);
@@ -29,8 +29,8 @@ protected:
 	virtual void initializeImpl() = 0;
 	virtual MapDesc mapImpl() = 0;
 	virtual void unmapImpl() = 0;
-	virtual void readDataImpl(Texture2DSlicePtr src, uint32_t offsetX, uint32_t offsetY) = 0;
-	virtual void writeDataImpl(Texture2DSlicePtr dest, uint32_t offsetX, uint32_t offsetY) = 0;
+	virtual void readFromImpl(Texture2DSlicePtr src, uint32_t offsetX, uint32_t offsetY) = 0;
+	virtual void writeToImpl(Texture2DSlicePtr dest, uint32_t offsetX, uint32_t offsetY) = 0;
 
 private:
 	FormatPtr _format;

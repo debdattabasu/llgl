@@ -18,16 +18,16 @@ public:
 	bool isMapped() const;
 	MapDesc map();
 	void unmap();
-	void readData(BufferPtr src, uint32_t offset);
-	void writeData(BufferPtr dest, uint32_t offset);
+	void readFrom(BufferPtr src, uint32_t offset);
+	void writeTo(BufferPtr dest, uint32_t offset);
 protected:
 	BufferStream(ContextPtr parentContext, uint32_t width, FormatPtr format);
 	void initialize();
 	virtual void initializeImpl() = 0;
 	virtual MapDesc mapImpl() = 0;
 	virtual void unmapImpl() = 0;
-	virtual void readDataImpl(BufferPtr src, uint32_t offset) = 0;
-	virtual void writeDataImpl(BufferPtr dest, uint32_t offset) = 0;
+	virtual void readFromImpl(BufferPtr src, uint32_t offset) = 0;
+	virtual void writeToImpl(BufferPtr dest, uint32_t offset) = 0;
 private:
 	FormatPtr _format;
 	bool _isMapped;
