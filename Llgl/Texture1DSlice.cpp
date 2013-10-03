@@ -15,7 +15,7 @@ Texture1DSlice::~Texture1DSlice()
 	
 void Texture1DSlice::initialize() 
 {
-	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
+	Context::LockGuard lock(getParentContext()); 
 	if((_mipLevel + 1) > getParentTexture()->getNumMips()) 
 		throw InvalidArgumentException("out of bounds");
 	initializeImpl();
@@ -43,7 +43,7 @@ uint32_t Texture1DSlice::getWidth() const
 
 void Texture1DSlice::copyFrom(Texture1DSlicePtr src, uint32_t srcOffset, uint32_t srcWidth, uint32_t destOffset)
 {
-	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
+	Context::LockGuard lock(getParentContext()); 
 	if (!src->getFormat()->equals(getFormat()))
 		throw InvalidArgumentException("format mismatch");
 	if(srcWidth == 0) throw InvalidArgumentException("invalid dimensions");

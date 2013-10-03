@@ -15,7 +15,7 @@ Texture1DStream::~Texture1DStream()
 	
 void Texture1DStream::initialize() 
 {
-	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
+	Context::LockGuard lock(getParentContext()); 
 	if(_width == 0) throw InvalidArgumentException("invalid dimensions");
 	switch(getFormat()->getUsage())
 	{
@@ -44,7 +44,7 @@ uint32_t Texture1DStream::getWidth() const
 
 Texture1DStream::MapDesc Texture1DStream::map()
 {
-	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
+	Context::LockGuard lock(getParentContext()); 
 	if(_isMapped) throw InvalidOperationException("already mapped");
 	auto ret = mapImpl();
 	_isMapped = 1;
@@ -53,7 +53,7 @@ Texture1DStream::MapDesc Texture1DStream::map()
 
 void Texture1DStream::unmap()
 {
-	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
+	Context::LockGuard lock(getParentContext()); 
 	if(!_isMapped) throw InvalidOperationException("already unmapped");
 	unmapImpl();
 	_isMapped = 0;
@@ -61,7 +61,7 @@ void Texture1DStream::unmap()
 
 void Texture1DStream::readFrom(Texture1DSlicePtr src, uint32_t offset)
 {
-	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
+	Context::LockGuard lock(getParentContext());  
 	if (!src->getFormat()->equals(getFormat()))
 		throw InvalidArgumentException("format mismatch");
 	if((offset + getWidth()) > src->getWidth())
@@ -71,7 +71,7 @@ void Texture1DStream::readFrom(Texture1DSlicePtr src, uint32_t offset)
 
 void Texture1DStream::writeTo(Texture1DSlicePtr dest, uint32_t offset)
 {
-	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
+	Context::LockGuard lock(getParentContext()); 
 	if (!dest->getFormat()->equals(getFormat()))
 		throw InvalidArgumentException("format mismatch");
 	if((offset + getWidth()) > dest->getWidth())

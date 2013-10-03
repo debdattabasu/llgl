@@ -15,7 +15,7 @@ Texture3D::~Texture3D()
 	
 void Texture3D::initialize() 
 {
-	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
+	Context::LockGuard lock(getParentContext()); 
 	if(_width == 0 || _height == 0 || _depth == 0) throw InvalidArgumentException("invalid dimensions");
 	auto maxNumMips = uint32_t(1 + floor(log(double(max(max(_width, _height), _depth))) /log(2.f)));
 	_numMips =  _numMips? _numMips: maxNumMips;

@@ -6,20 +6,17 @@ LLGL_NAMESPACE(Llgl);
 LLGL_CLASS(Context) : public std::enable_shared_from_this<Context>
 {
 public:
-	friend class Buffer;
-	friend class BufferStream;
-	friend class Texture1D;
-	friend class Texture1DSlice;
-	friend class Texture1DStream;
-	friend class Texture2D;
-	friend class Texture2DSlice;
-	friend class Texture2DStream;
-	friend class Texture3D;
-	friend class Texture3DStream;
-	friend class Texture3DSlice;
-	friend class Format;
+	LLGL_CLASS(LockGuard)
+	{
+	public:
+		LockGuard(ContextPtr ctx);
+		~LockGuard();
+	private:
+		ContextPtr _ctx;
+	};
 	virtual ~Context();
 	virtual CapabilitiesPtr getCapabilities() = 0;
+
 	BufferPtr createBuffer(uint32_t width, FormatPtr format);
 	BufferStreamPtr createBufferStream(uint32_t width, FormatPtr format);
 	Texture1DPtr createTexture1D(uint32_t width, uint32_t numMips, FormatPtr format);
@@ -29,6 +26,7 @@ public:
 	Texture3DPtr createTexture3D(uint32_t width, uint32_t height, uint32_t depth, uint32_t numMips, FormatPtr format);
 	Texture3DStreamPtr createTexture3DStream(uint32_t width, uint32_t height, uint32_t depth, FormatPtr format);
 	FormatPtr createFormat(FormatType type, uint32_t vectorSize = 1);
+
 protected:
 	Context();
 	virtual BufferPtr createBufferImpl(uint32_t width, FormatPtr format) = 0;

@@ -15,7 +15,7 @@ Texture2D::~Texture2D()
 	
 void Texture2D::initialize() 
 {
-	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
+	Context::LockGuard lock(getParentContext()); 
 	if(_width == 0 || _height == 0 ) throw InvalidArgumentException("invalid dimensions");
 	auto maxNumMips = uint32_t(1 + floor(log(double(max(_width, _height))) /log(2.f)));
 	_numMips =  _numMips? _numMips: maxNumMips;

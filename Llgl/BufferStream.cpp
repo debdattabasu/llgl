@@ -30,7 +30,7 @@ bool BufferStream::isMapped() const
 
 BufferStream::MapDesc BufferStream::map()
 {
-	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
+	Context::LockGuard lock(getParentContext()); 
 	if(isMapped()) throw InvalidOperationException("already mapped");
 	auto ret = mapImpl();
 	_isMapped = true;
@@ -39,7 +39,7 @@ BufferStream::MapDesc BufferStream::map()
 
 void BufferStream::unmap()
 {
-	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
+	Context::LockGuard lock(getParentContext()); 
 	if(!isMapped()) throw InvalidOperationException("already unmapped");
 	unmapImpl();
 	_isMapped = false;
@@ -47,7 +47,7 @@ void BufferStream::unmap()
 
 void BufferStream::initialize() 
 {
-	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
+	Context::LockGuard lock(getParentContext()); 
 	if(_width == 0) throw InvalidArgumentException("invalid dimensions");
 	auto caps = getParentContext()->getCapabilities();
 	switch(getFormat()->getUsage())
@@ -68,7 +68,7 @@ void BufferStream::initialize()
 
 void BufferStream::readFrom(BufferPtr src, uint32_t offset)
 {
-	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
+	Context::LockGuard lock(getParentContext()); 
 	if (!src->getFormat()->equals(getFormat()))
 		throw InvalidArgumentException("format mismatch");
 	if((offset + getWidth()) > src->getWidth())
@@ -78,7 +78,7 @@ void BufferStream::readFrom(BufferPtr src, uint32_t offset)
 
 void BufferStream::writeTo(BufferPtr dest, uint32_t offset)
 {
-	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
+	Context::LockGuard lock(getParentContext());  
 	if (!dest->getFormat()->equals(getFormat()))
 		throw InvalidArgumentException("format mismatch");
 	if((offset + getWidth()) > dest->getWidth())

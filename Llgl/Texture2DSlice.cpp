@@ -15,7 +15,7 @@ Texture2DSlice::~Texture2DSlice()
 	
 void Texture2DSlice::initialize() 
 {
-	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
+	Context::LockGuard lock(getParentContext()); 
 	if((_mipLevel+1) > getParentTexture()->getNumMips())
 		throw InvalidArgumentException("out of bounds");
 	initializeImpl();
@@ -49,7 +49,7 @@ Texture2DPtr Texture2DSlice::getParentTexture() const
 void Texture2DSlice::copyFrom(Texture2DSlicePtr src, uint32_t srcOffsetX, uint32_t srcOffsetY,
 	uint32_t srcWidth, uint32_t srcHeight, uint32_t destOffsetX, uint32_t destOffsetY)
 {
-	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
+	Context::LockGuard lock(getParentContext()); 
 	if (!src->getFormat()->equals(getFormat()))
 		throw InvalidArgumentException("format mismatch");
 	if(srcWidth == 0 || srcHeight == 0) throw InvalidArgumentException("invalid dimensions");

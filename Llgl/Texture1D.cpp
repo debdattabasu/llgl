@@ -15,7 +15,7 @@ Texture1D::~Texture1D()
 	
 void Texture1D::initialize() 
 {
-	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
+	Context::LockGuard lock(getParentContext()); 
 	if(_width == 0) throw InvalidArgumentException("invalid dimensions");
 	auto maxNumMips = uint32_t(1 + floor(log(double(_width)) /log(2.f)));
 	_numMips =  _numMips? _numMips: maxNumMips;

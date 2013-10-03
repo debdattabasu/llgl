@@ -12,6 +12,16 @@ Context::~Context()
 
 }
 
+Context::LockGuard::LockGuard(ContextPtr ctx) : _ctx(ctx) 
+{
+	_ctx->_mutex.lock();
+}
+
+Context::LockGuard::~LockGuard()
+{
+	_ctx->_mutex.unlock();
+}
+
 BufferPtr Context::createBuffer(uint32_t width, FormatPtr format)
 {
 	auto ret = createBufferImpl(width, format);

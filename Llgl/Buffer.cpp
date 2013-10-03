@@ -29,7 +29,7 @@ bool Buffer::isMapped() const
 
 void Buffer::copyFrom(BufferPtr src, uint32_t srcOffset, uint32_t srcWidth, uint32_t destOffset)
 {
-	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
+	Context::LockGuard lock(getParentContext()); 
 	if (!src->getFormat()->equals(getFormat()))
 		throw InvalidArgumentException("format mismatch");
 	if((srcOffset + srcWidth) > src->getWidth() || (destOffset + srcWidth) > getWidth())
@@ -39,7 +39,7 @@ void Buffer::copyFrom(BufferPtr src, uint32_t srcOffset, uint32_t srcWidth, uint
 
 void Buffer::initialize() 
 {
-	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
+	Context::LockGuard lock(getParentContext());
 	if(_width == 0) throw InvalidArgumentException("invalid dimensions");
 	auto caps = getParentContext()->getCapabilities();
 	switch(getFormat()->getUsage())

@@ -15,7 +15,7 @@ Texture3DStream::~Texture3DStream()
 	
 void Texture3DStream::initialize() 
 {
-	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
+	Context::LockGuard lock(getParentContext()); 
 	if(_width == 0 || _height == 0 || _depth == 0) throw InvalidArgumentException("invalid dimensions");
 	switch(getFormat()->getUsage())
 	{
@@ -54,7 +54,7 @@ uint32_t Texture3DStream::getDepth() const
 
 Texture3DStream::MapDesc Texture3DStream::map()
 {
-	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
+	Context::LockGuard lock(getParentContext()); 
 	if(_isMapped) throw InvalidOperationException("already mapped");
 	auto ret = mapImpl();
 	_isMapped = 1;
@@ -63,7 +63,7 @@ Texture3DStream::MapDesc Texture3DStream::map()
 
 void Texture3DStream::unmap()
 {
-	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
+	Context::LockGuard lock(getParentContext()); 
 	if(!_isMapped) throw InvalidOperationException("already unmapped");
 	unmapImpl();
 	_isMapped = 0;
@@ -71,7 +71,7 @@ void Texture3DStream::unmap()
 
 void Texture3DStream::readFrom(Texture3DSlicePtr src, uint32_t offsetX, uint32_t offsetY, uint32_t offsetZ)
 {
-	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
+	Context::LockGuard lock(getParentContext()); 
 	if (!src->getFormat()->equals(getFormat()))
 		throw InvalidArgumentException("format mismatch");
 	if((offsetX + getWidth()) > src->getWidth() || (offsetY + getHeight()) > src->getHeight()
@@ -82,7 +82,7 @@ void Texture3DStream::readFrom(Texture3DSlicePtr src, uint32_t offsetX, uint32_t
 
 void Texture3DStream::writeTo(Texture3DSlicePtr dest, uint32_t offsetX, uint32_t offsetY, uint32_t offsetZ)
 {
-	std::lock_guard<std::mutex> lock(getParentContext()->_mutex); 
+	Context::LockGuard lock(getParentContext()); 
 	if (!dest->getFormat()->equals(getFormat()))
 		throw InvalidArgumentException("format mismatch");
 	if((offsetX + getWidth()) > dest->getWidth() || (offsetY + getHeight()) > dest->getHeight()
