@@ -3,7 +3,7 @@
 
 LLGL_NAMESPACE(Llgl);
 
-LLGL_CLASS(Context) : public std::enable_shared_from_this<Context>
+LLGL_CLASS(Context) : public std::enable_shared_from_this<Context>, public NonCopyable
 {
 public:
 	LLGL_CLASS(LockGuard)

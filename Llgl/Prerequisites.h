@@ -90,6 +90,7 @@ LLGL_EXCEPTION(InvalidOperation);
 LLGL_EXCEPTION(OutOfMemory);
 LLGL_EXCEPTION(UnexpectedError);
 LLGL_EXCEPTION(NotImplemented);
+LLGL_CLASS(NonCopyable);
 LLGL_CLASS(Exception);
 LLGL_CLASS(Driver);
 LLGL_CLASS(Context);

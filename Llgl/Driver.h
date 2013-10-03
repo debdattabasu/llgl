@@ -3,7 +3,7 @@
 
 LLGL_NAMESPACE(Llgl);
 
-LLGL_CLASS(Driver)
+LLGL_CLASS(Driver) : public NonCopyable
 {
 public:
 	LLGL_CLASS(Load)

@@ -3,7 +3,7 @@
 
 LLGL_NAMESPACE(Llgl);
 
-LLGL_CLASS(ContextChild) 
+LLGL_CLASS(ContextChild) : public NonCopyable
 {
 public:
 	virtual ~ContextChild();

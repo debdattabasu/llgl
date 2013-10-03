@@ -1,5 +1,6 @@
 #pragma once
 
+#include "NonCopyable.h"
 #include "Exception.h"
 #include "Driver.h"
 #include "Context.h"
