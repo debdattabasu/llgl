@@ -48,11 +48,39 @@ void Texture2D::initialize()
 	initializeDriver();
 }
 
-Texture2DSlicePtr Texture2D::getSlice(uint32_t mipLevel)
+Texture2DShaderResourceViewPtr Texture2D::getShaderResourceView()
 {
-	auto ret = getSliceDriver(mipLevel);
+	auto ret = getShaderResourceViewDriver();
 	ret->initialize();
 	return ret;
 }
 
+Texture2DUnorderedAccessViewPtr Texture2D::getUnorderedAccessView(uint32_t mipLevel)
+{
+	auto ret = getUnorderedAccessViewDriver(mipLevel);
+	ret->initialize();
+	return ret;
+}
+
+Texture2DRenderTargetViewPtr Texture2D::getRenderTargetView(uint32_t mipLevel, uint32_t arrayIndex)
+{
+	auto ret = getRenderTargetViewDriver(mipLevel, arrayIndex);
+	ret->initialize();
+	return ret;
+}
+
+Texture2DDepthStencilViewPtr Texture2D::getDepthStencilView(uint32_t mipLevel, uint32_t arrayIndex)
+{
+	auto ret = getDepthStencilViewDriver(mipLevel, arrayIndex);
+	ret->initialize();
+	return ret;
+}
+
+Texture2DDataAccessViewPtr Texture2D::getDataAccessView(uint32_t offsetX, uint32_t offsetY, 
+	uint32_t width, uint32_t height, uint32_t mipLevel, uint32_t arrayIndex)
+{
+	auto ret = getDataAccessViewDriver(offsetX, offsetY, width, height, mipLevel, arrayIndex);
+	ret->initialize();
+	return ret;
+}
 LLGL_NAMESPACE_END;

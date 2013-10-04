@@ -50,9 +50,31 @@ void Direct3D11Texture2D::initializeDriver()
 	CHECK_HRESULT(hr);
 }
 
-Texture2DSlicePtr Direct3D11Texture2D::getSliceDriver(uint32_t mipLevel)
+Texture2DShaderResourceViewPtr Direct3D11Texture2D::getShaderResourceViewDriver()
 {
-	return Texture2DSlicePtr(new Direct3D11Texture2DSlice(shared_from_this(), mipLevel));
+	return Texture2DShaderResourceViewPtr(new Direct3D11Texture2DShaderResourceView(shared_from_this()));
+}
+
+Texture2DUnorderedAccessViewPtr Direct3D11Texture2D::getUnorderedAccessViewDriver(uint32_t mipLevel)
+{
+	return Texture2DUnorderedAccessViewPtr(new Direct3D11Texture2DUnorderedAccessView(shared_from_this(), mipLevel));
+}
+
+Texture2DRenderTargetViewPtr Direct3D11Texture2D::getRenderTargetViewDriver(uint32_t mipLevel, uint32_t arrayIndex)
+{
+	return Texture2DRenderTargetViewPtr(new Direct3D11Texture2DRenderTargetView(shared_from_this(), mipLevel, arrayIndex));
+}
+
+Texture2DDepthStencilViewPtr Direct3D11Texture2D::getDepthStencilViewDriver(uint32_t mipLevel, uint32_t arrayIndex)
+{
+	return Texture2DDepthStencilViewPtr(new Direct3D11Texture2DDepthStencilView(shared_from_this(), mipLevel, arrayIndex));
+}
+
+Texture2DDataAccessViewPtr Direct3D11Texture2D::getDataAccessViewDriver(uint32_t offsetX, uint32_t offsetY, 
+		uint32_t width, uint32_t height, uint32_t mipLevel, uint32_t arrayIndex)
+{
+	return Texture2DDataAccessViewPtr(new Direct3D11Texture2DDataAccessView(shared_from_this(), 
+		offsetX, offsetY, width, height, mipLevel, arrayIndex));
 }
 
 LLGL_NAMESPACE_END2;

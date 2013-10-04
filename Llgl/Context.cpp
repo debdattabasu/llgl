@@ -43,13 +43,6 @@ Texture2DPtr Context::createTexture2D(uint32_t width, uint32_t height, uint32_t 
 	return ret;
 }
 
-Texture2DStreamPtr Context::createTexture2DStream(uint32_t width, uint32_t height, FormatPtr format)
-{
-	auto ret = createTexture2DStreamDriver(width, height, format);
-	ret->initialize();
-	return ret;
-}
-
 Texture3DPtr Context::createTexture3D(uint32_t width, uint32_t height, uint32_t depth, uint32_t numMips, FormatPtr format)
 {
 	auto ret = createTexture3DDriver(width, height, depth, numMips, format);

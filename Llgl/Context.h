@@ -20,7 +20,6 @@ public:
 	BufferPtr createBuffer(uint32_t width, FormatPtr format);
 	Texture1DPtr createTexture1D(uint32_t width, uint32_t numMips, FormatPtr format);
 	Texture2DPtr createTexture2D(uint32_t width, uint32_t height, uint32_t numMips, FormatPtr format);
-	Texture2DStreamPtr createTexture2DStream(uint32_t width, uint32_t height, FormatPtr format);
 	Texture3DPtr createTexture3D(uint32_t width, uint32_t height, uint32_t depth, uint32_t numMips, FormatPtr format);
 	Texture3DStreamPtr createTexture3DStream(uint32_t width, uint32_t height, uint32_t depth, FormatPtr format);
 	FormatPtr createFormat(FormatType type, uint32_t vectorSize = 1);
@@ -30,7 +29,6 @@ protected:
 	virtual BufferPtr createBufferDriver(uint32_t width, FormatPtr format) = 0;
 	virtual Texture1DPtr createTexture1DDriver(uint32_t width, uint32_t numMips, FormatPtr format) = 0;
 	virtual Texture2DPtr createTexture2DDriver(uint32_t width, uint32_t height, uint32_t numMips, FormatPtr format) = 0;
-	virtual Texture2DStreamPtr createTexture2DStreamDriver(uint32_t width, uint32_t height, FormatPtr format) = 0;
 	virtual Texture3DPtr createTexture3DDriver(uint32_t width, uint32_t height, uint32_t depth, uint32_t numMips, FormatPtr format) = 0;
 	virtual Texture3DStreamPtr createTexture3DStreamDriver(uint32_t width, uint32_t height, uint32_t depth, FormatPtr format) = 0;
 	virtual FormatPtr createFormatDriver(FormatType type, uint32_t vectorSize) = 0;

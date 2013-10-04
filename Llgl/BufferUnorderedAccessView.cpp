@@ -16,7 +16,7 @@ BufferUnorderedAccessView::~BufferUnorderedAccessView()
 void BufferUnorderedAccessView::initialize()
 {
 	if(!getParentContext()->getCapabilities()->numUnorderedAccessSlots()) 
-		throw UnsupportedFeatureException("shader resource views for buffers unsupported");
+		throw UnsupportedFeatureException("unordered access views unsupported");
 
 	Context::LockGuard lock(getParentContext()); 
 	initializeDriver();

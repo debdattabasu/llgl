@@ -34,11 +34,6 @@ Texture2DPtr Direct3D11Context::createTexture2DDriver(uint32_t width, uint32_t h
 	return Texture2DPtr(new Direct3D11Texture2D(shared_from_this(), width, height, numMips, format));
 }
 
-Texture2DStreamPtr Direct3D11Context::createTexture2DStreamDriver(uint32_t width, uint32_t height, FormatPtr format)
-{
-	return Texture2DStreamPtr(new Direct3D11Texture2DStream(shared_from_this(), width, height, format));
-}
-
 FormatPtr Direct3D11Context::createFormatDriver(FormatType type, uint32_t vectorSize)
 {
 	return FormatPtr(new Direct3D11Format(shared_from_this(), type, vectorSize));

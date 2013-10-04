@@ -3,7 +3,7 @@
 LLGL_NAMESPACE2(Llgl, Direct3D11);
 
 Direct3D11Texture1D::Direct3D11Texture1D(ContextPtr parentContext, uint32_t width,  uint32_t numMips, FormatPtr format):
-	Texture1D(parentContext, width, numMips, format), _tex1d(0), _srv(0)
+	Texture1D(parentContext, width, numMips, format), _tex1d(0)
 {
 
 }
@@ -11,7 +11,6 @@ Direct3D11Texture1D::Direct3D11Texture1D(ContextPtr parentContext, uint32_t widt
 Direct3D11Texture1D::~Direct3D11Texture1D()
 {
 	SAFE_RELEASE(_tex1d);
-	SAFE_RELEASE(_srv);
 }
 
 void Direct3D11Texture1D::initializeDriver()
@@ -33,24 +32,21 @@ void Direct3D11Texture1D::initializeDriver()
 		td.BindFlags |= D3D11_BIND_UNORDERED_ACCESS;
 	hr =dev->CreateTexture1D(&td, NULL, &_tex1d);
 	CHECK_HRESULT(hr);
-	D3D11_SHADER_RESOURCE_VIEW_DESC srvd ;
-	ZeroMemory(&srvd, sizeof(srvd));
-	srvd.Format = dxgiFmtTyped;
-	srvd.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE1D;
-	srvd.Texture1D.MostDetailedMip = 0;
-	srvd.Texture1D.MipLevels = -1;
-	hr = dev->CreateShaderResourceView(_tex1d, &srvd, &_srv);
-	CHECK_HRESULT(hr);
 }
 
-Texture1DSlicePtr Direct3D11Texture1D::getSliceDriver(uint32_t mipLevel)
+Texture1DUnorderedAccessViewPtr Direct3D11Texture1D::getUnorderedAccessViewDriver(uint32_t mipLevel) 
 {
-	return Texture1DSlicePtr(new Direct3D11Texture1DSlice(shared_from_this(), mipLevel));
+	return Texture1DUnorderedAccessViewPtr(new Direct3D11Texture1DUnorderedAccessView(shared_from_this(), mipLevel));
 }
 
 Texture1DDataAccessViewPtr Direct3D11Texture1D::getDataAccessViewDriver(uint32_t offset, uint32_t width, uint32_t mipLevel, uint32_t arrayIndex) 
 {
 	return Texture1DDataAccessViewPtr(new Direct3D11Texture1DDataAccessView(shared_from_this(), offset, width, mipLevel, arrayIndex));
+}
+
+Texture1DShaderResourceViewPtr Direct3D11Texture1D::getShaderResourceViewDriver()
+{
+	return Texture1DShaderResourceViewPtr(new Direct3D11Texture1DShaderResourceView(shared_from_this()));
 }
 
 LLGL_NAMESPACE_END2;

@@ -27,6 +27,20 @@ Texture1DDataAccessViewPtr Texture1D::getDataAccessView(uint32_t offset, uint32_
 	return ret;
 }
 
+Texture1DShaderResourceViewPtr Texture1D::getShaderResourceView()
+{
+	auto ret = getShaderResourceViewDriver();
+	ret->initialize();
+	return ret;
+}
+
+Texture1DUnorderedAccessViewPtr Texture1D::getUnorderedAccessView(uint32_t mipLevel)
+{
+	auto ret = getUnorderedAccessViewDriver(mipLevel);
+	ret->initialize();
+	return ret;
+}
+
 void Texture1D::initialize() 
 {
 	Texture::initialize();
@@ -45,13 +59,6 @@ void Texture1D::initialize()
 	
 	Context::LockGuard lock(getParentContext()); 
 	initializeDriver();
-}
-
-Texture1DSlicePtr Texture1D::getSlice(uint32_t mipLevel)
-{
-	auto ret = getSliceDriver(mipLevel);
-	ret->initialize();
-	return ret;
 }
 
 LLGL_NAMESPACE_END;
