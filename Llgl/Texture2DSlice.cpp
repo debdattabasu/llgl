@@ -18,7 +18,7 @@ void Texture2DSlice::initialize()
 	Context::LockGuard lock(getParentContext()); 
 	if((_mipLevel+1) > getParentTexture()->getNumMips())
 		throw InvalidArgumentException("out of bounds");
-	initializeImpl();
+	initializeDriver();
 }
 
 FormatPtr Texture2DSlice::getFormat() const
@@ -56,7 +56,7 @@ void Texture2DSlice::copyFrom(Texture2DSlicePtr src, uint32_t srcOffsetX, uint32
 	if((srcOffsetX + srcWidth) > src->getWidth() || (destOffsetX + srcWidth) > getWidth() 
 	  	|| (srcOffsetY + srcHeight) > src->getHeight() || (destOffsetY + srcHeight) > getHeight())
 			throw InvalidArgumentException("out of bounds");
-	copyFromImpl(src, srcOffsetX, srcOffsetY, srcWidth, srcHeight, destOffsetX, destOffsetY);
+	copyFromDriver(src, srcOffsetX, srcOffsetY, srcWidth, srcHeight, destOffsetX, destOffsetY);
 }
 
 LLGL_NAMESPACE_END;

@@ -26,11 +26,11 @@ public:
 protected:
 	Texture2DStream(ContextPtr parentContext, uint32_t width, uint32_t height, FormatPtr format);
 	void initialize();
-	virtual void initializeImpl() = 0;
-	virtual MapDesc mapImpl() = 0;
-	virtual void unmapImpl() = 0;
-	virtual void readFromImpl(Texture2DSlicePtr src, uint32_t offsetX, uint32_t offsetY) = 0;
-	virtual void writeToImpl(Texture2DSlicePtr dest, uint32_t offsetX, uint32_t offsetY) = 0;
+	virtual void initializeDriver() = 0;
+	virtual MapDesc mapDriver() = 0;
+	virtual void unmapDriver() = 0;
+	virtual void readFromDriver(Texture2DSlicePtr src, uint32_t offsetX, uint32_t offsetY) = 0;
+	virtual void writeToDriver(Texture2DSlicePtr dest, uint32_t offsetX, uint32_t offsetY) = 0;
 
 private:
 	FormatPtr _format;

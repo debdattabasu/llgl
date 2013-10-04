@@ -2,8 +2,7 @@
 
 LLGL_NAMESPACE(Llgl);
 
-BufferView::BufferView(BufferPtr parentBuffer) : ContextChild(parentBuffer->getParentContext()), 
-	_parentBuffer(parentBuffer)
+BufferView::BufferView(BufferPtr parentBuffer) : ResourceView(parentBuffer)
 {
 
 }
@@ -13,14 +12,9 @@ BufferView::~BufferView()
 
 }
 
-FormatPtr BufferView::getFormat() const
+BufferPtr BufferView::getParentResource() const
 {
-	return _parentBuffer->getFormat();
-}
-
-BufferPtr BufferView::getParentBuffer() const
-{
-	return _parentBuffer;
+	return std::dynamic_pointer_cast<Buffer>(ResourceView::getParentResource());
 }
 
 LLGL_NAMESPACE_END;

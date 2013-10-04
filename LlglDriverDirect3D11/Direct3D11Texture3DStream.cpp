@@ -13,7 +13,7 @@ Direct3D11Texture3DStream::~Direct3D11Texture3DStream()
 	SAFE_RELEASE(_tex3d);
 }
 
-void Direct3D11Texture3DStream::initializeImpl()
+void Direct3D11Texture3DStream::initializeDriver()
 {
 	auto caps = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->getCapabilities();
 	auto dev = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_dev;
@@ -32,7 +32,7 @@ void Direct3D11Texture3DStream::initializeImpl()
 	CHECK_HRESULT(hr);
 }
 
-Texture3DStream::MapDesc Direct3D11Texture3DStream::mapImpl() 
+Texture3DStream::MapDesc Direct3D11Texture3DStream::mapDriver() 
 {
 	auto ctx = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_ctx;
 	HRESULT hr = S_OK;
@@ -46,13 +46,13 @@ Texture3DStream::MapDesc Direct3D11Texture3DStream::mapImpl()
 	return ret;
 }
 
-void Direct3D11Texture3DStream::unmapImpl() 
+void Direct3D11Texture3DStream::unmapDriver() 
 {
 	auto ctx = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_ctx;
 	ctx->Unmap(_tex3d, 0);
 }
 
-void Direct3D11Texture3DStream::readFromImpl(Texture3DSlicePtr src, uint32_t offsetX, uint32_t offsetY, uint32_t offsetZ)
+void Direct3D11Texture3DStream::readFromDriver(Texture3DSlicePtr src, uint32_t offsetX, uint32_t offsetY, uint32_t offsetZ)
 {
 	auto ctx = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_ctx;
 	ID3D11Resource* srcRes = std::dynamic_pointer_cast<Direct3D11Texture3D>(src->getParentTexture())->_tex3d; 
@@ -69,7 +69,7 @@ void Direct3D11Texture3DStream::readFromImpl(Texture3DSlicePtr src, uint32_t off
 	ctx->CopySubresourceRegion(destRes, destSubRes, 0, 0, 0, srcRes, srcSubRes, &bx);
 }
 
-void Direct3D11Texture3DStream::writeToImpl(Texture3DSlicePtr dest, uint32_t offsetX, uint32_t offsetY, uint32_t offsetZ)
+void Direct3D11Texture3DStream::writeToDriver(Texture3DSlicePtr dest, uint32_t offsetX, uint32_t offsetY, uint32_t offsetZ)
 {
 	auto ctx = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_ctx;
 	ID3D11Resource* srcRes = _tex3d; 

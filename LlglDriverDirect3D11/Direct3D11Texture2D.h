@@ -8,8 +8,8 @@ LLGL_CLASS(Direct3D11Texture2D) : public Texture2D
 public:
 	Direct3D11Texture2D(ContextPtr parentContext, uint32_t width, uint32_t height, uint32_t numMips, FormatPtr format);
 	~Direct3D11Texture2D() override;
-	void initializeImpl() override;
-	Texture2DSlicePtr getSliceImpl(uint32_t mipLevel) override;
+	void initializeDriver() override;
+	Texture2DSlicePtr getSliceDriver(uint32_t mipLevel) override;
 
 	ID3D11Texture2D* _tex2d;
 	ID3D11ShaderResourceView* _srv;

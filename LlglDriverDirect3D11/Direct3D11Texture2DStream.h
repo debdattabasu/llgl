@@ -8,11 +8,11 @@ LLGL_CLASS(Direct3D11Texture2DStream) : public Texture2DStream
 public:
 	Direct3D11Texture2DStream(ContextPtr parentContext, uint32_t width, uint32_t height, FormatPtr format);
 	~Direct3D11Texture2DStream() override;
-	void initializeImpl() override;
-	MapDesc mapImpl() override;
-	void unmapImpl() override;
-	void readFromImpl(Texture2DSlicePtr src, uint32_t offsetX, uint32_t offsetY) override;
-	void writeToImpl(Texture2DSlicePtr dest, uint32_t offsetX, uint32_t offsetY) override;
+	void initializeDriver() override;
+	MapDesc mapDriver() override;
+	void unmapDriver() override;
+	void readFromDriver(Texture2DSlicePtr src, uint32_t offsetX, uint32_t offsetY) override;
+	void writeToDriver(Texture2DSlicePtr dest, uint32_t offsetX, uint32_t offsetY) override;
 	
 	ID3D11Texture2D* _tex2d;
 };

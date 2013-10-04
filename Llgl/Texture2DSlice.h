@@ -18,8 +18,8 @@ public:
 protected:
 	Texture2DSlice(Texture2DPtr parentTexture, uint32_t mipLevel);
 	void initialize();
-	virtual void initializeImpl() = 0;
-	virtual void copyFromImpl(Texture2DSlicePtr src, uint32_t srcOffsetX, uint32_t srcOffsetY,
+	virtual void initializeDriver() = 0;
+	virtual void copyFromDriver(Texture2DSlicePtr src, uint32_t srcOffsetX, uint32_t srcOffsetY,
 		uint32_t srcWidth, uint32_t srcHeight, uint32_t destOffsetX, uint32_t destOffsetY) = 0;
 private:
 	uint32_t _mipLevel;

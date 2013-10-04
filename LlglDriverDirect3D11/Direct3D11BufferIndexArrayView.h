@@ -8,7 +8,7 @@ LLGL_CLASS(Direct3D11BufferIndexArrayView) : public BufferIndexArrayView
 public:
 	Direct3D11BufferIndexArrayView(BufferPtr parentBuffer);
 	~Direct3D11BufferIndexArrayView() override;
-	void initializeImpl() override;
+	void initializeDriver() override;
 
 };
 

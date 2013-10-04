@@ -15,10 +15,10 @@ public:
 	void setData(void* data);
 protected:
 	BufferDataAccessView(BufferPtr parentBuffer, uint32_t offset, uint32_t width);
-	virtual void initializeImpl() = 0;
-	virtual void copyFromImpl(BufferDataAccessViewPtr src) = 0;
-	virtual void getDataImpl(void* data) = 0;
-	virtual void setDataImpl(void* data) = 0;
+	virtual void initializeDriver() = 0;
+	virtual void copyFromDriver(BufferDataAccessViewPtr src) = 0;
+	virtual void getDataDriver(void* data) = 0;
+	virtual void setDataDriver(void* data) = 0;
 private:
 	void initialize();
 	uint32_t _offset;

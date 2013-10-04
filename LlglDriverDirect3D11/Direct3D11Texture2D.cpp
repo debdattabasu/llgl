@@ -15,7 +15,7 @@ Direct3D11Texture2D::~Direct3D11Texture2D()
 	SAFE_RELEASE(_srv);
 }
 
-void Direct3D11Texture2D::initializeImpl()
+void Direct3D11Texture2D::initializeDriver()
 {
 	auto caps = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->getCapabilities();
 	auto dev = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_dev;
@@ -50,7 +50,7 @@ void Direct3D11Texture2D::initializeImpl()
 	CHECK_HRESULT(hr);
 }
 
-Texture2DSlicePtr Direct3D11Texture2D::getSliceImpl(uint32_t mipLevel)
+Texture2DSlicePtr Direct3D11Texture2D::getSliceDriver(uint32_t mipLevel)
 {
 	return Texture2DSlicePtr(new Direct3D11Texture2DSlice(shared_from_this(), mipLevel));
 }

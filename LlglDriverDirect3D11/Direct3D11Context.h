@@ -9,14 +9,13 @@ public:
 	Direct3D11Context();
 	~Direct3D11Context() override;
 	CapabilitiesPtr getCapabilities() override;
-	BufferPtr createBufferImpl(uint32_t width, FormatPtr format) override;
-	Texture1DPtr createTexture1DImpl(uint32_t width, uint32_t numMips, FormatPtr format) override;
-	Texture1DStreamPtr createTexture1DStreamImpl(uint32_t width, FormatPtr format) override;
-	Texture2DPtr createTexture2DImpl(uint32_t width, uint32_t height, uint32_t numMips, FormatPtr format) override;
-	Texture2DStreamPtr createTexture2DStreamImpl(uint32_t width, uint32_t height, FormatPtr format) override;
-	Texture3DPtr createTexture3DImpl(uint32_t width, uint32_t height, uint32_t depth, uint32_t numMips, FormatPtr format) override;
-	Texture3DStreamPtr createTexture3DStreamImpl(uint32_t width, uint32_t height, uint32_t depth, FormatPtr format) override;
-	FormatPtr createFormatImpl(FormatType type, uint32_t vectorSize) override;
+	BufferPtr createBufferDriver(uint32_t width, FormatPtr format) override;
+	Texture1DPtr createTexture1DDriver(uint32_t width, uint32_t numMips, FormatPtr format) override;
+	Texture2DPtr createTexture2DDriver(uint32_t width, uint32_t height, uint32_t numMips, FormatPtr format) override;
+	Texture2DStreamPtr createTexture2DStreamDriver(uint32_t width, uint32_t height, FormatPtr format) override;
+	Texture3DPtr createTexture3DDriver(uint32_t width, uint32_t height, uint32_t depth, uint32_t numMips, FormatPtr format) override;
+	Texture3DStreamPtr createTexture3DStreamDriver(uint32_t width, uint32_t height, uint32_t depth, FormatPtr format) override;
+	FormatPtr createFormatDriver(FormatType type, uint32_t vectorSize) override;
 	void initialize();
 
 	ID3D11Device* _dev;

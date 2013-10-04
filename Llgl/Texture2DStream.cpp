@@ -26,7 +26,7 @@ void Texture2DStream::initialize()
 	default:
 		throw InvalidArgumentException("format type unsupported by texture2d stream");
 	}
-	initializeImpl();
+	initializeDriver();
 }
 
 FormatPtr Texture2DStream::getFormat() const
@@ -53,7 +53,7 @@ Texture2DStream::MapDesc Texture2DStream::map()
 {
 	Context::LockGuard lock(getParentContext()); 
 	if(_isMapped) throw InvalidOperationException("already mapped");
-	auto ret = mapImpl();
+	auto ret = mapDriver();
 	_isMapped = 1;
 	return ret;
 }
@@ -62,7 +62,7 @@ void Texture2DStream::unmap()
 {
 	Context::LockGuard lock(getParentContext()); 
 	if(!_isMapped) throw InvalidOperationException("already unmapped");
-	unmapImpl();
+	unmapDriver();
 	_isMapped= 0;
 }
 
@@ -73,7 +73,7 @@ void Texture2DStream::readFrom(Texture2DSlicePtr src, uint32_t offsetX, uint32_t
 		throw InvalidArgumentException("format mismatch");
 	if((offsetX + getWidth()) > src->getWidth() || (offsetY + getHeight()) > src->getHeight())
 			throw InvalidArgumentException("out of bounds");
-	readFromImpl(src, offsetX, offsetY);
+	readFromDriver(src, offsetX, offsetY);
 
 }
 
@@ -84,7 +84,7 @@ void Texture2DStream::writeTo(Texture2DSlicePtr dest, uint32_t offsetX, uint32_t
 		throw InvalidArgumentException("format mismatch");
 	if((offsetX + getWidth()) > dest->getWidth() || (offsetY + getHeight()) > dest->getHeight())
 			throw InvalidArgumentException("out of bounds");
-	writeToImpl(dest, offsetX, offsetY);
+	writeToDriver(dest, offsetX, offsetY);
 }
 
 LLGL_NAMESPACE_END;

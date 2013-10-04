@@ -9,7 +9,7 @@ LLGL_CLASS(Direct3D11Format) : public Format
 public:
 	Direct3D11Format(ContextPtr parentContext, FormatType type, uint32_t vectorSize);
 	~Direct3D11Format() override;
-	void initializeImpl() override;
+	void initializeDriver() override;
 	DXGI_FORMAT getDxgiFormatTypeless();
 	DXGI_FORMAT getDxgiFormatTyped();
 	DXGI_FORMAT getDxgiFormatDepthTyped();

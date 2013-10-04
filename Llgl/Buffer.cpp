@@ -3,7 +3,7 @@
 LLGL_NAMESPACE(Llgl);
 
 Buffer::Buffer(ContextPtr parentContext, uint32_t width, FormatPtr format): 
-	ContextChild(parentContext), _width(width), _format(format)
+	Resource(parentContext, 1, format), _width(width)
 {
 }
 
@@ -17,59 +17,44 @@ uint32_t Buffer::getWidth() const
 	return _width;
 }
 
-FormatPtr Buffer::getFormat() const
-{
-	return _format;
-}
-
 BufferDataAccessViewPtr Buffer::getDataAccessView(uint32_t offset, uint32_t width)
 {
-	auto ret = getDataAccessViewImpl(offset, width);
+	auto ret = getDataAccessViewDriver(offset, width);
 	ret->initialize();
 	return ret;
 }
 
 BufferShaderResourceViewPtr Buffer::getShaderResourceView()
 {
-	auto ret = getShaderResourceViewImpl();
+	auto ret = getShaderResourceViewDriver();
 	ret->initialize();
 	return ret;
 }
 
 BufferUnorderedAccessViewPtr Buffer::getUnorderedAccessView()
 {
-	auto ret = getUnorderedAccessViewImpl();
+	auto ret = getUnorderedAccessViewDriver();
 	ret->initialize();
 	return ret;
 }
 
 BufferVertexArrayViewPtr Buffer::getVertexArrayView()
 {
-	auto ret = getVertexArrayViewImpl();
+	auto ret = getVertexArrayViewDriver();
 	ret->initialize();
 	return ret;
 }
 
 BufferIndexArrayViewPtr Buffer::getIndexArrayView()
 {
-	auto ret = getIndexArrayViewImpl();
+	auto ret = getIndexArrayViewDriver();
 	ret->initialize();
 	return ret;
 }
 
-void Buffer::copyFrom(BufferPtr src, uint32_t srcOffset, uint32_t srcWidth, uint32_t destOffset)
-{
-	Context::LockGuard lock(getParentContext()); 
-	if (!src->getFormat()->equals(getFormat()))
-		throw InvalidArgumentException("format mismatch");
-	if((srcOffset + srcWidth) > src->getWidth() || (destOffset + srcWidth) > getWidth())
-		throw InvalidArgumentException("out of bounds");
-	copyFromImpl(src, srcOffset, srcWidth, destOffset);
-}
-
 void Buffer::initialize() 
 {
-	Context::LockGuard lock(getParentContext());
+	Resource::initialize();
 	if(_width == 0) throw InvalidArgumentException("invalid dimensions");
 	auto caps = getParentContext()->getCapabilities();
 	switch(getFormat()->getUsage())
@@ -85,7 +70,10 @@ void Buffer::initialize()
 	default:
 		throw InvalidArgumentException("format type unsupported by buffers");
 	}
-	initializeImpl();
+
+
+	Context::LockGuard lock(getParentContext());
+	initializeDriver();
 }
 
 LLGL_NAMESPACE_END;

@@ -13,7 +13,7 @@ Direct3D11Texture1DSlice::~Direct3D11Texture1DSlice()
 	SAFE_RELEASE(_uav);
 }
 
-void Direct3D11Texture1DSlice::initializeImpl()
+void Direct3D11Texture1DSlice::initializeDriver()
 {
 	auto caps = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->getCapabilities();
 	auto dev = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_dev;
@@ -33,7 +33,7 @@ void Direct3D11Texture1DSlice::initializeImpl()
 	}
 }
 
-void Direct3D11Texture1DSlice::copyFromImpl(Texture1DSlicePtr src, uint32_t srcOffset, uint32_t srcWidth, uint32_t destOffset) 
+void Direct3D11Texture1DSlice::copyFromDriver(Texture1DSlicePtr src, uint32_t srcOffset, uint32_t srcWidth, uint32_t destOffset) 
 {
 	auto ctx = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_ctx;
 	ID3D11Resource* srcRes = std::dynamic_pointer_cast<Direct3D11Texture1D>(src->getParentTexture())->_tex1d; 

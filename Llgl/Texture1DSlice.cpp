@@ -18,7 +18,7 @@ void Texture1DSlice::initialize()
 	Context::LockGuard lock(getParentContext()); 
 	if((_mipLevel + 1) > getParentTexture()->getNumMips()) 
 		throw InvalidArgumentException("out of bounds");
-	initializeImpl();
+	initializeDriver();
 }
 
 Texture1DPtr Texture1DSlice::getParentTexture() const
@@ -49,7 +49,7 @@ void Texture1DSlice::copyFrom(Texture1DSlicePtr src, uint32_t srcOffset, uint32_
 	if(srcWidth == 0) throw InvalidArgumentException("invalid dimensions");
 	if((srcOffset + srcWidth) > src->getWidth() || (destOffset + srcWidth) > getWidth())
 		throw InvalidArgumentException("out of bounds");	   	
-	copyFromImpl(src, srcOffset, srcWidth, destOffset);
+	copyFromDriver(src, srcOffset, srcWidth, destOffset);
 }
 
 LLGL_NAMESPACE_END;

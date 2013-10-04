@@ -3,7 +3,8 @@
 LLGL_NAMESPACE(Llgl);
 
 Texture3D::Texture3D(ContextPtr parentContext, uint32_t width, uint32_t height, uint32_t depth, uint32_t numMips, FormatPtr format):
-	ContextChild(parentContext), _width(width), _height(height), _depth(depth), _numMips(numMips), _format(format)
+	Texture(parentContext, 3, numMips? numMips : uint32_t(1 + floor(log(double(max(max(width, height), depth))) /log(2.f))), 1, format), 
+	_width(width), _height(height), _depth(depth)
 {
 
 }
@@ -11,28 +12,6 @@ Texture3D::Texture3D(ContextPtr parentContext, uint32_t width, uint32_t height, 
 Texture3D::~Texture3D()
 {
 
-}
-	
-void Texture3D::initialize() 
-{
-	Context::LockGuard lock(getParentContext()); 
-	if(_width == 0 || _height == 0 || _depth == 0) throw InvalidArgumentException("invalid dimensions");
-	auto maxNumMips = uint32_t(1 + floor(log(double(max(max(_width, _height), _depth))) /log(2.f)));
-	_numMips =  _numMips? _numMips: maxNumMips;
-	if(_numMips > maxNumMips) throw InvalidArgumentException("invalid dimensions");
-	switch(getFormat()->getUsage())
-	{
-	case FormatUsage::General:
-		break;
-	default:
-		throw InvalidArgumentException("format type unsupported by texture3d");
-	}
-	initializeImpl();
-}
-
-FormatPtr Texture3D::getFormat() const
-{
-	return _format;
 }
 
 uint32_t Texture3D::getWidth(uint32_t mipLevel) const
@@ -53,14 +32,30 @@ uint32_t Texture3D::getDepth(uint32_t mipLevel) const
 	return uint32_t(max(1, floor(_depth / pow(2 , mipLevel))));
 }
 
-uint32_t Texture3D::getNumMips()  const
+
+void Texture3D::initialize() 
 {
-	return _numMips;
+	Texture::initialize();
+	if(_width == 0 || _height == 0 || _depth == 0) throw InvalidArgumentException("invalid dimensions");
+
+	auto maxNumMips = uint32_t(1 + floor(log(double(max(max(_width, _height), _depth))) /log(2.f)));
+	if(getNumMips() > maxNumMips) throw InvalidArgumentException("invalid dimensions");
+	
+	switch(getFormat()->getUsage())
+	{
+	case FormatUsage::General:
+		break;
+	default:
+		throw InvalidArgumentException("format type unsupported by texture3d");
+	}
+
+	Context::LockGuard lock(getParentContext()); 
+	initializeDriver();
 }
 
 Texture3DSlicePtr Texture3D::getSlice(uint32_t mipLevel)
 {
-	auto ret = getSliceImpl(mipLevel);
+	auto ret = getSliceDriver(mipLevel);
 	ret->initialize();
 	return ret;
 }

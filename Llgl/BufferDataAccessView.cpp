@@ -25,36 +25,39 @@ uint32_t BufferDataAccessView::getOffset() const
 
 void BufferDataAccessView::getData(void* data)
 {
-	Context::LockGuard lock(getParentContext()); 
 	if(data == 0) throw InvalidArgumentException("argument null");
-	getDataImpl(data);
+
+	Context::LockGuard lock(getParentContext()); 
+	getDataDriver(data);
 }
 
 void BufferDataAccessView::setData(void* data)
 {
-	Context::LockGuard lock(getParentContext()); 
 	if(data == 0) throw InvalidArgumentException("argument null");
-	setDataImpl(data);
+	
+	Context::LockGuard lock(getParentContext()); 
+	setDataDriver(data);
 }
 
 void BufferDataAccessView::initialize()
 {
-	Context::LockGuard lock(getParentContext()); 
 	if(getWidth() == 0) throw InvalidArgumentException("invalid dimensions");
-	if((getOffset() + getWidth()) > getParentBuffer()->getWidth()) 
+	if((getOffset() + getWidth()) > getParentResource()->getWidth()) 
 		throw InvalidArgumentException("out of bounds");
-	initializeImpl();
+
+	Context::LockGuard lock(getParentContext()); 
+	initializeDriver();
 }
 
 void BufferDataAccessView::copyFrom(BufferDataAccessViewPtr src)
 {
-	Context::LockGuard lock(getParentContext());
-	if (!src->getFormat()->equals(getFormat()))
+	if (!src->getParentResource()->getFormat()->equals(getParentResource()->getFormat()))
 		throw InvalidArgumentException("format mismatch");
 	if (!src->getWidth() == getWidth())
-		throw InvalidArgumentException("width mismatch");	
-  	
-	copyFromImpl(src);
+		throw InvalidArgumentException("dimension mismatch");	
+
+  	Context::LockGuard lock(getParentContext());
+	copyFromDriver(src);
 }
 
 LLGL_NAMESPACE_END;

@@ -15,10 +15,11 @@ BufferShaderResourceView::~BufferShaderResourceView()
 
 void BufferShaderResourceView::initialize()
 {
-	Context::LockGuard lock(getParentContext()); 
 	if(!getParentContext()->getCapabilities()->supportsShaderResourceBuffer()) 
 		throw UnsupportedFeatureException("shader resource views for buffers unsupported");
-	initializeImpl();
+
+	Context::LockGuard lock(getParentContext()); 
+	initializeDriver();
 }
 
 LLGL_NAMESPACE_END;

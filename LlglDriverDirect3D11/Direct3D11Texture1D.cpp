@@ -14,7 +14,7 @@ Direct3D11Texture1D::~Direct3D11Texture1D()
 	SAFE_RELEASE(_srv);
 }
 
-void Direct3D11Texture1D::initializeImpl()
+void Direct3D11Texture1D::initializeDriver()
 {
 	auto caps = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->getCapabilities();
 	auto dev = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_dev;
@@ -43,9 +43,14 @@ void Direct3D11Texture1D::initializeImpl()
 	CHECK_HRESULT(hr);
 }
 
-Texture1DSlicePtr Direct3D11Texture1D::getSliceImpl(uint32_t mipLevel)
+Texture1DSlicePtr Direct3D11Texture1D::getSliceDriver(uint32_t mipLevel)
 {
 	return Texture1DSlicePtr(new Direct3D11Texture1DSlice(shared_from_this(), mipLevel));
+}
+
+Texture1DDataAccessViewPtr Direct3D11Texture1D::getDataAccessViewDriver(uint32_t offset, uint32_t width, uint32_t mipLevel, uint32_t arrayIndex) 
+{
+	return Texture1DDataAccessViewPtr(new Direct3D11Texture1DDataAccessView(shared_from_this(), offset, width, mipLevel, arrayIndex));
 }
 
 LLGL_NAMESPACE_END2;

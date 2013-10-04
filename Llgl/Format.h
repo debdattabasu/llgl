@@ -45,7 +45,7 @@ public:
 protected:
 	Format(ContextPtr parentContext, FormatType type, uint32_t vectorSize);
 	void initialize();
-	virtual void initializeImpl() = 0;
+	virtual void initializeDriver() = 0;
 private:
 	FormatType _type;
 	uint32_t _vectorSize;

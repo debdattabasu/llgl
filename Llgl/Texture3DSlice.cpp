@@ -18,7 +18,7 @@ void Texture3DSlice::initialize()
 	Context::LockGuard lock(getParentContext()); 
 	if((_mipLevel+1) > getParentTexture()->getNumMips())
 		throw InvalidArgumentException("out of bounds");
-	initializeImpl();
+	initializeDriver();
 }
 
 FormatPtr Texture3DSlice::getFormat() const
@@ -62,7 +62,7 @@ void Texture3DSlice::copyFrom(Texture3DSlicePtr src, uint32_t srcOffsetX, uint32
 	  	|| (srcOffsetY + srcHeight) > src->getHeight() || (destOffsetY + srcHeight) > getHeight()
 	  	|| (srcOffsetZ + srcDepth) > src->getDepth() || (destOffsetZ + srcDepth) > getDepth())
 			throw InvalidArgumentException("out of bounds");
-	copyFromImpl(src, srcOffsetX, srcOffsetY, srcOffsetZ, srcWidth, srcHeight, srcDepth, destOffsetX, destOffsetY, destOffsetZ);
+	copyFromDriver(src, srcOffsetX, srcOffsetY, srcOffsetZ, srcWidth, srcHeight, srcDepth, destOffsetX, destOffsetY, destOffsetZ);
 }
 
 LLGL_NAMESPACE_END;

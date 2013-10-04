@@ -24,7 +24,7 @@ void Texture3DStream::initialize()
 	default:
 		throw InvalidArgumentException("format type unsupported by texture3d stream");
 	}
-	initializeImpl();
+	initializeDriver();
 }
 
 FormatPtr Texture3DStream::getFormat() const
@@ -56,7 +56,7 @@ Texture3DStream::MapDesc Texture3DStream::map()
 {
 	Context::LockGuard lock(getParentContext()); 
 	if(_isMapped) throw InvalidOperationException("already mapped");
-	auto ret = mapImpl();
+	auto ret = mapDriver();
 	_isMapped = 1;
 	return ret;
 }
@@ -65,7 +65,7 @@ void Texture3DStream::unmap()
 {
 	Context::LockGuard lock(getParentContext()); 
 	if(!_isMapped) throw InvalidOperationException("already unmapped");
-	unmapImpl();
+	unmapDriver();
 	_isMapped = 0;
 }
 
@@ -77,7 +77,7 @@ void Texture3DStream::readFrom(Texture3DSlicePtr src, uint32_t offsetX, uint32_t
 	if((offsetX + getWidth()) > src->getWidth() || (offsetY + getHeight()) > src->getHeight()
 		|| (offsetZ + getDepth()) > src->getDepth())
 			throw InvalidArgumentException("out of bounds");
-	readFromImpl(src, offsetX, offsetY, offsetZ);
+	readFromDriver(src, offsetX, offsetY, offsetZ);
 }
 
 void Texture3DStream::writeTo(Texture3DSlicePtr dest, uint32_t offsetX, uint32_t offsetY, uint32_t offsetZ)
@@ -88,7 +88,7 @@ void Texture3DStream::writeTo(Texture3DSlicePtr dest, uint32_t offsetX, uint32_t
 	if((offsetX + getWidth()) > dest->getWidth() || (offsetY + getHeight()) > dest->getHeight()
 		|| (offsetZ + getDepth()) > dest->getDepth())
 			throw InvalidArgumentException("out of bounds");
-	writeToImpl(dest, offsetX, offsetY, offsetZ);
+	writeToDriver(dest, offsetX, offsetY, offsetZ);
 }
 
 LLGL_NAMESPACE_END;

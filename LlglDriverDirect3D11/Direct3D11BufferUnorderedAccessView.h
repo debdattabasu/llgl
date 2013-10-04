@@ -8,7 +8,7 @@ LLGL_CLASS(Direct3D11BufferUnorderedAccessView) : public BufferUnorderedAccessVi
 public:
 	Direct3D11BufferUnorderedAccessView(BufferPtr parentBuffer);
 	~Direct3D11BufferUnorderedAccessView() override;
-	void initializeImpl() override;
+	void initializeDriver() override;
 
 	void initializeRaw();
 	void initializeFormatted();

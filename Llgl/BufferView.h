@@ -3,16 +3,13 @@
 
 LLGL_NAMESPACE(Llgl);
 
-LLGL_CLASS(BufferView) : public ContextChild
+LLGL_CLASS(BufferView) : public ResourceView
 {
 public:
 	virtual ~BufferView() override;
-	BufferPtr getParentBuffer() const;
-	FormatPtr getFormat() const;
+	BufferPtr getParentResource() const;
 protected:
 	BufferView(BufferPtr parentBuffer);
-private:
-	BufferPtr _parentBuffer;
 };
 
 LLGL_NAMESPACE_END;

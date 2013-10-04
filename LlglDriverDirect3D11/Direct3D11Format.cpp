@@ -13,7 +13,7 @@ Direct3D11Format::~Direct3D11Format()
 
 }
 
-void Direct3D11Format::initializeImpl()
+void Direct3D11Format::initializeDriver()
 {
 	switch(getType())
 	{

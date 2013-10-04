@@ -27,11 +27,11 @@ public:
 protected:
 	Texture3DStream(ContextPtr parentContext, uint32_t width, uint32_t height, uint32_t depth, FormatPtr format);
 	void initialize();
-	virtual void initializeImpl() = 0;
-	virtual MapDesc mapImpl() = 0;
-	virtual void unmapImpl() = 0;
-	virtual void readFromImpl(Texture3DSlicePtr src, uint32_t offsetX, uint32_t offsetY, uint32_t offsetZ) = 0;
-	virtual void writeToImpl(Texture3DSlicePtr dest, uint32_t offsetX, uint32_t offsetY, uint32_t offsetZ) = 0;
+	virtual void initializeDriver() = 0;
+	virtual MapDesc mapDriver() = 0;
+	virtual void unmapDriver() = 0;
+	virtual void readFromDriver(Texture3DSlicePtr src, uint32_t offsetX, uint32_t offsetY, uint32_t offsetZ) = 0;
+	virtual void writeToDriver(Texture3DSlicePtr dest, uint32_t offsetX, uint32_t offsetY, uint32_t offsetZ) = 0;
 private:
 	bool _isMapped;
 	uint32_t _width;

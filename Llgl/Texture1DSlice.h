@@ -16,8 +16,8 @@ public:
 protected:
 	Texture1DSlice(Texture1DPtr parentTexture, uint32_t mipLevel);
 	void initialize();
-	virtual void initializeImpl() = 0;
-	virtual void copyFromImpl(Texture1DSlicePtr src, uint32_t srcOffset, uint32_t srcWidth, uint32_t destOffset) = 0;	
+	virtual void initializeDriver() = 0;
+	virtual void copyFromDriver(Texture1DSlicePtr src, uint32_t srcOffset, uint32_t srcWidth, uint32_t destOffset) = 0;	
 private:
 	Texture1DPtr _parentTexture;
 	uint32_t _mipLevel;

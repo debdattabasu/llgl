@@ -10,7 +10,7 @@ public:
 	virtual ~BufferVertexArrayView() override;
 protected:
 	BufferVertexArrayView(BufferPtr parentBuffer);
-	virtual void initializeImpl() = 0;
+	virtual void initializeDriver() = 0;
 private:
 	void initialize();
 };

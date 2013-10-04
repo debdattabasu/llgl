@@ -14,7 +14,7 @@ Direct3D11BufferIndexArrayView::~Direct3D11BufferIndexArrayView()
 
 }
 
-void Direct3D11BufferIndexArrayView::initializeImpl()
+void Direct3D11BufferIndexArrayView::initializeDriver()
 {
 
 }

@@ -10,7 +10,7 @@ public:
 	virtual ~BufferShaderResourceView() override;
 protected:
 	BufferShaderResourceView(BufferPtr parentBuffer);
-	virtual void initializeImpl() = 0;
+	virtual void initializeDriver() = 0;
 private:
 	void initialize();
 };

@@ -17,9 +17,9 @@ Direct3D11BufferShaderResourceView::~Direct3D11BufferShaderResourceView()
 void Direct3D11BufferShaderResourceView::initializeRaw()
 {
 	auto dev = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_dev;
-	auto dxgiFmtTyped = std::dynamic_pointer_cast<Direct3D11Format>(getFormat())->getDxgiFormatTyped();
-	auto numElements = getParentBuffer()->getWidth();
-	auto buf = std::dynamic_pointer_cast<Direct3D11Buffer>(getParentBuffer())->_buf;
+	auto dxgiFmtTyped = std::dynamic_pointer_cast<Direct3D11Format>(getParentResource()->getFormat())->getDxgiFormatTyped();
+	auto numElements = getParentResource()->getWidth();
+	auto buf = std::dynamic_pointer_cast<Direct3D11Buffer>(getParentResource())->_buf;
 
 	HRESULT hr;
 	D3D11_SHADER_RESOURCE_VIEW_DESC srvd;
@@ -38,10 +38,10 @@ void Direct3D11BufferShaderResourceView::initializeRaw()
 void Direct3D11BufferShaderResourceView::initializeFormatted()
 {
 	auto dev = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_dev;
-	auto dxgiFmtTyped = std::dynamic_pointer_cast<Direct3D11Format>(getFormat())->getDxgiFormatTyped();
-	auto elementSize = getFormat()->getSize();
-	auto numElements = getParentBuffer()->getWidth();
-	auto buf = std::dynamic_pointer_cast<Direct3D11Buffer>(getParentBuffer())->_buf;
+	auto dxgiFmtTyped = std::dynamic_pointer_cast<Direct3D11Format>(getParentResource()->getFormat())->getDxgiFormatTyped();
+	auto elementSize = getParentResource()->getFormat()->getSize();
+	auto numElements = getParentResource()->getWidth();
+	auto buf = std::dynamic_pointer_cast<Direct3D11Buffer>(getParentResource())->_buf;
 	
 	HRESULT hr;
 	D3D11_SHADER_RESOURCE_VIEW_DESC srvd;
@@ -56,9 +56,9 @@ void Direct3D11BufferShaderResourceView::initializeFormatted()
 	CHECK_HRESULT(hr);
 }
 
-void Direct3D11BufferShaderResourceView::initializeImpl()
+void Direct3D11BufferShaderResourceView::initializeDriver()
 {
-	if (getFormat()->getUsage() == FormatUsage::RawBuffer) initializeRaw();
+	if (getParentResource()->getFormat()->getUsage() == FormatUsage::RawBuffer) initializeRaw();
 	else initializeFormatted();
 }
 

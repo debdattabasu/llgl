@@ -15,10 +15,11 @@ BufferVertexArrayView::~BufferVertexArrayView()
 
 void BufferVertexArrayView::initialize()
 {
-	Context::LockGuard lock(getParentContext()); 
-	if(getFormat()->getUsage() != FormatUsage::General)
+	if(getParentResource()->getFormat()->getUsage() != FormatUsage::General)
 		throw InvalidArgumentException("vertex array views unsupported by format");
-	initializeImpl();
+
+	Context::LockGuard lock(getParentContext()); 
+	initializeDriver();
 }
 
 LLGL_NAMESPACE_END;

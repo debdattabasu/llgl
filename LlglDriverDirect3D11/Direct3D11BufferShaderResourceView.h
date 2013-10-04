@@ -8,7 +8,7 @@ LLGL_CLASS(Direct3D11BufferShaderResourceView) : public BufferShaderResourceView
 public:
 	Direct3D11BufferShaderResourceView(BufferPtr parentBuffer);
 	~Direct3D11BufferShaderResourceView() override;
-	void initializeImpl() override;
+	void initializeDriver() override;
 
 	void initializeRaw();
 	void initializeFormatted();
