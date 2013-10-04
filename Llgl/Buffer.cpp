@@ -43,6 +43,20 @@ BufferUnorderedAccessViewPtr Buffer::getUnorderedAccessView()
 	return ret;
 }
 
+BufferVertexArrayViewPtr Buffer::getVertexArrayView()
+{
+	auto ret = getVertexArrayViewImpl();
+	ret->initialize();
+	return ret;
+}
+
+BufferIndexArrayViewPtr Buffer::getIndexArrayView()
+{
+	auto ret = getIndexArrayViewImpl();
+	ret->initialize();
+	return ret;
+}
+
 void Buffer::copyFrom(BufferPtr src, uint32_t srcOffset, uint32_t srcWidth, uint32_t destOffset)
 {
 	Context::LockGuard lock(getParentContext()); 

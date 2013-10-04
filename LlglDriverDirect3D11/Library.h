@@ -5,6 +5,8 @@
 #include "Direct3D11Format.h"
 #include "Direct3D11BufferDataAccessView.h"
 #include "Direct3D11BufferUnorderedAccessView.h"
+#include "Direct3D11BufferVertexArrayView.h"
+#include "Direct3D11BufferIndexArrayView.h"
 #include "Direct3D11BufferShaderResourceView.h"
 #include "Direct3D11Buffer.h"
 #include "Direct3D11Texture1DStream.h"

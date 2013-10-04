@@ -101,4 +101,14 @@ BufferUnorderedAccessViewPtr Direct3D11Buffer::getUnorderedAccessViewImpl()
 	return BufferUnorderedAccessViewPtr(new Direct3D11BufferUnorderedAccessView(shared_from_this()));
 }
 
+BufferVertexArrayViewPtr Direct3D11Buffer::getVertexArrayViewImpl()
+{
+	return BufferVertexArrayViewPtr(new Direct3D11BufferVertexArrayView(shared_from_this()));
+}
+
+BufferIndexArrayViewPtr Direct3D11Buffer::getIndexArrayViewImpl()
+{
+	return BufferIndexArrayViewPtr(new Direct3D11BufferIndexArrayView(shared_from_this()));
+}
+
 LLGL_NAMESPACE_END2;

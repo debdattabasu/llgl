@@ -104,6 +104,8 @@ LLGL_CLASS(Format);
 LLGL_CLASS(BufferView);
 LLGL_CLASS(BufferShaderResourceView);
 LLGL_CLASS(BufferUnorderedAccessView);
+LLGL_CLASS(BufferVertexArrayView);
+LLGL_CLASS(BufferIndexArrayView);
 LLGL_CLASS(BufferDataAccessView);
 LLGL_CLASS(Buffer);
 LLGL_CLASS(Texture1DStream);

@@ -15,6 +15,8 @@ public:
 	BufferDataAccessViewPtr getDataAccessViewImpl(uint32_t offset, uint32_t width) override;
 	BufferShaderResourceViewPtr getShaderResourceViewImpl() override;
 	BufferUnorderedAccessViewPtr getUnorderedAccessViewImpl() override;
+	BufferVertexArrayViewPtr getVertexArrayViewImpl() override;
+	BufferIndexArrayViewPtr getIndexArrayViewImpl() override;
 
 	ID3D11Buffer* _buf;
 };

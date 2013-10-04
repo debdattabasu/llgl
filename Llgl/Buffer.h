@@ -14,6 +14,8 @@ public:
 	BufferDataAccessViewPtr getDataAccessView(uint32_t offset, uint32_t width);
 	BufferShaderResourceViewPtr getShaderResourceView();
 	BufferUnorderedAccessViewPtr getUnorderedAccessView();
+	BufferVertexArrayViewPtr getVertexArrayView();
+	BufferIndexArrayViewPtr getIndexArrayView();
 protected:
 	Buffer(ContextPtr parentContext, uint32_t width, FormatPtr format);
 	void initialize();
@@ -22,6 +24,8 @@ protected:
 	virtual BufferDataAccessViewPtr getDataAccessViewImpl(uint32_t offset, uint32_t width) = 0;
 	virtual BufferShaderResourceViewPtr getShaderResourceViewImpl() = 0;
 	virtual BufferUnorderedAccessViewPtr getUnorderedAccessViewImpl() = 0;
+	virtual BufferVertexArrayViewPtr getVertexArrayViewImpl() = 0;
+	virtual BufferIndexArrayViewPtr getIndexArrayViewImpl() = 0;
 private:
 	FormatPtr _format;
 	uint32_t _width;
