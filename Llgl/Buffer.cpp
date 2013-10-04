@@ -3,7 +3,7 @@
 LLGL_NAMESPACE(Llgl);
 
 Buffer::Buffer(ContextPtr parentContext, uint32_t width, FormatPtr format): 
-	ContextChild(parentContext), _width(width), _format(format), _isMapped(false)
+	ContextChild(parentContext), _width(width), _format(format)
 {
 }
 
@@ -22,9 +22,11 @@ FormatPtr Buffer::getFormat() const
 	return _format;
 }
 
-bool Buffer::isMapped() const
+BufferDataAccessViewPtr Buffer::getDataAccessView(uint32_t offset, uint32_t width)
 {
-	return _isMapped;
+	auto ret = getDataAccessViewImpl(offset, width);
+	ret->initialize();
+	return ret;
 }
 
 void Buffer::copyFrom(BufferPtr src, uint32_t srcOffset, uint32_t srcWidth, uint32_t destOffset)

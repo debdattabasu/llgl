@@ -13,7 +13,7 @@ public:
 		~Load();
 	};
 	static Driver* get();
-	virtual ~Driver();
+	virtual ~Driver() override;
 	virtual ContextPtr createContext() = 0;
 protected:
 	Driver();

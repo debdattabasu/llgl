@@ -3,7 +3,7 @@
 #include "Direct3D11Context.h"
 #include "Direct3D11Capabilities.h"
 #include "Direct3D11Format.h"
-#include "Direct3D11BufferStream.h"
+#include "Direct3D11BufferDataAccessView.h"
 #include "Direct3D11Buffer.h"
 #include "Direct3D11Texture1DStream.h"
 #include "Direct3D11Texture1DSlice.h"

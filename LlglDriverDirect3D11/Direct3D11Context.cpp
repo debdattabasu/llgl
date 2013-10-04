@@ -23,10 +23,6 @@ BufferPtr Direct3D11Context::createBufferImpl(uint32_t width, FormatPtr format)
 	return BufferPtr(new Direct3D11Buffer(shared_from_this(), width, format));
 }
 
-BufferStreamPtr Direct3D11Context::createBufferStreamImpl(uint32_t width, FormatPtr format)
-{
-	return BufferStreamPtr(new Direct3D11BufferStream(shared_from_this(), width, format));
-}
 
 Texture1DPtr Direct3D11Context::createTexture1DImpl(uint32_t width, uint32_t numMips, FormatPtr format)
 {

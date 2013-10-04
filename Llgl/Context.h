@@ -14,11 +14,10 @@ public:
 	private:
 		ContextPtr _ctx;
 	};
-	virtual ~Context();
+	virtual ~Context() override;
 	virtual CapabilitiesPtr getCapabilities() = 0;
 
 	BufferPtr createBuffer(uint32_t width, FormatPtr format);
-	BufferStreamPtr createBufferStream(uint32_t width, FormatPtr format);
 	Texture1DPtr createTexture1D(uint32_t width, uint32_t numMips, FormatPtr format);
 	Texture1DStreamPtr createTexture1DStream(uint32_t width, FormatPtr format);
 	Texture2DPtr createTexture2D(uint32_t width, uint32_t height, uint32_t numMips, FormatPtr format);
@@ -30,7 +29,6 @@ public:
 protected:
 	Context();
 	virtual BufferPtr createBufferImpl(uint32_t width, FormatPtr format) = 0;
-	virtual BufferStreamPtr createBufferStreamImpl(uint32_t width, FormatPtr format) = 0;
 	virtual Texture1DPtr createTexture1DImpl(uint32_t width, uint32_t numMips, FormatPtr format) = 0;
 	virtual Texture1DStreamPtr createTexture1DStreamImpl(uint32_t width, FormatPtr format) = 0;
 	virtual Texture2DPtr createTexture2DImpl(uint32_t width, uint32_t height, uint32_t numMips, FormatPtr format) = 0;

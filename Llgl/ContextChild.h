@@ -6,7 +6,7 @@ LLGL_NAMESPACE(Llgl);
 LLGL_CLASS(ContextChild) : public NonCopyable
 {
 public:
-	virtual ~ContextChild();
+	virtual ~ContextChild() override;
 	ContextPtr getParentContext() const;
 protected:
 	ContextChild(ContextPtr parentContext);

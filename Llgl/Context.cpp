@@ -29,13 +29,6 @@ BufferPtr Context::createBuffer(uint32_t width, FormatPtr format)
 	return ret;
 }
 
-BufferStreamPtr Context::createBufferStream(uint32_t width, FormatPtr format)
-{
-	auto ret = createBufferStreamImpl(width, format);
-	ret->initialize();
-	return ret;
-}
-
 Texture1DPtr Context::createTexture1D(uint32_t width, uint32_t numMips, FormatPtr format)
 {
 	auto ret = createTexture1DImpl(width, numMips, format);

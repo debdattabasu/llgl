@@ -137,4 +137,9 @@ void Direct3D11Buffer::copyFromImpl(BufferPtr src, uint32_t srcOffset, uint32_t 
 	ctx->CopySubresourceRegion(destRes, 0, destOffset*elementSize , 0, 0, srcRes, 0, &bx);
 }
 
+BufferDataAccessViewPtr Direct3D11Buffer::getDataAccessViewImpl(uint32_t offset, uint32_t width)
+{
+	return BufferDataAccessViewPtr(new Direct3D11BufferDataAccessView(shared_from_this(), offset, width));
+}
+
 LLGL_NAMESPACE_END2;

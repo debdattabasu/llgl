@@ -7,25 +7,24 @@ int main()
 {
 	auto ctx = Driver::get()->createContext();
 	auto buf = ctx->createBuffer(32, ctx->createFormat(FormatType::Float, 1));
-	auto bufStream = ctx->createBufferStream(32, ctx->createFormat(FormatType::Float, 1));
-	auto bufStream1 = ctx->createBufferStream(32, ctx->createFormat(FormatType::Float, 1));
+	std::vector<float> data(32);
+	for(int i = 0; i < 32; i++)
 	{
-		auto mem = bufStream->map();
-		memset(mem.data, 1, 32*4);
-		bufStream->unmap();
+		data[i] = 2;
 	}
-	bufStream->writeTo(buf, 0);
-	bufStream1->readFrom(buf, 0);
-	auto mem = bufStream->map();
-	auto mem1 = bufStream1->map();
+	buf->getDataAccessView(0, 32)->setData(&data[0]);
+	std::vector<float> dataRet(32);
+	buf->getDataAccessView(0, 32)->getData(&dataRet[0]);
 
 	bool passed = true;
-	if(memcmp(mem1.data, mem.data, 32*4))
+	for(int i = 0; i < 32; i++)
 	{
-		passed = false;
+		if(data[i] != dataRet[i] || data[i] != 2)
+		{
+			passed = false;
+			break;
+		}
+		
 	}
 	passed? std::cout<<"passed" : std::cout<<"failed";
-
-	bufStream->unmap();
-	bufStream1->unmap();
 }

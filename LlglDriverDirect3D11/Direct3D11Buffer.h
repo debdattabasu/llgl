@@ -12,6 +12,7 @@ public:
 	void initializeImpl() override;
 	void initializeRaw();
 	void initializeVertexIndex();
+	BufferDataAccessViewPtr getDataAccessViewImpl(uint32_t offset, uint32_t width) override;
 
 	ID3D11Buffer* _buf;
 	ID3D11ShaderResourceView* _srv;
