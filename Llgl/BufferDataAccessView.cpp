@@ -40,7 +40,7 @@ void BufferDataAccessView::setData(void* data)
 void BufferDataAccessView::initialize()
 {
 	Context::LockGuard lock(getParentContext()); 
-	if(getWidth() == 0) InvalidArgumentException("invalid dimensions");
+	if(getWidth() == 0) throw InvalidArgumentException("invalid dimensions");
 	if((getOffset() + getWidth()) > getParentBuffer()->getWidth()) 
 		throw InvalidArgumentException("out of bounds");
 	initializeImpl();

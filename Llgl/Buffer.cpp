@@ -29,6 +29,20 @@ BufferDataAccessViewPtr Buffer::getDataAccessView(uint32_t offset, uint32_t widt
 	return ret;
 }
 
+BufferShaderResourceViewPtr Buffer::getShaderResourceView()
+{
+	auto ret = getShaderResourceViewImpl();
+	ret->initialize();
+	return ret;
+}
+
+BufferUnorderedAccessViewPtr Buffer::getUnorderedAccessView()
+{
+	auto ret = getUnorderedAccessViewImpl();
+	ret->initialize();
+	return ret;
+}
+
 void Buffer::copyFrom(BufferPtr src, uint32_t srcOffset, uint32_t srcWidth, uint32_t destOffset)
 {
 	Context::LockGuard lock(getParentContext()); 

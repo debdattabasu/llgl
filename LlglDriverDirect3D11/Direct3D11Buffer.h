@@ -13,10 +13,10 @@ public:
 	void initializeRaw();
 	void initializeVertexIndex();
 	BufferDataAccessViewPtr getDataAccessViewImpl(uint32_t offset, uint32_t width) override;
+	BufferShaderResourceViewPtr getShaderResourceViewImpl() override;
+	BufferUnorderedAccessViewPtr getUnorderedAccessViewImpl() override;
 
 	ID3D11Buffer* _buf;
-	ID3D11ShaderResourceView* _srv;
-	ID3D11UnorderedAccessView* _uav;
 };
 
 LLGL_NAMESPACE_END2;

@@ -14,6 +14,8 @@ LLGL_CLASS(Direct3D11Capabilities);
 LLGL_CLASS(Direct3D11Format);
 LLGL_CLASS(Direct3D11Buffer);
 LLGL_CLASS(Direct3D11BufferDataAccessView);
+LLGL_CLASS(Direct3D11BufferUnorderedAccessView);
+LLGL_CLASS(Direct3D11BufferShaderResourceView);
 LLGL_CLASS(Direct3D11Texture1DStream);
 LLGL_CLASS(Direct3D11Texture1D);
 LLGL_CLASS(Direct3D11Texture1DSlice);

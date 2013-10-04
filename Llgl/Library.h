@@ -8,6 +8,8 @@
 #include "Capabilities.h"
 #include "Format.h"
 #include "BufferView.h"
+#include "BufferShaderResourceView.h"
+#include "BufferUnorderedAccessView.h"
 #include "BufferDataAccessView.h"
 #include "Buffer.h"
 #include "Texture1DStream.h"
