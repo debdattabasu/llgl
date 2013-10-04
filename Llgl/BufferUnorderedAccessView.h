@@ -10,8 +10,9 @@ public:
 	virtual ~BufferUnorderedAccessView() override;
 protected:
 	BufferUnorderedAccessView(BufferPtr parentBuffer);
-	void initialize();
 	virtual void initializeImpl() = 0;
+private:
+	void initialize();
 };
 
 LLGL_NAMESPACE_END;

@@ -10,8 +10,9 @@ public:
 	virtual ~BufferShaderResourceView() override;
 protected:
 	BufferShaderResourceView(BufferPtr parentBuffer);
-	void initialize();
 	virtual void initializeImpl() = 0;
+private:
+	void initialize();
 };
 
 LLGL_NAMESPACE_END;

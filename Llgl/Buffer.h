@@ -18,7 +18,6 @@ public:
 	BufferIndexArrayViewPtr getIndexArrayView();
 protected:
 	Buffer(ContextPtr parentContext, uint32_t width, FormatPtr format);
-	void initialize();
 	virtual void initializeImpl() = 0;
 	virtual void copyFromImpl(BufferPtr src, uint32_t srcOffset, uint32_t srcWidth, uint32_t destOffset) = 0;
 	virtual BufferDataAccessViewPtr getDataAccessViewImpl(uint32_t offset, uint32_t width) = 0;
@@ -27,6 +26,7 @@ protected:
 	virtual BufferVertexArrayViewPtr getVertexArrayViewImpl() = 0;
 	virtual BufferIndexArrayViewPtr getIndexArrayViewImpl() = 0;
 private:
+	void initialize();
 	FormatPtr _format;
 	uint32_t _width;
 };
