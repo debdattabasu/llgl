@@ -3,7 +3,7 @@
 
 LLGL_NAMESPACE(Llgl);
 
-LLGL_CLASS(Texture1DView) : public TextureView
+LLGL_CLASS(Texture1DView) : public ResourceView
 {
 public:
 	virtual ~Texture1DView() override;

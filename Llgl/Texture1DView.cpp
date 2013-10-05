@@ -2,7 +2,7 @@
 
 LLGL_NAMESPACE(Llgl);
 
-Texture1DView::Texture1DView(Texture1DPtr parentTexture) : TextureView(parentTexture)
+Texture1DView::Texture1DView(Texture1DPtr parentTexture) : ResourceView(parentTexture)
 {
 
 }

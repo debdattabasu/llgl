@@ -3,8 +3,7 @@
 LLGL_NAMESPACE(Llgl);
 
 Texture2D::Texture2D(ContextPtr parentContext, uint32_t width, uint32_t height, uint32_t numMips, FormatPtr format):
-	Texture(parentContext, 2, numMips? numMips: uint32_t(1 + floor(log(double(max(width, height))) /log(2.f))), 1, format), 
-	_width(width), _height(height)
+	Resource(parentContext, 2, format), _width(width), _height(height), _numMips(numMips), _arraySize(1)
 {
 
 }
@@ -25,13 +24,24 @@ uint32_t Texture2D::getHeight(uint32_t mipLevel) const
 	if((mipLevel+1) > getNumMips()) throw InvalidArgumentException("out of bounds");
 	return uint32_t(max(1, floor(_height / pow(2 , mipLevel))));
 }
+
+uint32_t Texture2D::getNumMips() const
+{
+	return _numMips;
+}
+
+uint32_t Texture2D::getArraySize() const
+{
+	return _arraySize;
+}
 	
 void Texture2D::initialize() 
 {
-	Texture::initialize();
-	if(_width == 0 || _height == 0) throw InvalidArgumentException("invalid dimensions");
+	Resource::initialize();
+	if(_width == 0 || _height == 0 || _arraySize == 0) throw InvalidArgumentException("invalid dimensions");
 
 	auto maxNumMips = uint32_t(1 + floor(log(double(max(_width, _height))) /log(2.f)));
+	_numMips = _numMips? _numMips : maxNumMips;
 	if(getNumMips() > maxNumMips) throw InvalidArgumentException("invalid dimensions");
 
 	switch(getFormat()->getUsage())

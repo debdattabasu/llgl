@@ -3,7 +3,7 @@
 
 LLGL_NAMESPACE(Llgl);
 
-LLGL_CLASS(Texture3D) : public Texture, public std::enable_shared_from_this<Texture3D>
+LLGL_CLASS(Texture3D) : public Resource, public std::enable_shared_from_this<Texture3D>
 {
 public:
 	friend class Context;
@@ -12,6 +12,7 @@ public:
 	uint32_t getWidth(uint32_t mipLevel = 0) const;
 	uint32_t getHeight(uint32_t mipLevel = 0) const;
 	uint32_t getDepth(uint32_t mipLevel = 0) const;
+	uint32_t getNumMips() const;
 protected:
 	Texture3D(ContextPtr parentContext, uint32_t width, uint32_t height, uint32_t depth, uint32_t numMips, FormatPtr format);
 	void initialize();
@@ -21,7 +22,7 @@ private:
 	uint32_t _width;
 	uint32_t _height;
 	uint32_t _depth;
-
+	uint32_t _numMips;
 };
 
 LLGL_NAMESPACE_END;
