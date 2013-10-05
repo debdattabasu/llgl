@@ -14,11 +14,16 @@ Direct3D11Texture2DRenderTargetView::~Direct3D11Texture2DRenderTargetView()
 	SAFE_RELEASE(_rtv);
 }
 
+ID3D11RenderTargetView* Direct3D11Texture2DRenderTargetView::getDirect3D11RenderTargetView() const
+{
+	return _rtv;
+}
+
 void Direct3D11Texture2DRenderTargetView::initializeDriver()
 {
-	auto dev = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_dev;
+	auto dev = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->getDirect3D11Device();
 	auto dxgiFmtTyped = std::dynamic_pointer_cast<Direct3D11Format>(getParentResource()->getFormat())->getDxgiFormatTyped();
-	auto tex2d = std::dynamic_pointer_cast<Direct3D11Texture2D>(getParentResource())->_tex2d;
+	auto tex2d = std::dynamic_pointer_cast<Direct3D11Texture2D>(getParentResource())->getDirect3D11Texture2D();
 
 	HRESULT hr = S_OK;
 	D3D11_RENDER_TARGET_VIEW_DESC rtvd ;

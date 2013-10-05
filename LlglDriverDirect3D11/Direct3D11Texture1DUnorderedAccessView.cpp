@@ -14,11 +14,16 @@ Direct3D11Texture1DUnorderedAccessView::~Direct3D11Texture1DUnorderedAccessView(
 	SAFE_RELEASE(_uav);
 }
 
+ID3D11UnorderedAccessView* Direct3D11Texture1DUnorderedAccessView::getDirect3D11UnorderedAccessView() const
+{
+	return _uav;
+}
+
 void Direct3D11Texture1DUnorderedAccessView::initializeDriver()
 {
-	auto dev = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_dev;
+	auto dev = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->getDirect3D11Device();
 	auto dxgiFmtTyped = std::dynamic_pointer_cast<Direct3D11Format>(getParentResource()->getFormat())->getDxgiFormatTyped();
-	auto tex = std::dynamic_pointer_cast<Direct3D11Texture1D>(getParentResource())->_tex1d;
+	auto tex = std::dynamic_pointer_cast<Direct3D11Texture1D>(getParentResource())->getDirect3D11Texture1D();
 	
 	HRESULT hr = S_OK;
 	D3D11_UNORDERED_ACCESS_VIEW_DESC uavd;

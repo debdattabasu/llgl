@@ -14,11 +14,16 @@ Direct3D11Texture2DDepthStencilView::~Direct3D11Texture2DDepthStencilView()
 	SAFE_RELEASE(_dsv);
 }
 
+ID3D11DepthStencilView* Direct3D11Texture2DDepthStencilView::getDirect3D11DepthStencilView() const
+{
+	return _dsv;
+}
+
 void Direct3D11Texture2DDepthStencilView::initializeDriver()
 {
-	auto dev = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_dev;
+	auto dev = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->getDirect3D11Device();
 	auto dxgiFmtDepthTyped = std::dynamic_pointer_cast<Direct3D11Format>(getParentResource()->getFormat())->getDxgiFormatDepthTyped();
-	auto tex2d = std::dynamic_pointer_cast<Direct3D11Texture2D>(getParentResource())->_tex2d;
+	auto tex2d = std::dynamic_pointer_cast<Direct3D11Texture2D>(getParentResource())->getDirect3D11Texture2D();
 
 	HRESULT hr = S_OK;
 	D3D11_DEPTH_STENCIL_VIEW_DESC dsvd;

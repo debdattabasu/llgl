@@ -10,6 +10,8 @@ public:
 	~Direct3D11Texture2DRenderTargetView() override;
 	void initializeDriver() override;
 
+	ID3D11RenderTargetView* getDirect3D11RenderTargetView() const;
+
 private:
 	ID3D11RenderTargetView* _rtv;
 };

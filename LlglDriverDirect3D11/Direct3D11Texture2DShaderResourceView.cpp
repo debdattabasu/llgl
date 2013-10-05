@@ -14,11 +14,17 @@ Direct3D11Texture2DShaderResourceView::~Direct3D11Texture2DShaderResourceView()
 	SAFE_RELEASE(_srv);
 }
 
+ID3D11ShaderResourceView* Direct3D11Texture2DShaderResourceView::getDirect3D11ShaderResourceView() const
+{
+	return _srv;
+}
+
+
 void Direct3D11Texture2DShaderResourceView::initializeDriver()
 {
-	auto dev = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_dev;
+	auto dev = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->getDirect3D11Device();
 	auto dxgiFmtTyped = std::dynamic_pointer_cast<Direct3D11Format>(getParentResource()->getFormat())->getDxgiFormatTyped();
-	auto tex2d = std::dynamic_pointer_cast<Direct3D11Texture2D>(getParentResource())->_tex2d;
+	auto tex2d = std::dynamic_pointer_cast<Direct3D11Texture2D>(getParentResource())->getDirect3D11Texture2D();
 
 	HRESULT hr = S_OK;
 	D3D11_SHADER_RESOURCE_VIEW_DESC srvd;

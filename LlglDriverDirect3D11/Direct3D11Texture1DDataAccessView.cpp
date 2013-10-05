@@ -20,7 +20,7 @@ ID3D11Texture1D* Direct3D11Texture1DDataAccessView::getDirect3D11StagingTexture1
 	if(!_tex1d)
 	{
 		auto caps = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->getCapabilities();
-		auto dev = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_dev;
+		auto dev = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->getDirect3D11Device();
 		auto dxgiFmtTypeless = std::dynamic_pointer_cast<Direct3D11Format>(getParentResource()->getFormat())->getDxgiFormatTypeless();
 		HRESULT hr = S_OK;
 		D3D11_TEXTURE1D_DESC td; 
@@ -45,12 +45,12 @@ void Direct3D11Texture1DDataAccessView::initializeDriver()
 
 void Direct3D11Texture1DDataAccessView::copyFromDriver(Texture1DDataAccessViewPtr src)
 {
-	auto ctx = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_ctx;
-	ID3D11Resource* srcRes = std::dynamic_pointer_cast<Direct3D11Texture1D>(src->getParentResource())->_tex1d;
+	auto ctx = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->getDirect3D11DeviceContext();
+	ID3D11Resource* srcRes = std::dynamic_pointer_cast<Direct3D11Texture1D>(src->getParentResource())->getDirect3D11Texture1D();
 	uint32_t srcSubRes = src->getMipLevel();
 	uint32_t srcOffset = src->getOffset();
 	uint32_t srcWidth = src->getWidth();
-	ID3D11Resource* destRes = std::dynamic_pointer_cast<Direct3D11Texture1D>(getParentResource())->_tex1d;
+	ID3D11Resource* destRes = std::dynamic_pointer_cast<Direct3D11Texture1D>(getParentResource())->getDirect3D11Texture1D();
 	uint32_t destOffset = getOffset();
 	uint32_t destSubRes = getMipLevel();
 
@@ -67,8 +67,8 @@ void Direct3D11Texture1DDataAccessView::copyFromDriver(Texture1DDataAccessViewPt
 
 void Direct3D11Texture1DDataAccessView::getDataDriver(void* data)
 {
-	auto ctx = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_ctx;
-	ID3D11Resource* srcRes = std::dynamic_pointer_cast<Direct3D11Texture1D>(getParentResource())->_tex1d;
+	auto ctx = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->getDirect3D11DeviceContext();
+	ID3D11Resource* srcRes = std::dynamic_pointer_cast<Direct3D11Texture1D>(getParentResource())->getDirect3D11Texture1D();
 	uint32_t srcSubRes = getMipLevel();  
 	ID3D11Resource* destRes = getDirect3D11StagingTexture1D();
 
@@ -96,7 +96,7 @@ void Direct3D11Texture1DDataAccessView::getDataDriver(void* data)
 
 void Direct3D11Texture1DDataAccessView::setDataDriver(void* data)
 {
-	auto ctx = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_ctx;
+	auto ctx = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->getDirect3D11DeviceContext();
 	ID3D11Resource* srcRes = getDirect3D11StagingTexture1D();
 	
 
@@ -112,7 +112,7 @@ void Direct3D11Texture1DDataAccessView::setDataDriver(void* data)
 
 	ctx->Unmap(srcRes, 0);
 
-	ID3D11Resource* destRes = std::dynamic_pointer_cast<Direct3D11Texture1D>(getParentResource())->_tex1d;
+	ID3D11Resource* destRes = std::dynamic_pointer_cast<Direct3D11Texture1D>(getParentResource())->getDirect3D11Texture1D();
 	uint32_t destSubRes = getMipLevel();
 
 	D3D11_BOX bx;

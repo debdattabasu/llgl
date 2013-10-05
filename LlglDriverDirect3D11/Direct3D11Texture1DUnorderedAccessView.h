@@ -9,6 +9,7 @@ public:
 	Direct3D11Texture1DUnorderedAccessView(Texture1DPtr parentTexture, uint32_t mipLevel);
 	~Direct3D11Texture1DUnorderedAccessView() override;
 	void initializeDriver() override;
+	ID3D11UnorderedAccessView* getDirect3D11UnorderedAccessView() const;
 
 private:
 	ID3D11UnorderedAccessView* _uav;

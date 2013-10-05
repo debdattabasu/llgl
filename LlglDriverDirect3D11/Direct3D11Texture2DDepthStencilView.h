@@ -10,6 +10,8 @@ public:
 	~Direct3D11Texture2DDepthStencilView() override;
 	void initializeDriver() override;
 
+	ID3D11DepthStencilView* getDirect3D11DepthStencilView() const;
+
 private:
 	ID3D11DepthStencilView* _dsv;
 };

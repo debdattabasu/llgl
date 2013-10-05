@@ -14,12 +14,17 @@ Direct3D11BufferShaderResourceView::~Direct3D11BufferShaderResourceView()
 	SAFE_RELEASE(_srv);
 }
 
+ID3D11ShaderResourceView* Direct3D11BufferShaderResourceView::getDirect3D11ShaderResourceView() const
+{
+	return _srv;
+}
+
 void Direct3D11BufferShaderResourceView::initializeRaw()
 {
-	auto dev = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_dev;
+	auto dev = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->getDirect3D11Device();
 	auto dxgiFmtTyped = std::dynamic_pointer_cast<Direct3D11Format>(getParentResource()->getFormat())->getDxgiFormatTyped();
 	auto numElements = getParentResource()->getWidth();
-	auto buf = std::dynamic_pointer_cast<Direct3D11Buffer>(getParentResource())->_buf;
+	auto buf = std::dynamic_pointer_cast<Direct3D11Buffer>(getParentResource())->getDirect3D11Buffer();
 
 	HRESULT hr;
 	D3D11_SHADER_RESOURCE_VIEW_DESC srvd;
@@ -37,11 +42,11 @@ void Direct3D11BufferShaderResourceView::initializeRaw()
 
 void Direct3D11BufferShaderResourceView::initializeFormatted()
 {
-	auto dev = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_dev;
+	auto dev = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->getDirect3D11Device();
 	auto dxgiFmtTyped = std::dynamic_pointer_cast<Direct3D11Format>(getParentResource()->getFormat())->getDxgiFormatTyped();
 	auto elementSize = getParentResource()->getFormat()->getSize();
 	auto numElements = getParentResource()->getWidth();
-	auto buf = std::dynamic_pointer_cast<Direct3D11Buffer>(getParentResource())->_buf;
+	auto buf = std::dynamic_pointer_cast<Direct3D11Buffer>(getParentResource())->getDirect3D11Buffer();
 	
 	HRESULT hr;
 	D3D11_SHADER_RESOURCE_VIEW_DESC srvd;

@@ -9,6 +9,7 @@ public:
 	Direct3D11Texture3DShaderResourceView(Texture3DPtr parentTexture);
 	~Direct3D11Texture3DShaderResourceView() override;
 	void initializeDriver() override;
+	ID3D11ShaderResourceView* getDirect3D11ShaderResourceView() const;
 
 private:
 	ID3D11ShaderResourceView* _srv;

@@ -17,7 +17,7 @@ Direct3D11Texture2D::~Direct3D11Texture2D()
 void Direct3D11Texture2D::initializeDriver()
 {
 	auto caps = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->getCapabilities();
-	auto dev = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_dev;
+	auto dev = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->getDirect3D11Device();
 	auto dxgiFmtTypeless = std::dynamic_pointer_cast<Direct3D11Format>(getFormat())->getDxgiFormatTypeless();
 	auto dxgiFmtTyped = std::dynamic_pointer_cast<Direct3D11Format>(getFormat())->getDxgiFormatTyped();
 	auto dxgiFmtDepthTyped = std::dynamic_pointer_cast<Direct3D11Format>(getFormat())->getDxgiFormatDepthTyped();
@@ -38,6 +38,11 @@ void Direct3D11Texture2D::initializeDriver()
 		td.BindFlags |= D3D11_BIND_UNORDERED_ACCESS;
 	hr = dev->CreateTexture2D(&td, NULL, &_tex2d);
 	CHECK_HRESULT(hr);
+}
+
+ID3D11Texture2D* Direct3D11Texture2D::getDirect3D11Texture2D() const
+{
+	return _tex2d;
 }
 
 Texture2DShaderResourceViewPtr Direct3D11Texture2D::getShaderResourceViewDriver()

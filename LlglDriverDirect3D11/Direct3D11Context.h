@@ -16,6 +16,11 @@ public:
 	FormatPtr createFormatDriver(FormatType type, uint32_t vectorSize) override;
 	void initialize();
 
+	ID3D11Device* getDirect3D11Device() const;
+	ID3D11DeviceContext* getDirect3D11DeviceContext() const;
+	D3D_FEATURE_LEVEL getDirect3D11FeatureLevel() const;
+
+private:
 	ID3D11Device* _dev;
 	ID3D11DeviceContext* _ctx;
 	D3D_FEATURE_LEVEL _featureLevel;

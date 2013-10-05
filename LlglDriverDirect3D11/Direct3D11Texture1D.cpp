@@ -16,7 +16,7 @@ Direct3D11Texture1D::~Direct3D11Texture1D()
 void Direct3D11Texture1D::initializeDriver()
 {
 	auto caps = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->getCapabilities();
-	auto dev = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_dev;
+	auto dev = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->getDirect3D11Device();
 	auto dxgiFmtTypeless = std::dynamic_pointer_cast<Direct3D11Format>(getFormat())->getDxgiFormatTypeless();
 	auto dxgiFmtTyped = std::dynamic_pointer_cast<Direct3D11Format>(getFormat())->getDxgiFormatTyped();
 	HRESULT hr = S_OK;
@@ -32,6 +32,11 @@ void Direct3D11Texture1D::initializeDriver()
 		td.BindFlags |= D3D11_BIND_UNORDERED_ACCESS;
 	hr =dev->CreateTexture1D(&td, NULL, &_tex1d);
 	CHECK_HRESULT(hr);
+}
+
+ID3D11Texture1D* Direct3D11Texture1D::getDirect3D11Texture1D() const
+{
+	return _tex1d;
 }
 
 Texture1DUnorderedAccessViewPtr Direct3D11Texture1D::getUnorderedAccessViewDriver(uint32_t mipLevel) 

@@ -14,8 +14,8 @@ public:
 	void getDataDriver(void* data) override;
 	void setDataDriver(void* data) override;
 
-private:
 	ID3D11Texture3D* getDirect3D11StagingTexture3D();
+private:
 	ID3D11Texture3D* _tex3d;
 };
 

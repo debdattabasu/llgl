@@ -14,12 +14,17 @@ Direct3D11BufferUnorderedAccessView::~Direct3D11BufferUnorderedAccessView()
 	SAFE_RELEASE(_uav);
 }
 
+ID3D11UnorderedAccessView* Direct3D11BufferUnorderedAccessView::getDirect3D11UnorderedAccessView() const
+{
+	return _uav;
+}
+
 void Direct3D11BufferUnorderedAccessView::initializeRaw()
 {
-	auto dev = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_dev;
+	auto dev = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->getDirect3D11Device();
 	auto dxgiFmtTyped = std::dynamic_pointer_cast<Direct3D11Format>(getParentResource()->getFormat())->getDxgiFormatTyped();
 	auto numElements = getParentResource()->getWidth();
-	auto buf = std::dynamic_pointer_cast<Direct3D11Buffer>(getParentResource())->_buf;
+	auto buf = std::dynamic_pointer_cast<Direct3D11Buffer>(getParentResource())->getDirect3D11Buffer();
 	
 	HRESULT hr;
 	D3D11_UNORDERED_ACCESS_VIEW_DESC uavd;
@@ -36,10 +41,10 @@ void Direct3D11BufferUnorderedAccessView::initializeRaw()
 
 void Direct3D11BufferUnorderedAccessView::initializeFormatted()
 {
-	auto dev = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_dev;
+	auto dev = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->getDirect3D11Device();
 	auto dxgiFmtTyped = std::dynamic_pointer_cast<Direct3D11Format>(getParentResource()->getFormat())->getDxgiFormatTyped();
 	auto numElements = getParentResource()->getWidth();
-	auto buf = std::dynamic_pointer_cast<Direct3D11Buffer>(getParentResource())->_buf;
+	auto buf = std::dynamic_pointer_cast<Direct3D11Buffer>(getParentResource())->getDirect3D11Buffer();
 	
 	HRESULT hr;
 	D3D11_UNORDERED_ACCESS_VIEW_DESC uavd;

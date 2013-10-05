@@ -15,6 +15,8 @@ public:
 	Texture3DShaderResourceViewPtr getShaderResourceViewDriver() override;
 	Texture3DUnorderedAccessViewPtr getUnorderedAccessViewDriver(uint32_t mipLevel) override;
 
+	ID3D11Texture3D* getDirect3D11Texture3D() const;
+private:
 	ID3D11Texture3D* _tex3d;
 };
 

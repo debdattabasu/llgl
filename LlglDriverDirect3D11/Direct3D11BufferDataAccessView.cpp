@@ -18,7 +18,7 @@ ID3D11Buffer* Direct3D11BufferDataAccessView::getDirect3D11StagingBuffer()
 {
 	if(!_buf)
 	{
-		auto dev = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_dev;
+		auto dev = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->getDirect3D11Device();
 		auto elementSize = getParentResource()->getFormat()->getSize();
 		auto numElements = getWidth();
 		HRESULT hr = S_OK;
@@ -41,11 +41,11 @@ void Direct3D11BufferDataAccessView::initializeDriver()
 
 void Direct3D11BufferDataAccessView::copyFromDriver(BufferDataAccessViewPtr src)
 {
-	auto ctx = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_ctx;
-	ID3D11Resource* srcRes = std::dynamic_pointer_cast<Direct3D11Buffer>(src->getParentResource())->_buf;
+	auto ctx = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->getDirect3D11DeviceContext();
+	ID3D11Resource* srcRes = std::dynamic_pointer_cast<Direct3D11Buffer>(src->getParentResource())->getDirect3D11Buffer();
 	uint32_t srcOffset = src->getOffset();
 	uint32_t srcWidth = src->getWidth();
-	ID3D11Resource* destRes = std::dynamic_pointer_cast<Direct3D11Buffer>(getParentResource())->_buf;
+	ID3D11Resource* destRes = std::dynamic_pointer_cast<Direct3D11Buffer>(getParentResource())->getDirect3D11Buffer();
 	uint32_t destOffset = getOffset();
 	auto elementSize = getParentResource()->getFormat()->getSize();
 
@@ -62,8 +62,8 @@ void Direct3D11BufferDataAccessView::copyFromDriver(BufferDataAccessViewPtr src)
 
 void Direct3D11BufferDataAccessView::getDataDriver(void* data)
 {
-	auto ctx = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_ctx;
-	ID3D11Resource* srcRes = std::dynamic_pointer_cast<Direct3D11Buffer>(getParentResource())->_buf; 
+	auto ctx = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->getDirect3D11DeviceContext();
+	ID3D11Resource* srcRes = std::dynamic_pointer_cast<Direct3D11Buffer>(getParentResource())->getDirect3D11Buffer(); 
 	ID3D11Resource* destRes = getDirect3D11StagingBuffer();
 	uint32_t elementSize = getParentResource()->getFormat()->getSize();
 
@@ -89,7 +89,7 @@ void Direct3D11BufferDataAccessView::getDataDriver(void* data)
 
 void Direct3D11BufferDataAccessView::setDataDriver(void* data)
 {
-	auto ctx = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_ctx;
+	auto ctx = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->getDirect3D11DeviceContext();
 	ID3D11Resource* srcRes = getDirect3D11StagingBuffer();
 	uint32_t elementSize = getParentResource()->getFormat()->getSize();
 
@@ -103,7 +103,7 @@ void Direct3D11BufferDataAccessView::setDataDriver(void* data)
 	ctx->Unmap(srcRes, 0);
 
 
-	ID3D11Resource* destRes = std::dynamic_pointer_cast<Direct3D11Buffer>(getParentResource())->_buf;
+	ID3D11Resource* destRes = std::dynamic_pointer_cast<Direct3D11Buffer>(getParentResource())->getDirect3D11Buffer();
 	D3D11_BOX bx;
 	
 	bx.left = 0; 

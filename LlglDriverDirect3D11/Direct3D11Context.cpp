@@ -44,6 +44,22 @@ Texture3DPtr Direct3D11Context::createTexture3DDriver(uint32_t width, uint32_t h
 	return Texture3DPtr(new Direct3D11Texture3D(shared_from_this(), width, height, depth, numMips, format));
 }
 
+ID3D11Device* Direct3D11Context::getDirect3D11Device() const
+{
+	return _dev;
+}
+
+ID3D11DeviceContext* Direct3D11Context::getDirect3D11DeviceContext() const
+{
+	return _ctx;
+}
+
+D3D_FEATURE_LEVEL Direct3D11Context::getDirect3D11FeatureLevel() const
+{
+	return _featureLevel;
+}
+
+
 void Direct3D11Context::initialize()
 {
 	HRESULT hr = S_OK;

@@ -16,7 +16,7 @@ Direct3D11Buffer::~Direct3D11Buffer()
 void Direct3D11Buffer::initializeRaw()
 {
 	auto caps = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->getCapabilities();
-	auto dev = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_dev;
+	auto dev = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->getDirect3D11Device();
 	auto dxgiFmtTyped = std::dynamic_pointer_cast<Direct3D11Format>(getFormat())->getDxgiFormatTyped();
 	auto elementSize = getFormat()->getSize();
 	auto numElements = getWidth();
@@ -37,7 +37,7 @@ void Direct3D11Buffer::initializeRaw()
 void Direct3D11Buffer::initializeVertexIndex()
 {
 	auto caps = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->getCapabilities();
-	auto dev = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_dev;
+	auto dev = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->getDirect3D11Device();
 
 	auto dxgiFmtTyped = std::dynamic_pointer_cast<Direct3D11Format>(getFormat())->getDxgiFormatTyped();
 	auto elementSize = getFormat()->getSize();
@@ -62,6 +62,11 @@ void Direct3D11Buffer::initializeVertexIndex()
 		bd.BindFlags |= D3D11_BIND_UNORDERED_ACCESS;
 	hr = dev->CreateBuffer(&bd, NULL, &_buf);
 	CHECK_HRESULT(hr);
+}
+
+ID3D11Buffer* Direct3D11Buffer::getDirect3D11Buffer() const
+{
+	return _buf;
 }
 
 void Direct3D11Buffer::initializeDriver()

@@ -16,6 +16,8 @@ public:
 	Texture2DDataAccessViewPtr getDataAccessViewDriver(uint32_t offsetX, uint32_t offsetY, 
 		uint32_t width, uint32_t height, uint32_t mipLevel, uint32_t arrayIndex) override;
 
+	ID3D11Texture2D* getDirect3D11Texture2D() const;
+private:
 	ID3D11Texture2D* _tex2d;
 };
 

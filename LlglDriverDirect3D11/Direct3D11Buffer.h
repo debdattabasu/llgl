@@ -18,6 +18,9 @@ public:
 	BufferVertexArrayViewPtr getVertexArrayViewDriver() override;
 	BufferIndexArrayViewPtr getIndexArrayViewDriver() override;
 
+	ID3D11Buffer* getDirect3D11Buffer() const;
+
+private:
 	ID3D11Buffer* _buf;
 };
 

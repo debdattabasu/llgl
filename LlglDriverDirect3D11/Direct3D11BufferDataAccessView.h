@@ -13,8 +13,8 @@ public:
 	void getDataDriver(void* data) override;
 	void setDataDriver(void* data) override;
 
-private:
 	ID3D11Buffer* getDirect3D11StagingBuffer();
+private:
 	ID3D11Buffer* _buf;
 };
 

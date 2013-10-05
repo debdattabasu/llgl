@@ -12,6 +12,8 @@ public:
 
 	void initializeRaw();
 	void initializeFormatted();
+
+	ID3D11UnorderedAccessView* getDirect3D11UnorderedAccessView() const;
 private:
 	ID3D11UnorderedAccessView* _uav;
 };
