@@ -22,6 +22,8 @@ void Texture1DUnorderedAccessView::initialize()
 {
 	if(!getParentContext()->getCapabilities()->numUnorderedAccessSlots()) 
 		throw UnsupportedFeatureException("unordered access views unsupported");
+	if(getMipLevel() + 1 > getParentResource()->getNumMips())
+		throw InvalidArgumentException("out of bounds");
 	Context::LockGuard lock(getParentContext()); 
 	initializeDriver();
 }

@@ -17,7 +17,6 @@ public:
 		uint32_t width, uint32_t height, uint32_t mipLevel, uint32_t arrayIndex) override;
 
 	ID3D11Texture2D* _tex2d;
-	ID3D11ShaderResourceView* _srv;
 };
 
 LLGL_NAMESPACE_END2;

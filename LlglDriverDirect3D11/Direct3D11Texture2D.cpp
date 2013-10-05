@@ -4,7 +4,7 @@ LLGL_NAMESPACE2(Llgl, Direct3D11);
 
 Direct3D11Texture2D::Direct3D11Texture2D(ContextPtr parentContext, uint32_t width, uint32_t height,
 	uint32_t numMips, FormatPtr format):
-	Texture2D(parentContext, width, height, numMips, format), _tex2d(0), _srv(0)
+	Texture2D(parentContext, width, height, numMips, format), _tex2d(0)
 {
 
 }
@@ -12,7 +12,6 @@ Direct3D11Texture2D::Direct3D11Texture2D(ContextPtr parentContext, uint32_t widt
 Direct3D11Texture2D::~Direct3D11Texture2D()
 {
 	SAFE_RELEASE(_tex2d);
-	SAFE_RELEASE(_srv);
 }
 
 void Direct3D11Texture2D::initializeDriver()
@@ -38,15 +37,6 @@ void Direct3D11Texture2D::initializeDriver()
 	if(!isDepth && caps->numUnorderedAccessSlots())
 		td.BindFlags |= D3D11_BIND_UNORDERED_ACCESS;
 	hr = dev->CreateTexture2D(&td, NULL, &_tex2d);
-	CHECK_HRESULT(hr);
-	D3D11_SHADER_RESOURCE_VIEW_DESC srvd ;
-	ZeroMemory(&srvd, sizeof(srvd));
-	srvd.Format = dxgiFmtTyped;
-	srvd.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
-	srvd.Texture2D.MostDetailedMip = 0;
-	srvd.Texture2D.MipLevels = -1;
-
-	hr = dev->CreateShaderResourceView(_tex2d, &srvd, &_srv);
 	CHECK_HRESULT(hr);
 }
 

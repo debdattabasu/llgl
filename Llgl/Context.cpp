@@ -50,13 +50,6 @@ Texture3DPtr Context::createTexture3D(uint32_t width, uint32_t height, uint32_t 
 	return ret;
 }
 
-Texture3DStreamPtr Context::createTexture3DStream(uint32_t width, uint32_t height, uint32_t depth, FormatPtr format)
-{
-	auto ret = createTexture3DStreamDriver(width, height, depth, format);
-	ret->initialize();
-	return ret;
-}
-
 FormatPtr Context::createFormat(FormatType type, uint32_t vectorSize)
 {
 	auto ret = createFormatDriver(type, vectorSize);

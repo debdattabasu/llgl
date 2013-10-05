@@ -73,7 +73,7 @@ void Direct3D11Texture2DDataAccessView::copyFromDriver(Texture2DDataAccessViewPt
 void Direct3D11Texture2DDataAccessView::getDataDriver(void* data)
 {
 	auto ctx = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->_ctx;
-	ID3D11Resource* srcRes = std::dynamic_pointer_cast<Direct3D11Texture1D>(getParentResource())->_tex1d;
+	ID3D11Resource* srcRes = std::dynamic_pointer_cast<Direct3D11Texture2D>(getParentResource())->_tex2d;
 	uint32_t srcSubRes = getMipLevel();  
 	ID3D11Resource* destRes = getDirect3D11StagingTexture2D();
 
@@ -128,7 +128,7 @@ void Direct3D11Texture2DDataAccessView::setDataDriver(void* data)
 
 	ctx->Unmap(srcRes, 0);
 
-	ID3D11Resource* destRes = std::dynamic_pointer_cast<Direct3D11Texture1D>(getParentResource())->_tex1d;
+	ID3D11Resource* destRes = std::dynamic_pointer_cast<Direct3D11Texture2D>(getParentResource())->_tex2d;
 	uint32_t destSubRes = getMipLevel();
 
 	D3D11_BOX bx;

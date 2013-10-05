@@ -2,30 +2,31 @@
 
 LLGL_NAMESPACE(Llgl);
 
-Texture2DUnorderedAccessView::Texture2DUnorderedAccessView(Texture2DPtr parentTexture, uint32_t mipLevel) :
-	Texture2DView(parentTexture), _mipLevel(mipLevel)
+Texture3DUnorderedAccessView::Texture3DUnorderedAccessView(Texture3DPtr parentTexture, uint32_t mipLevel) :
+	Texture3DView(parentTexture), _mipLevel(mipLevel)
 {
 
 }
 
-Texture2DUnorderedAccessView::~Texture2DUnorderedAccessView()
+Texture3DUnorderedAccessView::~Texture3DUnorderedAccessView()
 {
 
 }
 
-uint32_t Texture2DUnorderedAccessView::getMipLevel() const
+uint32_t Texture3DUnorderedAccessView::getMipLevel() const
 {
 	return _mipLevel;
 }
 
-void Texture2DUnorderedAccessView::initialize()
+void Texture3DUnorderedAccessView::initialize()
 {
+	if(_mipLevel +1 > getParentResource()->getNumMips())
+		throw InvalidArgumentException("out of bounds");
+
 	if(!getParentContext()->getCapabilities()->numUnorderedAccessSlots()) 
 		throw UnsupportedFeatureException("unordered access views unsupported");
 	if(getParentResource()->getFormat()->getUsage() == FormatUsage::DepthTexture)
 		throw InvalidOperationException("unordered access views unsupported by depth textures");
-	if(getMipLevel() + 1 > getParentResource()->getNumMips())
-		throw InvalidArgumentException("out of bounds");
 	Context::LockGuard lock(getParentContext()); 
 	initializeDriver();
 }

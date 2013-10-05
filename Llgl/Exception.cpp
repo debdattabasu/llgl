@@ -19,7 +19,7 @@ LLGL_EXCEPTION_DEFINE(InvalidArgument);
 LLGL_EXCEPTION_DEFINE(InvalidOperation);
 LLGL_EXCEPTION_DEFINE(OutOfMemory);
 LLGL_EXCEPTION_DEFINE(UnexpectedError);
-LLGL_EXCEPTION_DEFINE(NotDriveremented);
+LLGL_EXCEPTION_DEFINE(NotImplemented);
 LLGL_EXCEPTION_DEFINE(UnsupportedFeature);
 
 

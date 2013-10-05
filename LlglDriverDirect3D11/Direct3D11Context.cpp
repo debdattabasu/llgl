@@ -44,11 +44,6 @@ Texture3DPtr Direct3D11Context::createTexture3DDriver(uint32_t width, uint32_t h
 	return Texture3DPtr(new Direct3D11Texture3D(shared_from_this(), width, height, depth, numMips, format));
 }
 
-Texture3DStreamPtr Direct3D11Context::createTexture3DStreamDriver(uint32_t width, uint32_t height, uint32_t depth, FormatPtr format) 
-{
-	return Texture3DStreamPtr(new Direct3D11Texture3DStream(shared_from_this(), width, height, depth, format));
-}
-
 void Direct3D11Context::initialize()
 {
 	HRESULT hr = S_OK;

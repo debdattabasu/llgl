@@ -57,9 +57,24 @@ void Texture3D::initialize()
 	initializeDriver();
 }
 
-Texture3DSlicePtr Texture3D::getSlice(uint32_t mipLevel)
+Texture3DDataAccessViewPtr Texture3D::getDataAccessView(uint32_t offsetX, uint32_t offsetY, uint32_t offsetZ, 
+		uint32_t width, uint32_t height, uint32_t depth, uint32_t mipLevel)
 {
-	auto ret = getSliceDriver(mipLevel);
+	auto ret = getDataAccessViewDriver(offsetX, offsetY, offsetZ, width, height, depth, mipLevel);
+	ret->initialize();
+	return ret;
+}
+
+Texture3DShaderResourceViewPtr Texture3D::getShaderResourceView()
+{
+	auto ret = getShaderResourceViewDriver();
+	ret->initialize();
+	return ret;
+}
+
+Texture3DUnorderedAccessViewPtr Texture3D::getUnorderedAccessView(uint32_t mipLevel)
+{
+	auto ret = getUnorderedAccessViewDriver(mipLevel);
 	ret->initialize();
 	return ret;
 }

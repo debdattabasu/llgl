@@ -89,7 +89,7 @@ LLGL_EXCEPTION(InvalidArgument);
 LLGL_EXCEPTION(InvalidOperation);
 LLGL_EXCEPTION(OutOfMemory);
 LLGL_EXCEPTION(UnexpectedError);
-LLGL_EXCEPTION(NotDriveremented);
+LLGL_EXCEPTION(NotImplemented);
 LLGL_EXCEPTION(UnsupportedFeature);
 
 LLGL_CLASS(NonCopyable);
@@ -121,10 +121,11 @@ LLGL_CLASS(Texture2DRenderTargetView);
 LLGL_CLASS(Texture2DDepthStencilView);
 LLGL_CLASS(Texture2DDataAccessView);
 LLGL_CLASS(Texture3DView);
+LLGL_CLASS(Texture3DDataAccessView);
+LLGL_CLASS(Texture3DShaderResourceView);
+LLGL_CLASS(Texture3DUnorderedAccessView);
 LLGL_CLASS(Texture1D);
 LLGL_CLASS(Texture2D);
-LLGL_CLASS(Texture3DSlice);
-LLGL_CLASS(Texture3DStream);
 LLGL_CLASS(Texture3D);
 
 

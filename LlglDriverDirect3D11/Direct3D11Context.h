@@ -13,7 +13,6 @@ public:
 	Texture1DPtr createTexture1DDriver(uint32_t width, uint32_t numMips, FormatPtr format) override;
 	Texture2DPtr createTexture2DDriver(uint32_t width, uint32_t height, uint32_t numMips, FormatPtr format) override;
 	Texture3DPtr createTexture3DDriver(uint32_t width, uint32_t height, uint32_t depth, uint32_t numMips, FormatPtr format) override;
-	Texture3DStreamPtr createTexture3DStreamDriver(uint32_t width, uint32_t height, uint32_t depth, FormatPtr format) override;
 	FormatPtr createFormatDriver(FormatType type, uint32_t vectorSize) override;
 	void initialize();
 
