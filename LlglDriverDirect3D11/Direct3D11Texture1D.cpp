@@ -2,8 +2,8 @@
 
 LLGL_NAMESPACE2(Llgl, Direct3D11);
 
-Direct3D11Texture1D::Direct3D11Texture1D(ContextPtr parentContext, uint32_t width,  uint32_t numMips, FormatPtr format):
-	Texture1D(parentContext, width, numMips, format), _tex1d(0)
+Direct3D11Texture1D::Direct3D11Texture1D(ContextPtr parentContext, uint32_t width, uint32_t numMips, uint32_t arraySize, FormatPtr format):
+	Texture1D(parentContext, width, numMips, arraySize, format), _tex1d(0)
 {
 
 }
@@ -24,7 +24,7 @@ void Direct3D11Texture1D::initializeDriver()
 	ZeroMemory(&td, sizeof(td));
 	td.Width = getWidth();;
 	td.MipLevels = getNumMips();
-	td.ArraySize = 1;
+	td.ArraySize = getArraySize();
 	td.Format = dxgiFmtTypeless;
 	td.Usage = D3D11_USAGE_DEFAULT;
 	td.BindFlags = D3D11_BIND_SHADER_RESOURCE;

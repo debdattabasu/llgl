@@ -20,7 +20,7 @@ public:
 	uint32_t getNumMips() const;
 	uint32_t getArraySize() const;
 protected:
-	Texture2D(ContextPtr parentContext, uint32_t width, uint32_t height, uint32_t numMips, FormatPtr format);
+	Texture2D(ContextPtr parentContext, uint32_t width, uint32_t height, uint32_t numMips, uint32_t arraySize, FormatPtr format);
 	virtual void initializeDriver() = 0;
 	virtual Texture2DShaderResourceViewPtr getShaderResourceViewDriver() = 0;
 	virtual Texture2DUnorderedAccessViewPtr getUnorderedAccessViewDriver(uint32_t mipLevel) = 0;

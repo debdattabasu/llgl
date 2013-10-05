@@ -23,8 +23,19 @@ void Direct3D11Texture2DUnorderedAccessView::initializeDriver()
 	HRESULT hr = S_OK;
 	D3D11_UNORDERED_ACCESS_VIEW_DESC uavd;
 	uavd.Format = dxgiFmtTyped;
-	uavd.ViewDimension = D3D11_UAV_DIMENSION_TEXTURE2D;
-	uavd.Texture2D.MipSlice = getMipLevel();
+	uint32_t arraySize = getParentResource()->getArraySize();
+	if(arraySize == 1)
+	{
+		uavd.ViewDimension= D3D11_UAV_DIMENSION_TEXTURE2D;
+		uavd.Texture2D.MipSlice = getMipLevel();
+	}
+	else
+	{
+		uavd.ViewDimension= D3D11_UAV_DIMENSION_TEXTURE2DARRAY;
+		uavd.Texture2DArray.MipSlice = getMipLevel();
+		uavd.Texture2DArray.FirstArraySlice = 0;
+		uavd.Texture2DArray.ArraySize = arraySize;
+	}
 	hr = dev->CreateUnorderedAccessView(tex2d, &uavd, &_uav);
 	CHECK_HRESULT(hr);
 }

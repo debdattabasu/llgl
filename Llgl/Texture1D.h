@@ -17,7 +17,7 @@ public:
 	Texture1DUnorderedAccessViewPtr getUnorderedAccessView(uint32_t mipLevel);
 
 protected:
-	Texture1D(ContextPtr parentContext, uint32_t width, uint32_t numMips, FormatPtr format);
+	Texture1D(ContextPtr parentContext, uint32_t width, uint32_t numMips, uint32_t arraySize, FormatPtr format);
 	virtual void initializeDriver() = 0;
 	virtual Texture1DDataAccessViewPtr getDataAccessViewDriver(uint32_t offset, uint32_t width, uint32_t mipLevel, uint32_t arrayIndex) = 0;
 	virtual Texture1DShaderResourceViewPtr getShaderResourceViewDriver() = 0;

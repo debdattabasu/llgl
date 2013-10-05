@@ -3,8 +3,8 @@
 LLGL_NAMESPACE2(Llgl, Direct3D11);
 
 Direct3D11Texture2D::Direct3D11Texture2D(ContextPtr parentContext, uint32_t width, uint32_t height,
-	uint32_t numMips, FormatPtr format):
-	Texture2D(parentContext, width, height, numMips, format), _tex2d(0)
+	uint32_t numMips, uint32_t arraySize, FormatPtr format):
+	Texture2D(parentContext, width, height, numMips, arraySize, format), _tex2d(0)
 {
 
 }
@@ -27,7 +27,7 @@ void Direct3D11Texture2D::initializeDriver()
 	td.Width = getWidth();
 	td.Height = getHeight();
 	td.MipLevels = getNumMips();
-	td.ArraySize = 1;
+	td.ArraySize = getArraySize();
 	td.Format = dxgiFmtTypeless;
 	td.SampleDesc.Count = 1;
 	td.Usage = D3D11_USAGE_DEFAULT;

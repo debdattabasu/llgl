@@ -24,9 +24,22 @@ void Direct3D11Texture2DShaderResourceView::initializeDriver()
 	D3D11_SHADER_RESOURCE_VIEW_DESC srvd;
 	ZeroMemory(&srvd, sizeof(srvd));
 	srvd.Format = dxgiFmtTyped;
-	srvd.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
-	srvd.Texture2D.MostDetailedMip = 0;
-	srvd.Texture2D.MipLevels = -1;
+
+	uint32_t arraySize = getParentResource()->getArraySize();
+	if(arraySize == 1)
+	{
+		srvd.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+		srvd.Texture2D.MostDetailedMip = 0;
+		srvd.Texture2D.MipLevels = -1;
+	}
+	else
+	{
+		srvd.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2DARRAY;
+		srvd.Texture2DArray.MostDetailedMip = 0;
+		srvd.Texture2DArray.MipLevels = -1;
+		srvd.Texture2DArray.FirstArraySlice = 0;
+		srvd.Texture2DArray.ArraySize = arraySize;
+	}
 
 	hr = dev->CreateShaderResourceView(tex2d, &srvd, &_srv);
 	CHECK_HRESULT(hr);

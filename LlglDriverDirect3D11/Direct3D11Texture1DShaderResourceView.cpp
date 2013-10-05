@@ -24,9 +24,23 @@ void Direct3D11Texture1DShaderResourceView::initializeDriver()
 	D3D11_SHADER_RESOURCE_VIEW_DESC srvd ;
 	ZeroMemory(&srvd, sizeof(srvd));
 	srvd.Format = dxgiFmtTyped;
-	srvd.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE1D;
-	srvd.Texture1D.MostDetailedMip = 0;
-	srvd.Texture1D.MipLevels = -1;
+
+	uint32_t arraySize = getParentResource()->getArraySize();
+	if(arraySize == 1)
+	{
+		srvd.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE1D;
+		srvd.Texture1D.MostDetailedMip = 0;
+		srvd.Texture1D.MipLevels = -1;
+	}
+	else
+	{
+		srvd.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE1DARRAY;
+		srvd.Texture1DArray.MostDetailedMip = 0;
+		srvd.Texture1DArray.MipLevels = -1;
+		srvd.Texture1DArray.FirstArraySlice = 0;
+		srvd.Texture1DArray.ArraySize = arraySize;
+	}
+	
 	hr = dev->CreateShaderResourceView(tex1d, &srvd, &_srv);
 	CHECK_HRESULT(hr);
 }

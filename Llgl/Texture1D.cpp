@@ -2,8 +2,8 @@
 
 LLGL_NAMESPACE(Llgl);
 
-Texture1D::Texture1D(ContextPtr parentContext, uint32_t width, uint32_t numMips, FormatPtr format): 
-	Resource(parentContext, 1, format), _width(width), _numMips(numMips), _arraySize(0)
+Texture1D::Texture1D(ContextPtr parentContext, uint32_t width, uint32_t numMips, uint32_t arraySize, FormatPtr format): 
+	Resource(parentContext, 1, format), _width(width), _numMips(numMips), _arraySize(arraySize)
 {
 
 }

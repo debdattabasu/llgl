@@ -24,8 +24,21 @@ void Direct3D11Texture2DRenderTargetView::initializeDriver()
 	D3D11_RENDER_TARGET_VIEW_DESC rtvd ;
 		ZeroMemory(&rtvd, sizeof(rtvd));
 	rtvd.Format = dxgiFmtTyped;
-	rtvd.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
-	rtvd.Texture2D.MipSlice = getMipLevel();
+
+	uint32_t arraySize = getParentResource()->getArraySize();
+	if(arraySize == 1)
+	{
+		rtvd.ViewDimension= D3D11_RTV_DIMENSION_TEXTURE2D;
+		rtvd.Texture2D.MipSlice = getMipLevel();
+	}
+	else
+	{
+		rtvd.ViewDimension= D3D11_RTV_DIMENSION_TEXTURE2DARRAY;
+		rtvd.Texture2DArray.MipSlice = getMipLevel();
+		rtvd.Texture2DArray.FirstArraySlice = 0;
+		rtvd.Texture2DArray.ArraySize = arraySize;
+	}
+
 	hr = dev->CreateRenderTargetView(tex2d, &rtvd, &_rtv);
 	CHECK_HRESULT(hr);
 }

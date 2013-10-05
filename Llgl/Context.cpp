@@ -29,16 +29,16 @@ BufferPtr Context::createBuffer(uint32_t width, FormatPtr format)
 	return ret;
 }
 
-Texture1DPtr Context::createTexture1D(uint32_t width, uint32_t numMips, FormatPtr format)
+Texture1DPtr Context::createTexture1D(uint32_t width, uint32_t numMips, uint32_t arraySize, FormatPtr format)
 {
-	auto ret = createTexture1DDriver(width, numMips, format);
+	auto ret = createTexture1DDriver(width, numMips, arraySize, format);
 	ret->initialize();
 	return ret;
 }
 
-Texture2DPtr Context::createTexture2D(uint32_t width, uint32_t height, uint32_t numMips, FormatPtr format)
+Texture2DPtr Context::createTexture2D(uint32_t width, uint32_t height, uint32_t numMips, uint32_t arraySize, FormatPtr format)
 {
-	auto ret = createTexture2DDriver(width, height, numMips, format);
+	auto ret = createTexture2DDriver(width, height, numMips, arraySize, format);
 	ret->initialize();
 	return ret;
 }

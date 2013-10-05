@@ -10,8 +10,8 @@ public:
 	~Direct3D11Context() override;
 	CapabilitiesPtr getCapabilities() override;
 	BufferPtr createBufferDriver(uint32_t width, FormatPtr format) override;
-	Texture1DPtr createTexture1DDriver(uint32_t width, uint32_t numMips, FormatPtr format) override;
-	Texture2DPtr createTexture2DDriver(uint32_t width, uint32_t height, uint32_t numMips, FormatPtr format) override;
+	Texture1DPtr createTexture1DDriver(uint32_t width, uint32_t numMips, uint32_t arraySize, FormatPtr format) override;
+	Texture2DPtr createTexture2DDriver(uint32_t width, uint32_t height, uint32_t numMips, uint32_t arraySize, FormatPtr format) override;
 	Texture3DPtr createTexture3DDriver(uint32_t width, uint32_t height, uint32_t depth, uint32_t numMips, FormatPtr format) override;
 	FormatPtr createFormatDriver(FormatType type, uint32_t vectorSize) override;
 	void initialize();

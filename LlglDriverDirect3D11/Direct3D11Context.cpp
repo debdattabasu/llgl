@@ -24,14 +24,14 @@ BufferPtr Direct3D11Context::createBufferDriver(uint32_t width, FormatPtr format
 }
 
 
-Texture1DPtr Direct3D11Context::createTexture1DDriver(uint32_t width, uint32_t numMips, FormatPtr format)
+Texture1DPtr Direct3D11Context::createTexture1DDriver(uint32_t width, uint32_t numMips, uint32_t arraySize, FormatPtr format)
 {
-	return Texture1DPtr(new Direct3D11Texture1D(shared_from_this(), width, numMips, format));
+	return Texture1DPtr(new Direct3D11Texture1D(shared_from_this(), width, numMips, arraySize, format));
 }
 
-Texture2DPtr Direct3D11Context::createTexture2DDriver(uint32_t width, uint32_t height, uint32_t numMips, FormatPtr format)
+Texture2DPtr Direct3D11Context::createTexture2DDriver(uint32_t width, uint32_t height, uint32_t numMips, uint32_t arraySize, FormatPtr format)
 {
-	return Texture2DPtr(new Direct3D11Texture2D(shared_from_this(), width, height, numMips, format));
+	return Texture2DPtr(new Direct3D11Texture2D(shared_from_this(), width, height, numMips, arraySize, format));
 }
 
 FormatPtr Direct3D11Context::createFormatDriver(FormatType type, uint32_t vectorSize)

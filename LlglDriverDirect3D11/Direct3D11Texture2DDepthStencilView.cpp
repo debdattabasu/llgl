@@ -24,8 +24,20 @@ void Direct3D11Texture2DDepthStencilView::initializeDriver()
 	D3D11_DEPTH_STENCIL_VIEW_DESC dsvd;
 	ZeroMemory(&dsvd, sizeof(dsvd));
 	dsvd.Format = dxgiFmtDepthTyped;
-	dsvd.ViewDimension= D3D11_DSV_DIMENSION_TEXTURE2D;
-	dsvd.Texture2D.MipSlice = getMipLevel();
+
+	uint32_t arraySize = getParentResource()->getArraySize();
+	if(arraySize == 1)
+	{
+		dsvd.ViewDimension= D3D11_DSV_DIMENSION_TEXTURE2D;
+		dsvd.Texture2D.MipSlice = getMipLevel();
+	}
+	else
+	{
+		dsvd.ViewDimension= D3D11_DSV_DIMENSION_TEXTURE2DARRAY;
+		dsvd.Texture2DArray.MipSlice = getMipLevel();
+		dsvd.Texture2DArray.FirstArraySlice = 0;
+		dsvd.Texture2DArray.ArraySize = arraySize;
+	}
 	hr = dev->CreateDepthStencilView(tex2d, &dsvd, &_dsv);
 	CHECK_HRESULT(hr);
 }
