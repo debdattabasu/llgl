@@ -61,9 +61,9 @@ void Buffer::initialize()
 	{
 	case FormatUsage::General:
 		break;
-	case FormatUsage::RawBuffer:
-		if(!caps->supportsRawBuffer())
-			throw InvalidArgumentException("raw buffers unsupported");
+	case FormatUsage::StructuredBuffer:
+		if(!caps->supportsStructuredBuffer())
+			throw InvalidArgumentException("structured buffers unsupported");
 		break;
 	case FormatUsage::IndexBuffer:
 		break;

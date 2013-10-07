@@ -6,7 +6,7 @@ Driver::Load loader("Direct3D11");
 int main()
 {
 	auto ctx = Driver::get()->createContext();
-	auto buf = ctx->createBuffer(32, ctx->createFormat(FormatType::Float, 1));
+	auto buf = ctx->createBuffer(32, ctx->createFormat(FormatType::Structured, 4));
 	std::vector<float> data(32);
 	for(int i = 0; i < 32; i++)
 	{

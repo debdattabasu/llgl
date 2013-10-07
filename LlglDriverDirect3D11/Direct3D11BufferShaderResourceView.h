@@ -9,7 +9,7 @@ public:
 	Direct3D11BufferShaderResourceView(BufferPtr parentBuffer);
 	~Direct3D11BufferShaderResourceView() override;
 	void initializeDriver() override;
-	void initializeRaw();
+	void initializeStructured();
 	void initializeFormatted();
 
 	ID3D11ShaderResourceView* getDirect3D11ShaderResourceView() const;

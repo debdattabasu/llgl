@@ -9,7 +9,7 @@ public:
 	Direct3D11Buffer(ContextPtr parentContext, uint32_t width, FormatPtr format);
 	~Direct3D11Buffer() override;
 	void initializeDriver() override;
-	void initializeRaw();
+	void initializeStructured();
 	void initializeVertexIndex();
 	
 	BufferDataAccessViewPtr getDataAccessViewDriver(uint32_t offset, uint32_t width) override;

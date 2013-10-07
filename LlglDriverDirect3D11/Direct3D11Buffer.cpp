@@ -13,7 +13,7 @@ Direct3D11Buffer::~Direct3D11Buffer()
 	SAFE_RELEASE(_buf);
 }
 
-void Direct3D11Buffer::initializeRaw()
+void Direct3D11Buffer::initializeStructured()
 {
 	auto caps = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->getCapabilities();
 	auto dev = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->getDirect3D11Device();
@@ -29,7 +29,8 @@ void Direct3D11Buffer::initializeRaw()
 		bd.BindFlags |= D3D11_BIND_SHADER_RESOURCE;
 	if(caps->numUnorderedAccessSlots())
 		bd.BindFlags |= D3D11_BIND_UNORDERED_ACCESS;
-	bd.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_ALLOW_RAW_VIEWS; 
+	bd.MiscFlags = D3D11_RESOURCE_MISC_BUFFER_STRUCTURED;
+	bd.StructureByteStride = elementSize;
 	hr = dev->CreateBuffer(&bd, NULL, &_buf);
 	CHECK_HRESULT(hr);
 }
@@ -71,7 +72,7 @@ ID3D11Buffer* Direct3D11Buffer::getDirect3D11Buffer() const
 
 void Direct3D11Buffer::initializeDriver()
 {
-	if (getFormat()->getUsage() == FormatUsage::RawBuffer) initializeRaw();
+	if (getFormat()->getUsage() == FormatUsage::StructuredBuffer) initializeStructured();
 	else initializeVertexIndex();
 }
 

@@ -8,7 +8,7 @@ LLGL_CLASS(Direct3D11Capabilities) : public Capabilities
 public:
 	Direct3D11Capabilities(ContextPtr parentContext);
 	~Direct3D11Capabilities() override;
-	bool supportsRawBuffer() override;
+	bool supportsStructuredBuffer() override;
 	bool supportsShaderResourceBuffer() override;
 	uint32_t numUnorderedAccessSlots() override;
 	

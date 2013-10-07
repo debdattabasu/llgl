@@ -19,7 +19,7 @@ ID3D11UnorderedAccessView* Direct3D11BufferUnorderedAccessView::getDirect3D11Uno
 	return _uav;
 }
 
-void Direct3D11BufferUnorderedAccessView::initializeRaw()
+void Direct3D11BufferUnorderedAccessView::initializeStructured()
 {
 	auto dev = std::dynamic_pointer_cast<Direct3D11Context>(getParentContext())->getDirect3D11Device();
 	auto dxgiFmtTyped = std::dynamic_pointer_cast<Direct3D11Format>(getParentResource()->getFormat())->getDxgiFormatTyped();
@@ -33,10 +33,8 @@ void Direct3D11BufferUnorderedAccessView::initializeRaw()
 	uavd.ViewDimension = D3D11_UAV_DIMENSION_BUFFER;
 	uavd.Buffer.FirstElement = 0;
 	uavd.Buffer.NumElements =  numElements;
-	uavd.Buffer.Flags = D3D11_BUFFER_UAV_FLAG_RAW;
 	hr = dev->CreateUnorderedAccessView(buf, &uavd, &_uav);
 	CHECK_HRESULT(hr);
-
 }
 
 void Direct3D11BufferUnorderedAccessView::initializeFormatted()
@@ -53,14 +51,13 @@ void Direct3D11BufferUnorderedAccessView::initializeFormatted()
 	uavd.ViewDimension = D3D11_UAV_DIMENSION_BUFFER;
 	uavd.Buffer.FirstElement = 0;
 	uavd.Buffer.NumElements =  numElements;
-	uavd.Buffer.Flags = D3D11_BUFFER_UAV_FLAG_RAW;
 	hr = dev->CreateUnorderedAccessView(buf, &uavd, &_uav);
 	CHECK_HRESULT(hr);
 }
 
 void Direct3D11BufferUnorderedAccessView::initializeDriver()
 {
-	if (getParentResource()->getFormat()->getUsage() == FormatUsage::RawBuffer) initializeRaw();
+	if (getParentResource()->getFormat()->getUsage() == FormatUsage::StructuredBuffer) initializeStructured();
 	else initializeFormatted();
 }
 

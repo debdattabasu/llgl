@@ -17,8 +17,8 @@ void Direct3D11Format::initializeDriver()
 {
 	switch(getType())
 	{
-	case FormatType::Raw:
-		_dxgiFormatTypeless = DXGI_FORMAT_R32_TYPELESS;
+	case FormatType::Structured:
+		_dxgiFormatTypeless = DXGI_FORMAT_UNKNOWN;
 		_dxgiFormatTyped = DXGI_FORMAT_UNKNOWN;
 		_dxgiFormatDepthTyped = DXGI_FORMAT_UNKNOWN;
 		break;

@@ -23,8 +23,8 @@ FormatUsage Format::getUsage()
 	FormatUsage ret = FormatUsage::General;
 	switch(_type)
 	{
-	case FormatType::Raw:
-		ret = FormatUsage::RawBuffer; 
+	case FormatType::Structured:
+		ret = FormatUsage::StructuredBuffer; 
 		break;
 	case FormatType::Index16:
 		ret = FormatUsage::IndexBuffer; 
@@ -53,8 +53,8 @@ uint32_t Format::getSize()
 	uint32_t size  = 1;
 	switch(_type)
 	{
-	case FormatType::Raw:
-		size = 4; 
+	case FormatType::Structured:
+		size = 1; 
 		break;
 	case FormatType::Float:
 		size = 4; 
@@ -125,7 +125,7 @@ void Format::initialize()
 {
 	Context::LockGuard lock(getParentContext()); 
 	if(_vectorSize != 1 && _vectorSize != 2 && _vectorSize != 4) throw InvalidArgumentException("vector size must be 1, 2, or 4");
-	if(getUsage() != FormatUsage::General && _vectorSize != 1) throw InvalidArgumentException("vector size for given format must be 1");
+	if(!(getUsage() == FormatUsage::General || getUsage() == FormatUsage::StructuredBuffer) && _vectorSize != 1) throw InvalidArgumentException("vector size for given format must be 1");
 	initializeDriver();
 }
 

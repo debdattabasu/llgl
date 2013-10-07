@@ -12,7 +12,7 @@ Direct3D11Capabilities::~Direct3D11Capabilities()
 
 }
 
-bool Direct3D11Capabilities::supportsRawBuffer() 
+bool Direct3D11Capabilities::supportsStructuredBuffer() 
 {
 	auto ret = false;
 	switch (_featureLevel)

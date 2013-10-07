@@ -10,7 +10,7 @@ public:
 	~Direct3D11BufferUnorderedAccessView() override;
 	void initializeDriver() override;
 
-	void initializeRaw();
+	void initializeStructured();
 	void initializeFormatted();
 
 	ID3D11UnorderedAccessView* getDirect3D11UnorderedAccessView() const;

@@ -5,7 +5,7 @@ LLGL_NAMESPACE(Llgl);
 
 LLGL_ENUM(FormatType)
 {
-	Raw,
+	Structured,
 	Float, 
 	Half,
 	Int32, 
@@ -27,7 +27,7 @@ LLGL_ENUM(FormatType)
 LLGL_ENUM(FormatUsage)
 {
 	General, 
-	RawBuffer, 
+	StructuredBuffer, 
 	IndexBuffer,
 	DepthTexture
 };
